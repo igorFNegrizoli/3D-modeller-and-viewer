@@ -11,7 +11,7 @@ class CanvasMenu(Frame):
     def initToolbar(self):
 
         menuBar = Menu(self.master)
-        toolBar = LabelFrame(self.master, bd=2, relief=RAISED)
+        toolBar = LabelFrame(self.master, bd=1, relief=RAISED)
 
         optionPer = IntVar()
 
@@ -42,10 +42,10 @@ class CanvasMenu(Frame):
     def initSideBar(self):
 
         menuBar = Menu(self.master)
-        sideBar = LabelFrame(self.master, bd=2, relief=RAISED)
+        sideBar = LabelFrame(self.master, bd=1, relief=RAISED)
 
-        labelWorldLimit = Label(sideBar, text="      Limite do mundo")
-        labelWorldLimit.grid(row=0, column=0, pady=10)
+        labelWorldLimit = Label(sideBar, text="Limite do mundo", justify=LEFT, anchor="w")
+        labelWorldLimit.grid(row=0, column=0, padx=5, pady=10, sticky=W)
 
         WorldLimitX = Entry(sideBar, width= 10)
         WorldLimitX.grid(row=0, column=1, padx=8)
@@ -54,27 +54,46 @@ class CanvasMenu(Frame):
         labelX.grid(row=0, column=2)
 
         WorldLimitY = Entry(sideBar, width= 10)
-        WorldLimitY.grid(row=0, column=3, padx=8)
+        WorldLimitY.grid(row=0, column=3, padx=8, sticky = W)
 
-        labelFocalPoint = Label(sideBar, text="Ponto focal    ")
-        labelFocalPoint.grid(row=1, column=0, pady=10)
+        labelFocalPoint = Label(sideBar, text="Ponto focal", justify=LEFT, anchor="w")
+        labelFocalPoint.grid(row=1, column=0, padx=5, pady=10, sticky=W)
 
         coorFocalPoint = Entry(sideBar, width= 10)
         coorFocalPoint.grid(row=1, column=1)
 
-        labelViewUp = Label(sideBar, text="VIEW-UP        ")
-        labelViewUp.grid(row=2, column=0, pady=10)
+        labelViewUp = Label(sideBar, text="VIEW-UP", justify=LEFT, anchor="w")
+        labelViewUp.grid(row=2, column=0, padx=5, pady=10, sticky=W)
 
         coorViewUp = Entry(sideBar, width= 10)
         coorViewUp.grid(row=2, column=1)
 
-        labelVPR = Label(sideBar, text="VRP                ")
-        labelVPR.grid(row=3, column=0, pady=10)
+        labelVPR = Label(sideBar, text="VRP", justify=LEFT, anchor="w")
+        labelVPR.grid(row=3, column=0, padx=5, pady=10, sticky=W)
 
         coorVRP = Entry(sideBar, width= 10)
         coorVRP.grid(row=3, column=1)
 
+        labelDistance = Label(sideBar, text="Distância:", justify=LEFT, anchor="w")
+        labelDistance.grid(row=4, column=0, padx=5, pady=10, sticky=W)
 
+        labelProjectionPlane = Label(sideBar, text="Plano de projeção", justify=LEFT, anchor="w")
+        labelProjectionPlane.grid(row=5, column=0, padx=5, pady=10, sticky=W)
+
+        coorProjectionPlane = Entry(sideBar, width= 10)
+        coorProjectionPlane.grid(row=5, column=1)
+
+        labelNearPlane = Label(sideBar, text="Plano near", justify=LEFT, anchor="w")
+        labelNearPlane.grid(row=6, column=0, padx=5, pady=10, sticky=W)
+
+        coorNearPlane = Entry(sideBar, width= 10)
+        coorNearPlane.grid(row=6, column=1)
+
+        labelFarPlane = Label(sideBar, text="Plano far", justify=LEFT, anchor="w")
+        labelFarPlane.grid(row=7, column=0, padx=5, pady=10, sticky=W)
+
+        coorFarPlane = Entry(sideBar, width= 10)
+        coorFarPlane.grid(row=7, column=1)
 
         sideBar.pack(side=RIGHT, fill= Y)
         self.master.config(menu=menuBar)
