@@ -44,35 +44,25 @@ class CanvasMenu(Frame):
         menuBar = Menu(self.master)
         sideBar = LabelFrame(self.master, bd=2, relief=RAISED)
 
-        labelWorldLimit = Label(sideBar, text="Limite do mundo")
-        labelWorldLimit.grid(row=0, column=0, padx=2, pady=10)
+        labelWorldLimit = Label(sideBar, text="    Limite do mundo")
+        labelWorldLimit.grid(row=0, column=0, pady=20)
 
-        WorldLimitX = Entry(sideBar, width= 5)
-        WorldLimitX.grid(row=0, column=1, padx=5, pady=10)
+        WorldLimitX = Entry(sideBar, width= 10)
+        WorldLimitX.grid(row=0, column=1, padx=8)
 
-        WorldLimitY = Entry(sideBar, width= 5)
-        WorldLimitY.grid(row=0, column=2,padx=5, pady=10)
+        labelX = Label(sideBar, text="X")
+        labelX.grid(row=0, column=2)
 
-        labelFocalPoint = Label(sideBar, text="Ponto focal")
-        labelFocalPoint.grid(row=1, column=0, pady=10)
+        WorldLimitY = Entry(sideBar, width= 10)
+        WorldLimitY.grid(row=0, column=3, padx=8)
 
-        coorFocalPoint = Entry(sideBar, width= 5)
-        coorFocalPoint.grid(row=1, column=1, padx=5, pady=10)
+        labelFocalPoint = Label(sideBar, text="Ponto focal     ")
+        labelFocalPoint.grid(row=1, column=0, pady=5)
 
-        labelViewUp = Label(sideBar, text="VIEW - UP")
-        labelViewUp.grid(row=2, column=0, pady=10)
+        coorFocalPoint = Entry(sideBar, width= 10)
+        coorFocalPoint.grid(row=1, column=1)
 
-        coorViewUp = Entry(sideBar, width= 5)
-        coorViewUp.grid(row=2, column=1, padx=5, pady=10)
 
-        labelVRP = Label(sideBar, text="VRP")
-        labelVRP.grid(row=3, column=0, pady=10)
-
-        coorVRP = Entry(sideBar, width= 5)
-        coorVRP.grid(row=3, column=1, padx=5, pady=10)
-
-        labelDistance = Label(sideBar, text="Distâncias:")
-        labelDistance.grid(row=4, column=0, pady=10)
 
         sideBar.pack(side=RIGHT, fill= Y)
         self.master.config(menu=menuBar)
