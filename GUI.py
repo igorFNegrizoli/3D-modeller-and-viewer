@@ -44,8 +44,8 @@ class CanvasMenu(Frame):
         menuBar = Menu(self.master)
         sideBar = LabelFrame(self.master, bd=2, relief=RAISED)
 
-        labelWorldLimit = Label(sideBar, text="    Limite do mundo")
-        labelWorldLimit.grid(row=0, column=0, pady=20)
+        labelWorldLimit = Label(sideBar, text="      Limite do mundo")
+        labelWorldLimit.grid(row=0, column=0, pady=10)
 
         WorldLimitX = Entry(sideBar, width= 10)
         WorldLimitX.grid(row=0, column=1, padx=8)
@@ -56,11 +56,23 @@ class CanvasMenu(Frame):
         WorldLimitY = Entry(sideBar, width= 10)
         WorldLimitY.grid(row=0, column=3, padx=8)
 
-        labelFocalPoint = Label(sideBar, text="Ponto focal     ")
-        labelFocalPoint.grid(row=1, column=0, pady=5)
+        labelFocalPoint = Label(sideBar, text="Ponto focal    ")
+        labelFocalPoint.grid(row=1, column=0, pady=10)
 
         coorFocalPoint = Entry(sideBar, width= 10)
         coorFocalPoint.grid(row=1, column=1)
+
+        labelViewUp = Label(sideBar, text="VIEW-UP        ")
+        labelViewUp.grid(row=2, column=0, pady=10)
+
+        coorViewUp = Entry(sideBar, width= 10)
+        coorViewUp.grid(row=2, column=1)
+
+        labelVPR = Label(sideBar, text="VRP                ")
+        labelVPR.grid(row=3, column=0, pady=10)
+
+        coorVRP = Entry(sideBar, width= 10)
+        coorVRP.grid(row=3, column=1)
 
 
 
