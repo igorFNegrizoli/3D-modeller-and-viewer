@@ -89,11 +89,11 @@ class CanvasMenu(Frame):
         coorNearPlane = Entry(sideBar, width= 10)
         coorNearPlane.grid(row=6, column=1)
 
-        labelFarPlane = Label(sideBar, text="Plano far", justify=LEFT, anchor="w")
-        labelFarPlane.grid(row=7, column=0, padx=5, pady=10, sticky=W)
+        labelFarPlan = Label(sideBar, text="Plano far", justify=LEFT, anchor="w")
+        labelFarPlan.grid(row=7, column=0, padx=5, pady=10, sticky=W)
 
-        coorFarPlane = Entry(sideBar, width= 10)
-        coorFarPlane.grid(row=7, column=1)
+        coorFarPlan = Entry(sideBar, width= 10)
+        coorFarPlan.grid(row=7, column=1)
 
         sideBar.pack(side=RIGHT, fill= Y)
         self.master.config(menu=menuBar)
