@@ -48,13 +48,13 @@ class CanvasMenu(Frame):
         labelWorldLimit.grid(row=0, column=0, padx=5, pady=10, sticky=W)
 
         WorldLimitX = Entry(sideBar, width= 10)
-        WorldLimitX.grid(row=0, column=1, padx=8)
+        WorldLimitX.grid(row=0, column=1)
 
         labelX = Label(sideBar, text="X")
         labelX.grid(row=0, column=2)
 
         WorldLimitY = Entry(sideBar, width= 10)
-        WorldLimitY.grid(row=0, column=3, padx=8, sticky = W)
+        WorldLimitY.grid(row=0, column=3)
 
         labelFocalPoint = Label(sideBar, text="Ponto focal", justify=LEFT, anchor="w")
         labelFocalPoint.grid(row=1, column=0, padx=5, pady=10, sticky=W)
@@ -89,11 +89,15 @@ class CanvasMenu(Frame):
         coorNearPlane = Entry(sideBar, width= 10)
         coorNearPlane.grid(row=6, column=1)
 
-        labelFarPlan = Label(sideBar, text="Plano far", justify=LEFT, anchor="w")
-        labelFarPlan.grid(row=7, column=0, padx=5, pady=10, sticky=W)
+        labelFarPlane = Label(sideBar, text="Plano far", justify=LEFT, anchor="w")
+        labelFarPlane.grid(row=7, column=0, padx=5, pady=10, sticky=W)
 
-        coorFarPlan = Entry(sideBar, width= 10)
-        coorFarPlan.grid(row=7, column=1)
+        coorFarPlane = Entry(sideBar, width= 10)
+        coorFarPlane.grid(row=7, column=1)
+
+        canvas = Canvas(sideBar)
+        canvas.create_line(0, 25, 380, 25)
+        canvas.grid(row=8, column=0, columnspan=4)
 
         sideBar.pack(side=RIGHT, fill= Y)
         self.master.config(menu=menuBar)
