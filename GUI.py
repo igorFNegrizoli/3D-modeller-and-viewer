@@ -15,26 +15,26 @@ class CanvasMenu(Frame):
 
         toolBar = LabelFrame(self.master, bg='#E0E0E0', relief=FLAT)
 
-        optionPer = IntVar()
+        optionProj = IntVar()
 
         labelProjection = Label(toolBar, text="Projeção:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelProjection.grid(row=0, column= 1, padx=10)
     
-        perspective = Radiobutton(toolBar, text="Perspectiva", variable=optionPer, value=1, font=('Helvetica', 9), bg='#E0E0E0')
+        perspective = Radiobutton(toolBar, text="Perspectiva", variable=optionProj, value=1, font=('Helvetica', 9), bg='#E0E0E0')
         perspective.grid(row=1, column=2, padx=5, pady=5)
 
-        parallel = Radiobutton(toolBar, text="Paralela", variable=optionPer, value=2, font=('Helvetica', 9), bg='#E0E0E0')
+        parallel = Radiobutton(toolBar, text="Paralela", variable=optionProj, value=2, font=('Helvetica', 9), bg='#E0E0E0')
         parallel.grid(row=1, column=3, padx=5, pady=5)
 
-        optionSom = IntVar()
+        optionSomb = IntVar()
 
         labelProjection = Label(toolBar, text="Sombreamento:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelProjection.grid(row=0, column= 5, padx=10)
     
-        gouraud = Radiobutton(toolBar, text="Gouraud", variable=optionSom, value=3, font=('Helvetica', 9), bg='#E0E0E0')
+        gouraud = Radiobutton(toolBar, text="Gouraud", variable=optionSomb, value=3, font=('Helvetica', 9), bg='#E0E0E0')
         gouraud.grid(row=1, column=6, padx=5, pady=5)
 
-        phong = Radiobutton(toolBar, text="Phong simplificado", variable=optionSom, value=4, font=('Helvetica', 9), bg='#E0E0E0')
+        phong = Radiobutton(toolBar, text="Phong simplificado", variable=optionSomb, value=4, font=('Helvetica', 9), bg='#E0E0E0')
         phong.grid(row=1, column=7, padx=5, pady=5)
 
         toolBar.pack(side=TOP, fill=X)
@@ -44,10 +44,10 @@ class CanvasMenu(Frame):
 
         sideBar = LabelFrame(self.master, relief=FLAT)
 
-        # Criação do Canvas com a barra de rolamento
+        # Criação do canvas com a barra de rolamento
         canvas = Canvas(sideBar, bg='#E0E0E0', relief=FLAT)
         scrollBar = Scrollbar(sideBar, command=canvas.yview)
-        
+
         # Colocar o frame no canvas
         scrollableFrame = Frame(canvas, bg='#E0E0E0', relief=FLAT)
 
