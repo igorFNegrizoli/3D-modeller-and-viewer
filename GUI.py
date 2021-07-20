@@ -1,4 +1,6 @@
 from tkinter import *
+
+# Classe para criação dos Menus (Toolbar e SideBar)
 class CanvasMenu(Frame):
 
     def __init__(self):
@@ -8,6 +10,7 @@ class CanvasMenu(Frame):
         self.initSideBar()
         self.initToolbar()
 
+    # Toolbar para a escolha da projeção e do sombreamento
     def initToolbar(self):
 
         toolBar = LabelFrame(self.master, bg='#E0E0E0', relief=FLAT)
@@ -36,17 +39,20 @@ class CanvasMenu(Frame):
 
         toolBar.pack(side=TOP, fill=X)
 
+    # SideBar para definição do mundo e do objeto
     def initSideBar(self):
 
         sideBar = LabelFrame(self.master, relief=FLAT)
-        # --- create canvas with scrollbar ---
+
+        # Criação do Canvas com a barra de rolamento
         canvas = Canvas(sideBar, bg='#E0E0E0', relief=FLAT)
         scrollBar = Scrollbar(sideBar, command=canvas.yview)
-        # --- put frame in canvas ---
+        
+        # Colocar o frame no canvas
         scrollableFrame = Frame(canvas, bg='#E0E0E0', relief=FLAT)
 
-        # update scrollregion after starting 'mainloop'
-        # when all widgets are in canvas
+        # Atualizar a região de rolamento depois de começar o 'mainloop'
+        # com todos os widgets no canvas
         scrollableFrame.bind(
             "<Configure>",
             lambda e: canvas.configure(
@@ -56,7 +62,7 @@ class CanvasMenu(Frame):
         canvas.create_window((0,0), window=scrollableFrame, anchor='nw')
         canvas.config(yscrollcommand= scrollBar.set)
         
-        # --- add widgets in frame ---
+        #  Adição dos widgets no frame 
         labelWorldLimit = Label(scrollableFrame, text="Limite do mundo:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelWorldLimit.grid(row=0, column=0, padx=15, pady=10, columnspan=3, sticky=W)
 
