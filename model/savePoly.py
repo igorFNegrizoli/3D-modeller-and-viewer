@@ -3,7 +3,7 @@ import numpy as np
 from math import sin, cos, pi
 import sys
 
-def salvaPoligono(raioBase, raioTopo, nLados, altura, GC = [0,0,0]):
+def salvaPoligono(raioBase, raioTopo, nLados, altura, GC = [0,0,0], debug_vertices_insertion=False, debug_face_insertion=False):
 	angleSpacing = 2*pi/nLados
 	currRad = 0
 	mesh = om.TriMesh()
@@ -24,7 +24,7 @@ def salvaPoligono(raioBase, raioTopo, nLados, altura, GC = [0,0,0]):
 
 		currRad	+= angleSpacing
 
-	if 'debug_vertices_insertion' in sys.argv:
+	if debug_vertices_insertion:
 		for j in vHandle:
 			i = mesh.point(j)
 			print(f"({i[0]:.3f}, {i[1]:.3f}, {i[2]:.3f})")
@@ -49,7 +49,7 @@ def salvaPoligono(raioBase, raioTopo, nLados, altura, GC = [0,0,0]):
 	#create lateral faces
 	for i in range(0, lenVHandle, 2):
 
-		if 'debug_face_insertion' in sys.argv:
+		if debug_face_insertion:
 			print(f"Adding face with vertices:")
 			po = mesh.point(vHandle[(i)%lenVHandle])
 			print(f"({po[0]:.3f}, {po[1]:.3f}, {po[2]:.3f})")
@@ -65,7 +65,7 @@ def salvaPoligono(raioBase, raioTopo, nLados, altura, GC = [0,0,0]):
 		face_vhandles.append(vHandle[(i+1)%lenVHandle])
 		mesh.add_face(face_vhandles)
 
-		if 'debug_face_insertion' in sys.argv:
+		if debug_face_insertion:
 			print(f"Adding face with vertices:")
 			po = mesh.point(vHandle[(i+1)%lenVHandle])
 			print(f"({po[0]:.3f}, {po[1]:.3f}, {po[2]:.3f})")
@@ -92,6 +92,7 @@ def salvaPoligono(raioBase, raioTopo, nLados, altura, GC = [0,0,0]):
 		face_vhandles.append(vHandle[(i+3)%lenVHandle])
 		mesh.add_face(face_vhandles)
 
-	om.write_mesh(mesh=mesh, filename="polygon.ply")
+	return mesh
 
-salvaPoligono(20, 1, 40000, 40)
+mesh = salvaPoligono(0, 20.5, 40000, 40.7)
+om.write_mesh(mesh=mesh, filename="polygon.ply")
