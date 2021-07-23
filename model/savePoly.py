@@ -33,6 +33,19 @@ def salvaPoligono(raioBase, raioTopo, nLados, altura, GC = [0,0,0]):
 	faceHandler = []
 	lenVHandle = len(vHandle)
 
+	#calculation geometric centre of base and top to construct base and top w/ triangular faces
+	CG_topo = mesh.add_vertex(np.array([
+			GC[0] + 0,
+			GC[1] + altura/2,
+			GC[2] + 0
+			]))
+
+	CG_base = mesh.add_vertex(np.array([
+			GC[0] + 0,
+			GC[1] - altura/2,
+			GC[2] + 0
+			]))
+
 	#create lateral faces
 	for i in range(0, lenVHandle, 2):
 
@@ -68,22 +81,7 @@ def salvaPoligono(raioBase, raioTopo, nLados, altura, GC = [0,0,0]):
 		face_vhandles.append(vHandle[(i+3)%lenVHandle])
 		mesh.add_face(face_vhandles)
 
-	#calculation geometric centre of base and top to construct base and top w/ triangular faces
-	CG_topo = mesh.add_vertex(np.array([
-			GC[0] + 0,
-			GC[1] + altura/2,
-			GC[2] + 0
-			]))
-
-	CG_base = mesh.add_vertex(np.array([
-			GC[0] + 0,
-			GC[1] - altura/2,
-			GC[2] + 0
-			]))
-
-	#create base and top faces
-	for i in range(0, lenVHandle, 2):
-
+		#create base and top faces
 		face_vhandles = [CG_topo]
 		face_vhandles.append(vHandle[(i+2)%lenVHandle])
 		face_vhandles.append(vHandle[i])
@@ -96,4 +94,4 @@ def salvaPoligono(raioBase, raioTopo, nLados, altura, GC = [0,0,0]):
 
 	om.write_mesh(mesh=mesh, filename="polygon.ply")
 
-salvaPoligono(15, 15, 40000, 40)
+salvaPoligono(20, 1, 40000, 40)
