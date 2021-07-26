@@ -1,6 +1,7 @@
 from tkinter import *
 
 # Classe para criação dos Menus (Toolbar e SideBar)
+
 class CanvasMenu(Frame):
 
     def __init__(self):
@@ -9,10 +10,11 @@ class CanvasMenu(Frame):
 
         self.initSideBar()
         self.initToolbar()
+        self.initScreen()
 
     # Toolbar para a escolha da projeção e do sombreamento
     def initToolbar(self):
-
+        
         toolBar = LabelFrame(self.master, bg='#E0E0E0', relief=FLAT)
 
         optionProj = IntVar()
@@ -232,11 +234,33 @@ class CanvasMenu(Frame):
         canvas.pack(side=LEFT, fill=BOTH, expand=True)
         scrollBar.pack(side=RIGHT, fill=Y)
 
-    """
+    
     def initScreen(self):
-            screen = Frame(self.master, highlightbackground='red', highlightthickness=3)
-            screen.place(x=100, y= 500, width=300, height=100)
-    """
+            screen = Frame(self.master, highlightbackground='gray', highlightthickness=1)
+            screen.rowconfigure(0, weight = 1)
+            screen.columnconfigure(0, weight = 1)
+            global canvas 
+            canvas = Canvas(screen)
+
+            screen.place(x=10, y= 70, width=980, height=640)
+            canvas.grid(sticky="nsew")
+
+            canvas.bind("<Button-1>", locate_xy)
+            canvas.bind("<B1-Motion>", addLine)
+            canvas.create_line((62, 528, 62, 586), fill="green")
+            canvas.create_line((62, 586, 120, 586), fill="blue")
+            canvas.create_line((62, 586, 20, 616), fill="red")
+
+def locate_xy(event):
+    global current_x, current_y
+    current_x, current_y = 0,0
+    current_x, current_y = event.x, event.y
+    print(current_x, current_y)   
+
+def addLine(event):
+    global current_x, current_y
+    canvas.create_line((current_x, current_y, event.x, event.y), fill="black")
+    current_x, current_y = event.x, event.y
 
 def newObject():
     print("Hello!")
@@ -244,12 +268,22 @@ def newObject():
 def main():
 
     root = Tk()
+    root.resizable(width=False, height=False)
     root.title('3D-modeller-and-viewer')
-    root.geometry("1400x700")
-    root.state('zoomed')
+
+    largura = 1400
+    altura = 720
+
+    largura_screen = root.winfo_screenwidth()
+    altura_screen = root.winfo_screenheight()
+
+    posx = largura_screen/2 - largura/2
+    posy = (altura_screen/2 - altura/2) -30
+
+    root.geometry("%dx%d+%d+%d" % (largura, altura, posx, posy))
+
     app = CanvasMenu()
     root.mainloop()
-
 
 if __name__ == '__main__':
     main()
