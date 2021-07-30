@@ -1,4 +1,6 @@
 from tkinter import *
+from tkinter import messagebox
+
 
 # Classe para criação dos Menus (Toolbar e SideBar)
 
@@ -44,8 +46,39 @@ class CanvasMenu(Frame):
     # SideBar para definição do mundo e do objeto
     def initSideBar(self):
 
+        def popupShowError():
+            messagebox.showerror("Erro!", "Campos vazios!")
+
+        def popupShowErrorInput():
+            messagebox.showerror("Erro!", "Entrada Inválida")
+
+        def popupShowLimitError():
+            messagebox.showerror("Erro!", "Limite Máximo Atingido!")
+
         def newWorld():
-            return
+
+            if len(coorWorldLimitX1.get()) != 0 and len(coorWorldLimitY1.get()) != 0 and len(coorWorldLimitX2.get()) != 0 and len(coorWorldLimitY2.get()) != 0:
+                try:
+                    global coorWLX1
+                    coorWLX1 = int(coorWorldLimitX1.get())
+                    global coorWLY1
+                    coorWLY1 = int(coorWorldLimitY1.get())
+                    global coorWLX2
+                    coorWLX2 = int(coorWorldLimitX2.get())
+                    global coorWLY2
+                    coorWLY2 = int(coorWorldLimitY2.get())
+                except ValueError:
+                    popupShowErrorInput()  
+                
+                else:
+                    if (coorWLX2 == 1080) and (coorWLY2 == 730) and (coorWLX1 == 0) and (coorWLY1 == 0):
+                        placeScreen()
+                    elif (coorWLX2 <= 1080) and (coorWLY2 <= 730):
+                        placeScreen()
+                    else:
+                        popupShowLimitError()    
+            else:
+                popupShowError()
             
         sideBar = LabelFrame(self.master, relief=FLAT)
         squareUp = LabelFrame(sideBar, bd=1, bg='#E0E0E0', relief=RAISED)
@@ -169,7 +202,6 @@ class CanvasMenu(Frame):
         novoMundo = Button(squareUp, text="Novo mundo", font=('Helvetica', 10), bg='#edb1ba', width=10, command = newWorld)
         novoMundo.grid(row=11, column=0, columnspan=4, pady= 20)
 
-
         labelObject = Label(squareDown, text="Dados do objeto:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelObject.grid(row=14, column=0, padx=4.5, pady=10, columnspan=4, sticky=W)
 
@@ -230,6 +262,7 @@ class CanvasMenu(Frame):
 
     def initScreen(self):
 
+            global screen
             screen = Frame(self.master, highlightbackground='gray', highlightthickness=1)
             screen.rowconfigure(0, weight = 1)
 
@@ -259,6 +292,10 @@ def addLine(event):
 
 def newObject():
     print("Hello!")
+
+def placeScreen ():
+    global coorWLX1, coorWLY1, coorWLX2, coorWLY2
+    screen.place(x = (coorWLX1 + 10), y = (coorWLY1 + 70), width= coorWLX2, height= coorWLY2)
 
 def main():
 
