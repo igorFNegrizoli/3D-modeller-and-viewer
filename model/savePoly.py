@@ -93,6 +93,3 @@ def salvaPoligono(raioBase, raioTopo, nLados, altura, GC = [0,0,0], debug_vertic
 		mesh.add_face(face_vhandles)
 
 	return mesh
-
-mesh = salvaPoligono(0, 20.5, 40000, 40.7)
-om.write_mesh(mesh=mesh, filename="polygon.ply")
