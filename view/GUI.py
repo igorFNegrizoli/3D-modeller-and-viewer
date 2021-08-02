@@ -13,6 +13,8 @@ class CanvasMenu(Frame):
         self.initSideBar()
         self.initToolbar()
         self.initScreen()
+        self.initPC()
+        
 
     # Toolbar para a escolha da projeção e do sombreamento
     def initToolbar(self):
@@ -50,10 +52,16 @@ class CanvasMenu(Frame):
             messagebox.showerror("Erro!", "Campos vazios!")
 
         def popupShowErrorInput():
-            messagebox.showerror("Erro!", "Entrada Inválida")
+            messagebox.showerror("Erro!", "Entrada inválida!")
 
+        def popupShowLimitErrorX():
+            messagebox.showerror("Erro!", "Insira valores de 0 a 1080 para X1 e X2!")
+
+        def popupShowLimitErrorY():
+            messagebox.showerror("Erro!", "Insira valores de 0 a 730 para Y1 e Y2!")
+        
         def popupShowLimitError():
-            messagebox.showerror("Erro!", "Limite Máximo Atingido!")
+            messagebox.showerror("Erro!", "Limite máximo da tela atingido!")
 
         def newWorld():
 
@@ -71,12 +79,14 @@ class CanvasMenu(Frame):
                     popupShowErrorInput()  
                 
                 else:
-                    if (coorWLX2 == 1080) and (coorWLY2 == 730) and (coorWLX1 == 0) and (coorWLY1 == 0):
-                        placeScreen()
-                    elif (coorWLX2 <= 1080) and (coorWLY2 <= 730):
-                        placeScreen()
+                    if ((coorWLX1 < 0) or (coorWLX1 > 1080)) or ((coorWLX2 < 0) or (coorWLX2 > 1080)):
+                        popupShowLimitErrorX() 
+                    elif ((coorWLY1 < 0) or (coorWLY1 > 730)) or ((coorWLY2 < 0) or (coorWLY2 > 730)):
+                        popupShowLimitErrorY() 
+                    elif ((coorWLX1 + coorWLX2) > 1080) or ((coorWLY1 + coorWLY2) > 730):
+                        popupShowLimitError() 
                     else:
-                        popupShowLimitError()    
+                        placeScreen()     
             else:
                 popupShowError()
             
@@ -264,9 +274,10 @@ class CanvasMenu(Frame):
 
             global screen
             screen = Frame(self.master, highlightbackground='gray', highlightthickness=1)
-            screen.rowconfigure(0, weight = 1)
 
+            screen.rowconfigure(0, weight = 1)
             screen.columnconfigure(0, weight = 1)
+
             global canvas 
             canvas = Canvas(screen)
 
@@ -275,9 +286,25 @@ class CanvasMenu(Frame):
             canvas.grid(sticky="nsew")
             canvas.bind("<Button-1>", locate_xy)
             canvas.bind("<B1-Motion>", addLine)
-            canvas.create_line((60, 600, 60, 650), fill="green")
-            canvas.create_line((60, 650, 110, 650), fill="blue")
-            canvas.create_line((60, 650, 30, 680), fill="red")
+
+    def initPC(self):
+        planoCartesiano = Frame(self.master, highlightbackground='gray', highlightthickness=1)
+
+        planoCartesiano.rowconfigure(0, weight = 1)
+        planoCartesiano.columnconfigure(0, weight = 1)
+        canvasPC = Canvas(planoCartesiano)
+        planoCartesiano.place(x=20, y= 640, width=150, height=150)
+        
+        labelY = Label(planoCartesiano, text="Y", font=('Helvetica', 9), fg="green")
+        labelY.place(relx=0.55, rely= 0.2, anchor=E)
+        canvasPC.create_line((62, 25, 62, 86), fill="green")
+        labelX = Label(planoCartesiano, text="X", font=('Helvetica', 9), fg="red")
+        labelX.place(relx=0.85, rely= 0.5, anchor=E)
+        canvasPC.create_line((62, 86, 125, 86), fill="red")
+        labelZ = Label(planoCartesiano, text="Z", font=('Helvetica', 9), fg="blue")
+        labelZ.place(relx=0.2, rely= 0.68, anchor=E)
+        canvasPC.create_line((62, 86, 20, 120), fill="blue")
+        canvasPC.grid(sticky="nsew")
 
 def locate_xy(event):
     global current_x, current_y
@@ -315,6 +342,7 @@ def main():
     root.geometry("%dx%d+%d+%d" % (largura, altura, posx, posy))
 
     app = CanvasMenu()
+
     root.mainloop()
 
 if __name__ == '__main__':
