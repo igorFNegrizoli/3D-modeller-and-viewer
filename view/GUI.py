@@ -47,48 +47,6 @@ class CanvasMenu(Frame):
 
     # SideBar para definição do mundo e do objeto
     def initSideBar(self):
-
-        def popupShowError():
-            messagebox.showerror("Erro!", "Campos vazios!")
-
-        def popupShowErrorInput():
-            messagebox.showerror("Erro!", "Entrada inválida!")
-
-        def popupShowLimitErrorX():
-            messagebox.showerror("Erro!", "Insira valores de 0 a 1080 para X1 e X2!")
-
-        def popupShowLimitErrorY():
-            messagebox.showerror("Erro!", "Insira valores de 0 a 730 para Y1 e Y2!")
-        
-        def popupShowLimitError():
-            messagebox.showerror("Erro!", "Limite máximo da tela atingido!")
-
-        def newWorld():
-
-            if len(coorWorldLimitX1.get()) != 0 and len(coorWorldLimitY1.get()) != 0 and len(coorWorldLimitX2.get()) != 0 and len(coorWorldLimitY2.get()) != 0:
-                try:
-                    global coorWLX1
-                    coorWLX1 = int(coorWorldLimitX1.get())
-                    global coorWLY1
-                    coorWLY1 = int(coorWorldLimitY1.get())
-                    global coorWLX2
-                    coorWLX2 = int(coorWorldLimitX2.get())
-                    global coorWLY2
-                    coorWLY2 = int(coorWorldLimitY2.get())
-                except ValueError:
-                    popupShowErrorInput()  
-                
-                else:
-                    if ((coorWLX1 < 0) or (coorWLX1 > 1080)) or ((coorWLX2 < 0) or (coorWLX2 > 1080)):
-                        popupShowLimitErrorX() 
-                    elif ((coorWLY1 < 0) or (coorWLY1 > 730)) or ((coorWLY2 < 0) or (coorWLY2 > 730)):
-                        popupShowLimitErrorY() 
-                    elif ((coorWLX1 + coorWLX2) > 1080) or ((coorWLY1 + coorWLY2) > 730):
-                        popupShowLimitError() 
-                    else:
-                        placeScreen()     
-            else:
-                popupShowError()
             
         sideBar = LabelFrame(self.master, relief=FLAT)
         squareUp = LabelFrame(sideBar, bd=1, bg='#E0E0E0', relief=RAISED)
@@ -104,24 +62,28 @@ class CanvasMenu(Frame):
         labelWorldLimitX1 = Label(squareUp, text="X1", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitX1.grid(row=1, column=0, padx=15, pady=10)
 
+        global coorWorldLimitX1
         coorWorldLimitX1 = Entry(squareUp, width= 8)
         coorWorldLimitX1.grid(row=1, column=1, padx=15, pady=10)
 
         labelWorldLimitX2 = Label(squareUp, text="X2", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitX2.grid(row=1, column=2, padx=5, pady=10)
 
+        global coorWorldLimitX2 
         coorWorldLimitX2 = Entry(squareUp, width= 8)
         coorWorldLimitX2.grid(row=1, column=3, padx=15, pady=10)
 
         labelWorldLimitY1 = Label(squareUp, text="Y1", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitY1.grid(row=2, column=0, padx=15, pady=10)
 
+        global coorWorldLimitY1
         coorWorldLimitY1 = Entry(squareUp, width= 8)
         coorWorldLimitY1.grid(row=2, column=1, padx=15, pady=10)
 
         labelWorldLimitY2 = Label(squareUp, text="Y2", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitY2.grid(row=2, column=2, padx=5, pady=10)
 
+        global coorWorldLimitY2
         coorWorldLimitY2 = Entry(squareUp, width= 8)
         coorWorldLimitY2.grid(row=2, column=3, padx=15, pady=10)
 
@@ -131,18 +93,21 @@ class CanvasMenu(Frame):
         labelViewUpX = Label(squareUp, text="X", font=('Helvetica', 9), bg='#E0E0E0')
         labelViewUpX.grid(row=4, column=0, padx=15, pady=10)
 
+        global coorViewUpX
         coorViewUpX = Entry(squareUp, width= 8)
         coorViewUpX.grid(row=4, column=1, padx=15, pady=10)
 
         labelViewUpY = Label(squareUp, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
         labelViewUpY.grid(row=5, column=0, padx=15, pady=10)
 
+        global coorViewUpY 
         coorViewUpY = Entry(squareUp, width= 8)
         coorViewUpY.grid(row=5, column=1, padx=15, pady=10)
 
         labelViewUpZ = Label(squareUp, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
         labelViewUpZ.grid(row=6, column=0, padx=15, pady=10)
 
+        global coorViewUpZ 
         coorViewUpZ = Entry(squareUp, width= 8)
         coorViewUpZ.grid(row=6, column=1, padx=15, pady=10)
 
@@ -152,18 +117,21 @@ class CanvasMenu(Frame):
         labelVRPX = Label(squareUp, text="X", font=('Helvetica', 9), bg='#E0E0E0')
         labelVRPX.grid(row=4, column=2, padx=15, pady=10)
 
+        global coorVRPX
         coorVRPX = Entry(squareUp, width=8)
         coorVRPX.grid(row=4, column=3, padx=15, pady=10)
 
         labelVRPY = Label(squareUp, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
         labelVRPY.grid(row=5, column=2, padx=15, pady=10)
-
+        
+        global coorVRPY
         coorVRPY = Entry(squareUp, width=8)
         coorVRPY.grid(row=5, column=3, padx=15, pady=10)
 
         labelVRPZ = Label(squareUp, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
         labelVRPZ.grid(row=6, column=2, padx=15, pady=10)
-
+       
+        global coorVRPZ
         coorVRPZ = Entry(squareUp, width=8)
         coorVRPZ.grid(row=6, column=3, padx=15, pady=10)
 
@@ -173,18 +141,21 @@ class CanvasMenu(Frame):
         labelFocalPointX = Label(squareUp, text="X", font=('Helvetica', 9), bg='#E0E0E0')
         labelFocalPointX.grid(row=8, column=0, padx=15, pady=10)
 
+        global coorFocalPointX 
         coorFocalPointX = Entry(squareUp, width=8)
         coorFocalPointX.grid(row=8, column=1, padx=15, pady=10)
 
         labelFocalPointY = Label(squareUp, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
         labelFocalPointY.grid(row=9, column=0, padx=15, pady=10)
 
+        global coorFocalPointY 
         coorFocalPointY = Entry(squareUp, width=8)
         coorFocalPointY.grid(row=9, column=1, padx=15, pady=10)
 
         labelFocalPointZ = Label(squareUp, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
         labelFocalPointZ.grid(row=10, column=0, padx=15, pady=10)
 
+        global coorFocalPointZ 
         coorFocalPointZ = Entry(squareUp, width=8)
         coorFocalPointZ.grid(row=10, column=1, padx=15, pady=10)
 
@@ -194,18 +165,21 @@ class CanvasMenu(Frame):
         labelProjectionPlane = Label(squareUp, text="Projeção", font=('Helvetica', 9), bg='#E0E0E0')
         labelProjectionPlane.grid(row=8, column=2, padx=15, pady=8)
 
+        global coorProjectionPlane
         coorProjectionPlane = Entry(squareUp, width=8)
         coorProjectionPlane.grid(row=8, column=3, padx=15, pady=8)
 
         labelNearPlane = Label(squareUp, text="Near", font=('Helvetica', 9), bg='#E0E0E0')
         labelNearPlane.grid(row=9, column=2, padx=15, pady=8)
 
+        global coorNearPlane
         coorNearPlane = Entry(squareUp, width=8)
         coorNearPlane.grid(row=9, column=3, padx=15, pady=8)
 
         labelFarPlane = Label(squareUp, text="Far", font=('Helvetica', 9), bg='#E0E0E0')
         labelFarPlane.grid(row=10, column=2, padx=15, pady=8)
 
+        global coorFarPlane
         coorFarPlane = Entry(squareUp, width=8)
         coorFarPlane.grid(row=10, column=3, padx=15, pady=8) 
 
@@ -218,24 +192,28 @@ class CanvasMenu(Frame):
         labelBaseRadius = Label(squareDown, text="Raio da base", justify=LEFT, anchor="w", font=('Helvetica', 9), bg='#E0E0E0')
         labelBaseRadius.grid(row=15, column=0, padx=4.5, pady=10, sticky=W)
 
+        global coorBaseRadius
         coorBaseRadius = Entry(squareDown, width= 8)
         coorBaseRadius.grid(row=15, column=1,padx=4.5, pady=10)
 
         labelTopRadius = Label(squareDown, text="Raio do topo", justify=LEFT, anchor="w", font=('Helvetica', 9), bg='#E0E0E0')
         labelTopRadius.grid(row=15, column=2, padx=4.5, pady=10, sticky=W)
 
+        global coorTopRadius
         coorTopRadius = Entry(squareDown, width= 8)
         coorTopRadius.grid(row=15, column=3, padx=4.5, pady=10)
 
         labelNumSides = Label(squareDown, text="Nº de lados", justify=LEFT, anchor="w", font=('Helvetica', 9), bg='#E0E0E0')
         labelNumSides.grid(row=16, column=0, padx=4.5, pady=10, sticky=W)
 
+        global coorNumLados
         coorNumLados = Entry(squareDown, width= 8)
         coorNumLados.grid(row=16, column=1, padx=4.5, pady=10)
 
         labelObjHeight = Label(squareDown, text="Altura", font=('Helvetica', 9), bg='#E0E0E0')
         labelObjHeight.grid(row=16, column=2, padx=4.5, pady=10)
 
+        global coorObjHeight
         coorObjHeight = Entry(squareDown, width= 8)
         coorObjHeight.grid(row=16, column=3, padx=4.5, pady=10)
         
@@ -245,25 +223,28 @@ class CanvasMenu(Frame):
         labelObjectCenterX = Label(squareDown, text="X", font=('Helvetica', 9), bg='#E0E0E0')
         labelObjectCenterX.place(relx=0.1, rely= 0.68, anchor=E)
 
+        global coorObjectCenterX 
         coorObjectCenterX = Entry(squareDown, width=8)
         coorObjectCenterX.grid(row=18, column=0, columnspan=2, pady=10)
 
         labelObjectCenterY = Label(squareDown, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
         labelObjectCenterY.place(relx=0.42, rely= 0.68, anchor=E)
 
+        global coorObjectCenterY
         coorObjectCenterY = Entry(squareDown, width=8)
         coorObjectCenterY.grid(row=18, column=1, columnspan=2, pady=10)
 
         labelObjectCenterZ = Label(squareDown, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
         labelObjectCenterZ.place(relx=0.74, rely= 0.68, anchor=E)
 
-        coorObjectCenterY = Entry(squareDown, width=8, justify=LEFT)
-        coorObjectCenterY.grid(row=18, column=3, sticky=W)
+        global coorObjectCenterZ
+        coorObjectCenterZ = Entry(squareDown, width=8, justify=LEFT)
+        coorObjectCenterZ.grid(row=18, column=3, sticky=W)
 
-        limparCena = Button(squareDown, text="Novo objeto", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newObject)
-        limparCena.grid(row=19, column=0, columnspan=2, pady=20)
+        novoObjeto = Button(squareDown, text="Novo objeto", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newObject)
+        novoObjeto.grid(row=19, column=0, columnspan=2, pady=20)
 
-        limparCena = Button(squareDown, text="Nova cena", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newObject)
+        limparCena = Button(squareDown, text="Limpar cena", font=('Helvetica', 10), bg='#edb1ba', width=9, command= clearScreen)
         limparCena.grid(row=19, column=2, columnspan=2, pady=20)
 
         sideBar.pack(side=RIGHT, fill=Y)
@@ -306,6 +287,22 @@ class CanvasMenu(Frame):
         canvasPC.create_line((62, 86, 20, 120), fill="blue")
         canvasPC.grid(sticky="nsew")
 
+
+def popupShowError():
+    messagebox.showerror("Erro!", "Campos vazios!")
+
+def popupShowErrorInput():
+    messagebox.showerror("Erro!", "Entrada inválida!")
+
+def popupShowLimitErrorX():
+    messagebox.showerror("Erro!", "Insira valores de 0 a 1080 para X1 e X2!")
+
+def popupShowLimitErrorY():
+    messagebox.showerror("Erro!", "Insira valores de 0 a 730 para Y1 e Y2!")
+
+def popupShowLimitError():
+    messagebox.showerror("Erro!", "Limite máximo da tela atingido!")
+    
 def locate_xy(event):
     global current_x, current_y
     current_x, current_y = 0,0
@@ -317,12 +314,107 @@ def addLine(event):
     canvas.create_line((current_x, current_y, event.x, event.y), fill="black")
     current_x, current_y = event.x, event.y
 
-def newObject():
-    print("Hello!")
+def newWorld():
+    
+    if len(coorWorldLimitX1.get()) != 0 and len(coorWorldLimitY1.get()) != 0 and len(coorWorldLimitX2.get()) != 0 and len(coorWorldLimitY2.get()) != 0 \
+       and len(coorViewUpX.get()) != 0 and len(coorViewUpY.get()) != 0 and len(coorViewUpZ.get()) != 0 \
+       and len(coorVRPX.get()) != 0 and len(coorVRPY.get()) != 0 and len(coorVRPZ.get()) != 0 \
+       and len(coorFocalPointX.get()) != 0 and len(coorFocalPointY.get()) != 0 and len(coorFocalPointZ.get()) != 0 \
+       and len(coorProjectionPlane.get()) != 0 and len(coorNearPlane.get()) != 0 and len(coorFarPlane.get()) != 0:
+   
+        try:
+            # Limite de mundo
+            global coorWLX1
+            coorWLX1 = int(coorWorldLimitX1.get())
+            global coorWLY1
+            coorWLY1 = int(coorWorldLimitY1.get())
+            global coorWLX2
+            coorWLX2 = int(coorWorldLimitX2.get())
+            global coorWLY2
+            coorWLY2 = int(coorWorldLimitY2.get())
+            
+            # View-up
+            global coorVUX
+            coorVUX = int(coorViewUpX.get())
+            global coorVUY
+            coorVUY = int(coorViewUpY.get())
+            global coorVUZ
+            coorVUZ = int(coorViewUpZ.get())
+            
+            #VRP
+            global coorvrpx
+            coorvrpx = int(coorVRPX.get())
+            global coorvrpy
+            coorvrpy = int(coorVRPY.get())
+            global coorvrpz
+            coorvrpz = int(coorVRPZ.get())
 
+            #Ponto Focal
+            global coorFPX
+            coorFPX = int(coorFocalPointX.get())
+            global coorFPY
+            coorFPY = int(coorFocalPointY.get())
+            global coorFPZ
+            coorFPZ = int(coorFocalPointZ.get())
+
+            # Distância ao plano de projeção, plano near e ao plano far
+            global coorPP
+            coorPP = int(coorProjectionPlane.get())
+            global coorNP
+            coorNP = int(coorNearPlane.get())
+            global coorFP
+            coorFP = int(coorFarPlane.get())
+       
+        except ValueError:
+            popupShowErrorInput()  
+        
+        else:
+            if ((coorWLX1 < 0) or (coorWLX1 > 1080)) or ((coorWLX2 < 0) or (coorWLX2 > 1080)):
+                popupShowLimitErrorX() 
+            elif ((coorWLY1 < 0) or (coorWLY1 > 730)) or ((coorWLY2 < 0) or (coorWLY2 > 730)):
+                popupShowLimitErrorY() 
+            elif ((coorWLX1 + coorWLX2) > 1080) or ((coorWLY1 + coorWLY2) > 730):
+                popupShowLimitError() 
+            else:
+                placeScreen()     
+    else:
+        popupShowError()
+
+def newObject():
+    
+    if len(coorBaseRadius.get()) != 0 and len(coorTopRadius.get()) != 0 and len(coorNumLados.get()) != 0 and len(coorObjHeight.get()) != 0 \
+       and len(coorObjectCenterX.get()) != 0 and len(coorObjectCenterY.get()) != 0 and len(coorObjectCenterZ.get()) != 0:
+        try:
+            #Dados do Objeto
+            global coorBR
+            coorBR = int(coorBaseRadius.get())
+            global coorTR
+            coorTR = int(coorTopRadius.get())
+            global coorNL
+            coorNL = int(coorNumLados.get())
+            global coorOH
+            coorOH = int(coorObjHeight.get())
+
+            #Centro Geométrico
+            global coorOCX
+            coorOCX = int(coorObjectCenterX.get())
+            global coorOCY
+            coorOCY = int(coorObjectCenterY.get())
+            global coorOCZ
+            coorOCZ = int(coorObjectCenterZ.get())
+            
+        except ValueError:
+            popupShowErrorInput() 
+    else:
+        popupShowError()
+        
+  
 def placeScreen ():
     global coorWLX1, coorWLY1, coorWLX2, coorWLY2
     screen.place(x = (coorWLX1 + 10), y = (coorWLY1 + 70), width= coorWLX2, height= coorWLY2)
+
+def clearScreen():
+    canvas.delete("all")
 
 def main():
 
