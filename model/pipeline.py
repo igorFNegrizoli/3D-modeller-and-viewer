@@ -85,3 +85,13 @@ def buildPipeline(VRP, dist, width, height, uMin, uMax,
 	return np.dot(np.dot(persp2srt(width, height, uMin, uMax, vMin, vMax),
 		perspProj(dist)), sru2src(VRP, P, viewUp))
 
+def computeVertices(mesh, pipelineMatrix):
+	#pass the copied mesh as parameter not the original one
+	for vh in mesh.vertices():
+		coord = np.append(copy.deepcopy(mesh.point(vh)),1)
+		coord = np.dot(pipelineMatrix, coord)
+		mesh.point(vh)[0] = coord[0]/coord[3]
+		mesh.point(vh)[1] = coord[1]/coord[3]
+		mesh.point(vh)[2] = coord[2]
+
+	return mesh
