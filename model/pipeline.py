@@ -30,7 +30,7 @@ def getVisibleFaces(mesh, VRP, P):
 
 	return visibleMesh
 
-def sru2src(VRP, P, viewUp=np.array([0,1,0])):
+def sru2src(VRP, P=np.array([0,0,0]), viewUp=np.array([0,1,0])):
 	#returns the SRU to SRC matrix
 
 	n = normalize(VRP - P)
@@ -51,3 +51,37 @@ def sru2src(VRP, P, viewUp=np.array([0,1,0])):
 	m[2,3] = -np.dot(VRP, n)
 
 	return m
+
+def perspProj(dist):
+	#returns the perspective transformation matrix
+
+	m = np.eye(4)
+	m[2,2] = 1
+	m[3,3] = 0
+	m[3,2] = -1/dist
+
+	return m
+
+def persp2srt(width, height, uMin, uMax, vMin, vMax):
+	xMin = -width/2
+	xMax = width/2
+
+	yMin = -height/2
+	yMax = height/2
+	#print(xMin, xMax, yMin, yMax)
+
+	m = np.eye(4)
+	#print((uMax-uMin)/(xMax-xMin))
+	m[0,0] = (uMax-uMin)/(xMax-xMin)
+	m[1,1] = (vMin-vMax)/(yMax-yMin)
+	m[0,3] = (-xMin*(uMax-uMin)/(xMax-xMin))+uMin
+	m[1,3] = (yMin*(vMax-vMin)/(yMax-yMin))+vMax
+
+	return m
+
+def buildPipeline(VRP, dist, width, height, uMin, uMax, 
+	vMin, vMax, P=np.array([0,0,0]), viewUp=np.array([0,1,0])):
+	
+	return np.dot(np.dot(persp2srt(width, height, uMin, uMax, vMin, vMax),
+		perspProj(dist)), sru2src(VRP, P, viewUp))
+
