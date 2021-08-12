@@ -63,15 +63,13 @@ def perspProj(dist):
 	return m
 
 def persp2srt(width, height, uMin, uMax, vMin, vMax):
+	#returns projection matrix
 	xMin = -width/2
 	xMax = width/2
-
 	yMin = -height/2
 	yMax = height/2
-	#print(xMin, xMax, yMin, yMax)
 
 	m = np.eye(4)
-	#print((uMax-uMin)/(xMax-xMin))
 	m[0,0] = (uMax-uMin)/(xMax-xMin)
 	m[1,1] = (vMin-vMax)/(yMax-yMin)
 	m[0,3] = (-xMin*(uMax-uMin)/(xMax-xMin))+uMin
