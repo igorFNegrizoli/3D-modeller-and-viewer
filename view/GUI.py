@@ -265,8 +265,9 @@ class CanvasMenu(Frame):
             screen.place(x=10, y= 70, width=1080, height=730)
 
             canvas.grid(sticky="nsew")
-            canvas.bind("<Button-1>", locate_xy)
-            canvas.bind("<B1-Motion>", addLine)
+            canvas.bind("<Button-1>", identify)
+            # canvas.bind("<Button-1>", locate_xy)
+            # canvas.bind("<B1-Motion>", addLine)
 
     def initPC(self):
         planoCartesiano = Frame(self.master, highlightbackground='gray', highlightthickness=1)
@@ -382,33 +383,53 @@ def newWorld():
 
 def newObject():
     
-    if len(coorBaseRadius.get()) != 0 and len(coorTopRadius.get()) != 0 and len(coorNumLados.get()) != 0 and len(coorObjHeight.get()) != 0 \
-       and len(coorObjectCenterX.get()) != 0 and len(coorObjectCenterY.get()) != 0 and len(coorObjectCenterZ.get()) != 0:
-        try:
-            #Dados do Objeto
-            global coorBR
-            coorBR = int(coorBaseRadius.get())
-            global coorTR
-            coorTR = int(coorTopRadius.get())
-            global coorNL
-            coorNL = int(coorNumLados.get())
-            global coorOH
-            coorOH = int(coorObjHeight.get())
+    # if len(coorBaseRadius.get()) != 0 and len(coorTopRadius.get()) != 0 and len(coorNumLados.get()) != 0 and len(coorObjHeight.get()) != 0 \
+    #    and len(coorObjectCenterX.get()) != 0 and len(coorObjectCenterY.get()) != 0 and len(coorObjectCenterZ.get()) != 0:
+    #     try:
+    #         #Dados do Objeto
+    #         global coorBR
+    #         coorBR = int(coorBaseRadius.get())
+    #         global coorTR
+    #         coorTR = int(coorTopRadius.get())
+    #         global coorNL
+    #         coorNL = int(coorNumLados.get())
+    #         global coorOH
+    #         coorOH = int(coorObjHeight.get())
 
-            #Centro Geométrico
-            global coorOCX
-            coorOCX = int(coorObjectCenterX.get())
-            global coorOCY
-            coorOCY = int(coorObjectCenterY.get())
-            global coorOCZ
-            coorOCZ = int(coorObjectCenterZ.get())
+    #         #Centro Geométrico
+    #         global coorOCX
+    #         coorOCX = int(coorObjectCenterX.get())
+    #         global coorOCY
+    #         coorOCY = int(coorObjectCenterY.get())
+    #         global coorOCZ
+    #         coorOCZ = int(coorObjectCenterZ.get())
             
-        except ValueError:
-            popupShowErrorInput() 
-    else:
-        popupShowError()
+    #     except ValueError:
+    #         popupShowErrorInput() 
+    # else:
+    #     popupShowError()
+    createObject()
         
-  
+def createObject():
+    obj1=canvas.create_polygon(10,10,70,50,200,300,10,10, fill="black", tags="clickable")
+    
+    
+
+def identify(event):
+    global id
+    item = canvas.find_closest(event.x, event.y)[0]
+    id = canvas.find_withtag(tagOrId=item)
+    print (id)
+    canvas.focus(id)
+    canvas.bind("<key>", keypress)
+def keypress(event):
+    x,y= 0,0
+    if event.char == "a": x=-10
+    elif event.char == "d": x=10
+    elif event.char == "w": y=-10
+    elif event.char == "s": y=-10
+    canvas.move(id, x ,y)
+
 def placeScreen ():
     global coorWLX1, coorWLY1, coorWLX2, coorWLY2
     screen.place(x = (coorWLX1 + 10), y = (coorWLY1 + 70), width= coorWLX2, height= coorWLY2)
@@ -432,9 +453,9 @@ def main():
     posy = (altura_screen/2 - altura/2) -30
 
     root.geometry("%dx%d+%d+%d" % (largura, altura, posx, posy))
-
+    
     app = CanvasMenu()
-
+   
     root.mainloop()
 
 if __name__ == '__main__':
