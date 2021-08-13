@@ -1,6 +1,14 @@
 import copy
 import openmesh as om
 import numpy as np
+from transformations import getGeometricCenter
+
+def isMeshVisible(mesh, dNear, dFar):
+	GC = getGeometricCenter(mesh)
+	if -GC[2] < dNear or -GC[2] > dFar:
+		return False
+	else:
+		return True
 
 def normalize(n):
 	norm = np.linalg.norm(n)
@@ -62,7 +70,7 @@ def perspProj(dist):
 
 	return m
 
-def persp2srt(width, height, uMin, uMax, vMin, vMax):
+def proj2srt(width, height, uMin, uMax, vMin, vMax):
 	#returns projection matrix
 	xMin = -width/2
 	xMax = width/2
@@ -78,10 +86,11 @@ def persp2srt(width, height, uMin, uMax, vMin, vMax):
 	return m
 
 def buildPipeline(VRP, dist, width, height, uMin, uMax, 
-	vMin, vMax, P=np.array([0,0,0]), viewUp=np.array([0,1,0])):
+	vMin, vMax, P=np.array([0,0,0]), viewUp=np.array([0,1,0]), perspOn=False):
 	
-	return np.dot(np.dot(persp2srt(width, height, uMin, uMax, vMin, vMax),
-		perspProj(dist)), sru2src(VRP, P, viewUp))
+	if perspOn: m = np.dot(perspProj(dist), sru2src(VRP, P, viewUp))
+	else: m = sru2src(VRP, P, viewUp)
+	return np.dot(proj2srt(width, height, uMin, uMax, vMin, vMax),m)
 
 def computeVertices(mesh, pipelineMatrix):
 	#pass the copied mesh as parameter not the original one
@@ -93,3 +102,13 @@ def computeVertices(mesh, pipelineMatrix):
 		mesh.point(vh)[2] = coord[2]
 
 	return mesh
+
+def convertMesh2SRT(mesh, VRP, dist, width, height, uMin, uMax, 
+	vMin, vMax, P=np.array([0,0,0]), viewUp=np.array([0,1,0]), perspOn=False):
+
+	matrix = buildPipeline(VRP, dist, width, height, uMin, uMax, 
+	vMin, vMax, P, viewUp, perspOn)
+
+	meshCopy = computeVertices(getVisibleFaces(mesh, VRP, P), matrix)
+
+	return meshCopy
