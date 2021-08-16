@@ -43,6 +43,9 @@ class CanvasMenu(Frame):
         phong = Radiobutton(toolBar, text="Phong simplificado", variable=optionSomb, value=4, font=('Helvetica', 9), bg='#E0E0E0')
         phong.grid(row=1, column=7, padx=5, pady=5)
 
+        constant = Radiobutton(toolBar, text="Sombreamento Constante", variable=optionSomb, value=5, font=('Helvetica', 9), bg='#E0E0E0')
+        constant.grid(row=1, column=8, padx=5, pady=5)
+
         toolBar.pack(side=TOP, fill=X)
 
     # SideBar para definição do mundo e do objeto
@@ -265,9 +268,11 @@ class CanvasMenu(Frame):
             screen.place(x=10, y= 70, width=1080, height=730)
 
             canvas.grid(sticky="nsew")
-            canvas.bind("<Button-1>", identify)
-            # canvas.bind("<Button-1>", locate_xy)
-            # canvas.bind("<B1-Motion>", addLine)
+
+            # Condição - objeto já estar em tela
+            #canvas.bind("<Button-1>", identify)
+            canvas.bind("<Button-1>", locate_xy)
+            canvas.bind("<B1-Motion>", addLine)
 
     def initPC(self):
         planoCartesiano = Frame(self.master, highlightbackground='gray', highlightthickness=1)
@@ -303,6 +308,9 @@ def popupShowLimitErrorY():
 
 def popupShowLimitError():
     messagebox.showerror("Erro!", "Limite máximo da tela atingido!")
+
+def popupShowNumLadosError():
+    messagebox.showerror("Erro!", "Número de lados deve ser entre 3 e 20")
     
 def locate_xy(event):
     global current_x, current_y
@@ -383,52 +391,97 @@ def newWorld():
 
 def newObject():
     
-    # if len(coorBaseRadius.get()) != 0 and len(coorTopRadius.get()) != 0 and len(coorNumLados.get()) != 0 and len(coorObjHeight.get()) != 0 \
-    #    and len(coorObjectCenterX.get()) != 0 and len(coorObjectCenterY.get()) != 0 and len(coorObjectCenterZ.get()) != 0:
-    #     try:
-    #         #Dados do Objeto
-    #         global coorBR
-    #         coorBR = int(coorBaseRadius.get())
-    #         global coorTR
-    #         coorTR = int(coorTopRadius.get())
-    #         global coorNL
-    #         coorNL = int(coorNumLados.get())
-    #         global coorOH
-    #         coorOH = int(coorObjHeight.get())
+    if len(coorBaseRadius.get()) != 0 and len(coorTopRadius.get()) != 0 and len(coorNumLados.get()) != 0 and len(coorObjHeight.get()) != 0 \
+       and len(coorObjectCenterX.get()) != 0 and len(coorObjectCenterY.get()) != 0 and len(coorObjectCenterZ.get()) != 0:
+        try:
+            #Dados do Objeto
 
-    #         #Centro Geométrico
-    #         global coorOCX
-    #         coorOCX = int(coorObjectCenterX.get())
-    #         global coorOCY
-    #         coorOCY = int(coorObjectCenterY.get())
-    #         global coorOCZ
-    #         coorOCZ = int(coorObjectCenterZ.get())
-            
-    #     except ValueError:
-    #         popupShowErrorInput() 
-    # else:
-    #     popupShowError()
-    createObject()
+            global coorNL
+            coorNL = int(coorNumLados.get())
+
+            if(coorNL > 3 and coorNL < 20):
+                #mandar para o back
+                print(coorNL)
+
+                global coorBR
+                coorBR = int(coorBaseRadius.get())
+                global coorTR
+                coorTR = int(coorTopRadius.get())
+                global coorOH
+                coorOH = int(coorObjHeight.get())
+
+                #Centro Geométrico
+                global coorOCX
+                coorOCX = int(coorObjectCenterX.get())
+                global coorOCY
+                coorOCY = int(coorObjectCenterY.get())
+                global coorOCZ
+                coorOCZ = int(coorObjectCenterZ.get())
+
+                createObject()
+            else:
+                popupShowNumLadosError()
+
+        except ValueError:
+            popupShowErrorInput() 
+    else:
+        popupShowError()
+    
         
 def createObject():
+    global obj
+    obj = []
     obj1=canvas.create_polygon(10,10,70,50,200,300,10,10, fill="black", tags="clickable")
-    
+    obj2=canvas.create_polygon(50,10,70,50,400,500,10,10, fill="black", tags="clickable")
+    obj3=canvas.create_polygon(30,10,70,50,700,800,10,10, fill="black", tags="clickable")
+    obj.append(obj1)
+    obj.append(obj2)
+    obj.append(obj3)
     
 
 def identify(event):
-    global id
+
     item = canvas.find_closest(event.x, event.y)[0]
     id = canvas.find_withtag(tagOrId=item)
-    print (id)
-    canvas.focus(id)
-    canvas.bind("<key>", keypress)
-def keypress(event):
-    x,y= 0,0
-    if event.char == "a": x=-10
-    elif event.char == "d": x=10
-    elif event.char == "w": y=-10
-    elif event.char == "s": y=-10
-    canvas.move(id, x ,y)
+    print(id)
+    objeto = obj[id[0]-1]
+    for i in range(0, len(obj)):
+         if i == id[0] - 1:
+             canvas.itemconfig(objeto, fill='green')
+         else:
+             canvas.itemconfig(obj[i], fill="black")
+    
+    #canvas.bind("<key>", keypress)
+    
+# def translacao(event):
+#     x,y= 0,0
+#     if event.char == "q": # esquerda
+#     elif event.char == "a": #direita
+#     elif event.char == "w": #frente
+#     elif event.char == "s": #tras
+#     elif event.char == "e": #cima
+#     elif event.char == "d": #baixo
+#     canvas.move(id, x ,y)
+
+# def escala(event):
+#     x,y= 0,0
+#     if event.char == "r": # diminui o objeto no eixo x
+#     elif event.char == "f": # aumenta o objeto no eixo x
+#     elif event.char == "t": # diminui o objeto no eixo z
+#     elif event.char == "g": # aumenta o objeto no eixo z
+#     elif event.char == "y": # diminui o objeto no eixo y
+#     elif event.char == "h": # aumenta o objeto no eixo y
+#     canvas.move(id, x ,y)
+
+# def rotacao(event):
+#     x,y= 0,0
+#     if event.char == "u": # rotaciona para a esquerda ao redor do eixo x
+#     elif event.char == "j": # rotaciona para a direita ao redor do eixo x
+#     elif event.char == "i": # rotaciona para a esquerda ao redor do eixo z
+#     elif event.char == "k": # rotaciona para a direita ao redor do eixo z
+#     elif event.char == "o": # rotaciona para a esquerda ao redor do eixo y
+#     elif event.char == "l": # rotaciona para a direita ao redor do eixo y
+#     canvas.move(id, x ,y)
 
 def placeScreen ():
     global coorWLX1, coorWLY1, coorWLX2, coorWLY2
