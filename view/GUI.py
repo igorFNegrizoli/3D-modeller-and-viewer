@@ -463,7 +463,6 @@ def placeScreen ():
 
 def clearScreen():
     canvas.delete("all")
-    obj.clear()
 
 def createObject():
     global obj
@@ -481,26 +480,17 @@ def identifyObject(event):
         print("Nenhum objeto no Canvas!")
     else:
         id = int(canvas.find_closest(event.x, event.y)[0])
-        object = obj[id-1]
 
-        for i in range(0, len(obj)):
-            if i == id - 1:
-                canvas.itemconfig(object, fill='green')
-            else:
-                canvas.itemconfig(obj[i], fill="black")
+        for i in range(0, len(tupla)):
+            if id == tupla[i]:
+                object = obj[i]
+                for j in range(0, len(obj)):
+                    if j == i:
+                        canvas.itemconfig(object, fill='green')
+                    else:
+                        canvas.itemconfig(obj[j], fill="black")
 
-    # if 
-    #     # tag = canvas.find_closest(event.x, event.y)[0]
-    #     # id = canvas.find_withtag(tagOrId=tag)
-    #     # #print(id)
-    #     # objeto = obj[id[0]-1]
-    #     # for i in range(0, len(obj)):
-    #     #     if i == id[0] - 1:
-    #     #         canvas.itemconfig(objeto, fill='green')
-    #     #     else:
-    #     #         canvas.itemconfig(obj[i], fill="black")
-    # else:
-    #     print("Nenhum objeto no Canvas!")
+
 
 # def translacao(event):
 #     x,y= 0,0
