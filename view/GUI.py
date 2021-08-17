@@ -29,15 +29,15 @@ class CanvasMenu(Frame):
 
         labelProjection = Label(toolBar, text="Sombreamento:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelProjection.grid(row=0, column= 5, padx=10)
+
+        constant = Radiobutton(toolBar, text="Constante", variable=optionSomb, value=5, font=('Helvetica', 9), bg='#E0E0E0')
+        constant.grid(row=1, column=6, padx=5, pady=5)
     
         gouraud = Radiobutton(toolBar, text="Gouraud", variable=optionSomb, value=3, font=('Helvetica', 9), bg='#E0E0E0')
-        gouraud.grid(row=1, column=6, padx=5, pady=5)
+        gouraud.grid(row=1, column=7, padx=5, pady=5)
 
         phong = Radiobutton(toolBar, text="Phong simplificado", variable=optionSomb, value=4, font=('Helvetica', 9), bg='#E0E0E0')
-        phong.grid(row=1, column=7, padx=5, pady=5)
-
-        constant = Radiobutton(toolBar, text="Sombreamento Constante", variable=optionSomb, value=5, font=('Helvetica', 9), bg='#E0E0E0')
-        constant.grid(row=1, column=8, padx=5, pady=5)
+        phong.grid(row=1, column=8, padx=5, pady=5)
 
         toolBar.pack(side=TOP, fill=X)
 
@@ -301,17 +301,17 @@ class CanvasMenu(Frame):
 
         canvasPC = Canvas(planoCartesiano)
         planoCartesiano.place(x=20, y= 550, width=150, height=150)
+
+        labelXAxis = Label(planoCartesiano, text="X", font=('Helvetica', 9), fg="red")
+        labelXAxis.place(relx=0.85, rely= 0.5, anchor=E)
+        canvasPC.create_line((62, 86, 125, 86), fill="red")
         
-        labelY = Label(planoCartesiano, text="Y", font=('Helvetica', 9), fg="green")
-        labelY.place(relx=0.55, rely= 0.2, anchor=E)
+        labelYAxis = Label(planoCartesiano, text="Y", font=('Helvetica', 9), fg="green")
+        labelYAxis.place(relx=0.55, rely= 0.2, anchor=E)
         canvasPC.create_line((62, 25, 62, 86), fill="green")
 
-        labelX = Label(planoCartesiano, text="X", font=('Helvetica', 9), fg="red")
-        labelX.place(relx=0.85, rely= 0.5, anchor=E)
-        canvasPC.create_line((62, 86, 125, 86), fill="red")
-
-        labelZ = Label(planoCartesiano, text="Z", font=('Helvetica', 9), fg="blue")
-        labelZ.place(relx=0.2, rely= 0.68, anchor=E)
+        labelZAxis = Label(planoCartesiano, text="Z", font=('Helvetica', 9), fg="blue")
+        labelZAxis.place(relx=0.2, rely= 0.68, anchor=E)
         canvasPC.create_line((62, 86, 20, 120), fill="blue")
 
         canvasPC.grid(sticky="nsew")
@@ -475,14 +475,14 @@ def createObject():
     obj.append(obj3)
 
 def identifyObject(event):
-    tupla = canvas.find_all()
-    if len(tupla) == 0:
+    tuple = canvas.find_all()
+    if len(tuple) == 0:
         print("Nenhum objeto no Canvas!")
     else:
         id = int(canvas.find_closest(event.x, event.y)[0])
 
-        for i in range(0, len(tupla)):
-            if id == tupla[i]:
+        for i in range(0, len(tuple)):
+            if id == tuple[i]:
                 object = obj[i]
                 for j in range(0, len(obj)):
                     if j == i:
