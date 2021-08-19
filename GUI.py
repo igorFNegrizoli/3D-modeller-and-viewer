@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
+import numpy as np
+
 class CanvasMenu(Frame):
     def __init__(self):
 
@@ -419,18 +421,18 @@ def newObject():
         try:
 
             #Número de lados
-            coorNL = int(objectList[2].get())
+            NL = int(objectList[2].get())
 
-            if(coorNL > 3 and coorNL < 20):
+            if(NL > 3 and NL < 20):
 
                 #Raio da base
-                coorBR = int(objectList[0].get())
+                BR = int(objectList[0].get())
 
                 #Raio do topo
-                coorTR = int(objectList[1].get())
+                TR = int(objectList[1].get())
 
                 #Altura do objeto
-                coorOH = int(objectList[3].get())
+                OH = int(objectList[3].get())
 
                 #Centro Geométrico
                 coorOCX = int(objectList[4].get())
@@ -467,12 +469,12 @@ def clearScreen():
 def createObject():
     global obj
     obj = []
-    obj1 = canvas.create_polygon(10,10,70,50,200,300,10,10, fill="black", tags="clickable")
+    obj1 = canvas.create_polygon(np.array([10,10]),np.array([70,50]),np.array([200,300]), fill="black", tags="clickable")
     obj.append(obj1)
-    obj2=canvas.create_polygon(50, 50, 100, 60, 500, 100, 4, 10, fill="black", tags="clickable")
-    obj.append(obj2)
-    obj3=canvas.create_polygon(200, 200, 300, 10, 100, 100, 15, 15, fill="black", tags="clickable")
-    obj.append(obj3)
+    #obj2=canvas.create_polygon(50, 50, 100, 60, 500, 100, 4, 10, fill="black", tags="clickable")
+    #obj.append(obj2)
+    #obj3=canvas.create_polygon(200, 200, 300, 10, 100, 100, 15, 15, fill="black", tags="clickable")
+    #obj.append(obj3)
 
 def identifyObject(event):
     tuple = canvas.find_all()
@@ -522,7 +524,7 @@ def identifyObject(event):
 #     elif event.char == "l": # rotaciona para a direita ao redor do eixo y
 #     canvas.move(id, x ,y)
 
-def main():
+def run_program():
     root = Tk()
     root.resizable(width=False, height=False)
     root.title('3D-modeller-and-viewer')
@@ -543,4 +545,4 @@ def main():
     root.mainloop()
 
 if __name__ == '__main__':
-    main()
+    run_program()
