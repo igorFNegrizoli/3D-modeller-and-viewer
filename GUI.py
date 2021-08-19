@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
-import numpy as np
+from model.teste_cube import return_cube
+import openmesh as om
 
 class CanvasMenu(Frame):
     def __init__(self):
@@ -439,7 +440,7 @@ def newObject():
                 coorOCY = int(objectList[5].get())
                 coorOCZ = int(objectList[5].get())
 
-                createObject()
+                createObject(BR, TR, NL, OH, [coorOCX, coorOCY, coorOCZ])
 
             else:
                 popupShowNumSidesError()
@@ -466,11 +467,28 @@ def placeScreen ():
 def clearScreen():
     canvas.delete("all")
 
-def createObject():
+def createObject(raioBase, raioTopo, nLados, altura, GC):
     global obj
     obj = []
-    obj1 = canvas.create_polygon(np.array([10,10]),np.array([70,50]),np.array([200,300]), fill="black", tags="clickable")
-    obj.append(obj1)
+
+
+    face = []
+    mesh = model.salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
+    #Converte para SRT
+    meshSRT = convertMesh2SRT(mesh, VRP, dist, width, height, uMin, uMax, vMin, vMax, P, viewUp, perspOn)
+    #mesh = return_cube()
+
+    for fh in meshSRT.faces():
+        for vh in meshSRT.fv(fh):
+            point = meshSRT.point(vh)
+            face.append(point[0])
+            face.append(point[1])
+        obj.append(canvas.create_polygon(face, fill="black", tags="clickable"))
+        face = []
+
+    
+    #obj1 = canvas.create_polygon(np.array([10,10]),np.array([70,50]),np.array([200,300]), fill="black", tags="clickable")
+    #obj.append(obj1)
     #obj2=canvas.create_polygon(50, 50, 100, 60, 500, 100, 4, 10, fill="black", tags="clickable")
     #obj.append(obj2)
     #obj3=canvas.create_polygon(200, 200, 300, 10, 100, 100, 15, 15, fill="black", tags="clickable")
