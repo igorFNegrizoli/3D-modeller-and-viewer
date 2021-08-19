@@ -94,6 +94,15 @@ def buildPipeline(VRP, dist, width, height, uMin, uMax,
 
 def computeVertices(mesh, pipelineMatrix):
 	#pass the copied mesh as parameter not the original one
+
+	#pontos = np.c_[mesh.points()]
+	#pontos = np.c_[pontos, np.ones(np.shape(pontos)[0])].transpose()
+	#pontos = np.dot(pipelineMatrix, pontos)
+	#pontos[0] = pontos[0]/pontos[3]
+	#pontos[1] = pontos[1]/pontos[3]
+	#pontos[3] = pontos[3]/pontos[3]
+	#return pontos
+
 	for vh in mesh.vertices():
 		coord = np.append(copy.deepcopy(mesh.point(vh)),1)
 		coord = np.dot(pipelineMatrix, coord)
