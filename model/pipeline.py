@@ -118,6 +118,8 @@ def convertMesh2SRT(mesh, VRP, dist, width, height, uMin, uMax,
 	matrix = buildPipeline(VRP, dist, width, height, uMin, uMax, 
 	vMin, vMax, P, viewUp, perspOn)
 
+	mesh = copy.deepcopy(mesh)
+	
 	meshCopy = computeVertices(getVisibleFaces(mesh, VRP, P), matrix)
 
 	return meshCopy
