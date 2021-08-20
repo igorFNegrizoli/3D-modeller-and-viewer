@@ -70,12 +70,12 @@ def perspProj(dist):
 
 	return m
 
-def proj2srt(width, height, uMin, uMax, vMin, vMax):
+def proj2srt(xMin, xMax, yMin, yMax, uMin, uMax, vMin, vMax):
 	#returns projection matrix
-	xMin = -width/2
-	xMax = width/2
-	yMin = -height/2
-	yMax = height/2
+	# xMin = -width/2
+	# xMax = width/2
+	# yMin = -height/2
+	# yMax = height/2
 
 	m = np.eye(4)
 	m[0,0] = (uMax-uMin)/(xMax-xMin)
@@ -85,12 +85,12 @@ def proj2srt(width, height, uMin, uMax, vMin, vMax):
 
 	return m
 
-def buildPipeline(VRP, dist, width, height, uMin, uMax, 
+def buildPipeline(VRP, dist, xMin, xMax, yMin, yMax, uMin, uMax, 
 	vMin, vMax, P=np.array([0,0,0]), viewUp=np.array([0,1,0]), perspOn=False):
 	
 	if perspOn: m = np.dot(perspProj(dist), sru2src(VRP, P, viewUp))
 	else: m = sru2src(VRP, P, viewUp)
-	return np.dot(proj2srt(width, height, uMin, uMax, vMin, vMax),m)
+	return np.dot(proj2srt(xMin, xMax, yMin, yMax, uMin, uMax, vMin, vMax),m)
 
 def computeVertices(mesh, pipelineMatrix):
 	#pass the copied mesh as parameter not the original one
@@ -112,10 +112,10 @@ def computeVertices(mesh, pipelineMatrix):
 
 	return mesh
 
-def convertMesh2SRT(mesh, VRP, dist, width, height, uMin, uMax, 
+def convertMesh2SRT(mesh, VRP, dist, xMin, xMax, yMin, yMax, uMin, uMax, 
 	vMin, vMax, P=np.array([0,0,0]), viewUp=np.array([0,1,0]), perspOn=False):
 
-	matrix = buildPipeline(VRP, dist, width, height, uMin, uMax, 
+	matrix = buildPipeline(VRP, dist, xMin, xMax, yMin, yMax, uMin, uMax, 
 	vMin, vMax, P, viewUp, perspOn)
 
 	meshCopy = computeVertices(getVisibleFaces(mesh, VRP, P), matrix)
