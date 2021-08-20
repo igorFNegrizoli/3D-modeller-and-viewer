@@ -15,18 +15,21 @@ class CanvasMenu(Frame):
 
     # Toolbar para a escolha da projeção e do sombreamento
     def initToolbar(self):
+
         toolBar = Frame(self.master, bg='#E0E0E0')
 
-        optionProj = IntVar()
+        global optionProj
+        optionProj = BooleanVar
 
         labelProjection = Label(toolBar, text="Projeção:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelProjection.grid(row=0, column= 1, padx=10)
     
-        perspective = Radiobutton(toolBar, text="Perspectiva", variable=optionProj, value=1, font=('Helvetica', 9), bg='#E0E0E0')
+        perspective = Radiobutton(toolBar, text="Perspectiva", variable=optionProj, value=False, font=('Helvetica', 9), bg='#E0E0E0')
         perspective.grid(row=1, column=2, padx=5, pady=5)
 
-        parallel = Radiobutton(toolBar, text="Paralela", variable=optionProj, value=2, font=('Helvetica', 9), bg='#E0E0E0')
+        parallel = Radiobutton(toolBar, text="Paralela", variable=optionProj, value=True, font=('Helvetica', 9), bg='#E0E0E0')
         parallel.grid(row=1, column=3, padx=5, pady=5)
+
 
         optionSomb = IntVar()
 
@@ -365,41 +368,68 @@ def newWorld():
    
         try:
             #View-port
-            global coorWlList
-            coorWlList = []
+            global listViewPort
+            listViewPort = []
             coorWLX1 = int(worldList[0].get())
-            coorWlList.append(coorWLX1)
+            listViewPort.append(coorWLX1)
             coorWLX2 = int(worldList[1].get())
-            coorWlList.append(coorWLX2)
+            listViewPort.append(coorWLX2)
             coorWLY1 = int(worldList[2].get())
-            coorWlList.append(coorWLY1)
+            listViewPort.append(coorWLY1)
             coorWLY2 = int(worldList[3].get())
-            coorWlList.append(coorWLY2)
+            listViewPort.append(coorWLY2)
             
             #View-up
+            global listViewUp
+            listViewUp = []
             coorVUX = int(worldList[4].get())
+            listViewUp.append(coorVUX)
             coorVUY = int(worldList[5].get())
+            listViewUp.append(coorVUY)
             coorVUZ = int(worldList[6].get())
+            listViewUp.append(coorVUZ)
             
             #VRP
+            global listVRP
+            listVRP = []
             coorvrpx = int(worldList[7].get())
+            listVRP.append(coorvrpx)
             coorvrpy = int(worldList[8].get())
+            listVRP.append(coorvrpy)
             coorvrpz = int(worldList[9].get())
+            listVRP.append(coorvrpz)
 
             #Ponto Focal
+            global listP
+            listP = []
             coorFPX = int(worldList[10].get())
+            listP.append(coorFPX)
             coorFPY = int(worldList[11].get())
+            listP.append(coorFPY)
             coorFPZ = int(worldList[12].get())
+            listP.append(coorFPZ)
 
             # Distância ao plano de projeção, plano near e ao plano far
-            coorPP = int(worldList[13].get())
-            coorNP = int(worldList[14].get())
-            coorFP = int(worldList[15].get())
+            global listDist
+            listDist = []
+            distPP = int(worldList[13].get())
+            listDist.append(distPP)
+            distNP = int(worldList[14].get())
+            listDist.append(distNP)
+            distFP = int(worldList[15].get())
+            listDist.append(distFP)
 
             # Plano de projeção
-            coorPPX = int(worldList[16].get())
-            coorPPY = int(worldList[17].get())
-            coorPPZ = int(worldList[18].get())
+            global listPP
+            listPP = []
+            coorPPX1 = int(worldList[16].get())
+            listPP.append(coorPPX1)
+            coorPPX2 = int(worldList[16].get())
+            listPP.append(coorPPX2)
+            coorPPY1 = int(worldList[17].get())
+            listPP.append(coorPPY1)
+            coorPPY2 = int(worldList[18].get())
+            listPP.append(coorPPY2)
        
         except ValueError:
             popupShowErrorInput()  
@@ -462,7 +492,7 @@ def newObject():
 #     current_x, current_y = event.x, event.y
 
 def placeScreen ():
-    screen.place(x = (coorWlList[0] + 10), y = (coorWlList[2] + 70), width= coorWlList[1], height= coorWlList[3])
+    screen.place(x = (listViewPort[0] + 10), y = (listViewPort[2] + 70), width= listViewPort[1], height= listViewPort[3])
 
 def clearScreen():
     canvas.delete("all")
@@ -473,16 +503,17 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
 
 
     face = []
-    mesh = model.salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
+    mesh = model.savePoly(raioBase, raioTopo, nLados, altura, GC)
     #Converte para SRT
-    meshSRT = convertMesh2SRT(mesh, VRP, dist, width, height, uMin, uMax, vMin, vMax, P, viewUp, perspOn)
-    #mesh = return_cube()
+    meshSRT = convertMesh2SRT(mesh, listVRP, listDist[0], listPP[0], listPP[1], listPP[2], listPP[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], listP, listViewPort, optionProj)
+    mesh = return_cube()
+
+    
 
     for fh in meshSRT.faces():
         for vh in meshSRT.fv(fh):
             point = meshSRT.point(vh)
-            face.append(point[0])
-            face.append(point[1])
+            face.append([point[0], point[1]])
         obj.append(canvas.create_polygon(face, fill="black", tags="clickable"))
         face = []
 
