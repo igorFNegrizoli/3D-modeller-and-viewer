@@ -1,7 +1,10 @@
 from tkinter import *
 from tkinter import messagebox
-from model.teste_cube import return_cube
+from teste_cube import return_cube
 import openmesh as om
+from pipeline import convertMesh2SRT
+from savePoly import salvaPoligono
+import numpy as np
 
 class CanvasMenu(Frame):
     def __init__(self):
@@ -76,28 +79,28 @@ class CanvasMenu(Frame):
         labelWarning = Label(scrollableFrame, text="(Limite máximo: 860x640)", justify=LEFT, anchor="w", font=('Helvetica', 8), bg='#E0E0E0')
         labelWarning.grid(row=0, column=2, padx=15, pady=10, columnspan=4, sticky=W)
 
-        labelWorldLimitX1 = Label(scrollableFrame, text="X1", font=('Helvetica', 9), bg='#E0E0E0')
+        labelWorldLimitX1 = Label(scrollableFrame, text="uMin", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitX1.grid(row=1, column=0, padx=15, pady=10)
 
         coorWorldLimitX1 = Entry(scrollableFrame, width= 8)
         coorWorldLimitX1.grid(row=1, column=1, padx=15, pady=10)
         worldList.append(coorWorldLimitX1)
 
-        labelWorldLimitX2 = Label(scrollableFrame, text="X2", font=('Helvetica', 9), bg='#E0E0E0')
+        labelWorldLimitX2 = Label(scrollableFrame, text="uMax", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitX2.grid(row=1, column=2, padx=5, pady=10)
 
         coorWorldLimitX2 = Entry(scrollableFrame, width= 8)
         coorWorldLimitX2.grid(row=1, column=3, padx=15, pady=10)
         worldList.append(coorWorldLimitX2)
 
-        labelWorldLimitY1 = Label(scrollableFrame, text="Y1", font=('Helvetica', 9), bg='#E0E0E0')
+        labelWorldLimitY1 = Label(scrollableFrame, text="vMin", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitY1.grid(row=2, column=0, padx=15, pady=10)
 
         coorWorldLimitY1 = Entry(scrollableFrame, width= 8)
         coorWorldLimitY1.grid(row=2, column=1, padx=15, pady=10)
         worldList.append(coorWorldLimitY1)
 
-        labelWorldLimitY2 = Label(scrollableFrame, text="Y2", font=('Helvetica', 9), bg='#E0E0E0')
+        labelWorldLimitY2 = Label(scrollableFrame, text="vMax", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitY2.grid(row=2, column=2, padx=5, pady=10)
 
         coorWorldLimitY2 = Entry(scrollableFrame, width= 8)
@@ -200,7 +203,7 @@ class CanvasMenu(Frame):
         distFarPlane.grid(row=10, column=3, padx=15, pady=8)
         worldList.append(distFarPlane)
 
-        labelProjectionPlane = Label(scrollableFrame, text="Plano de Projeção:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
+        labelProjectionPlane = Label(scrollableFrame, text="World window:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelProjectionPlane.grid(row=11, column=0, padx=15, pady=10, columnspan=3, sticky=W)
 
         labelProjectionPlaneX1 = Label(scrollableFrame, text="X1", font=('Helvetica', 9), bg='#E0E0E0')
@@ -370,14 +373,10 @@ def newWorld():
             #View-port
             global listViewPort
             listViewPort = []
-            coorWLX1 = int(worldList[0].get())
-            listViewPort.append(coorWLX1)
-            coorWLX2 = int(worldList[1].get())
-            listViewPort.append(coorWLX2)
-            coorWLY1 = int(worldList[2].get())
-            listViewPort.append(coorWLY1)
-            coorWLY2 = int(worldList[3].get())
-            listViewPort.append(coorWLY2)
+            listViewPort.append(int(worldList[0].get()))
+            listViewPort.append(int(worldList[1].get()))
+            listViewPort.append(int(worldList[2].get()))
+            listViewPort.append(int(worldList[3].get()))
             
             #View-up
             global listViewUp
@@ -419,17 +418,13 @@ def newWorld():
             distFP = int(worldList[15].get())
             listDist.append(distFP)
 
-            # Plano de projeção
-            global listPP
-            listPP = []
-            coorPPX1 = int(worldList[16].get())
-            listPP.append(coorPPX1)
-            coorPPX2 = int(worldList[16].get())
-            listPP.append(coorPPX2)
-            coorPPY1 = int(worldList[17].get())
-            listPP.append(coorPPY1)
-            coorPPY2 = int(worldList[18].get())
-            listPP.append(coorPPY2)
+            # Janela do mundo
+            global listWW
+            listWW = []
+            listWW.append(int(worldList[16].get()))
+            listWW.append(int(worldList[16].get()))
+            listWW.append(int(worldList[17].get()))
+            listWW.append(int(worldList[18].get()))
        
         except ValueError:
             popupShowErrorInput()  
@@ -501,24 +496,27 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     global obj
     obj = []
 
+    print("-"*10)
+    print("createObject")
+    print(f"listWW={listWW}")
+    print(f"listViewPort={listViewPort}")
+    print("-"*10)
 
     face = []
-    #mesh = model.savePoly(raioBase, raioTopo, nLados, altura, GC)
+    mesh = salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
     #Converte para SRT
-    #meshSRT = convertMesh2SRT(mesh, listVRP, listDist[0], listPP[0], listPP[1], listPP[2], listPP[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], listP, listViewPort, optionProj)
+    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
     meshSRT = return_cube()
 
     vertices = mesh.points()
 
-    print(vertices)
+    #print(vertices)
     
 
     for fh in meshSRT.faces():
         for vh in meshSRT.fv(fh):
             point = meshSRT.point(vh)
-            face.append([point[0], point[1]])
-        obj.append(canvas.create_polygon(face, fill="black", tags="clickable"))
-        face = []
+            obj.append(canvas.create_polygon([point[0], point[1]], fill="black", tags="clickable"))
 
     
     #obj1 = canvas.create_polygon(np.array([10,10]),np.array([70,50]),np.array([200,300]), fill="black", tags="clickable")

@@ -114,7 +114,10 @@ def computeVertices(mesh, pipelineMatrix):
 
 def convertMesh2SRT(mesh, VRP, dist, xMin, xMax, yMin, yMax, uMin, uMax, 
 	vMin, vMax, P=np.array([0,0,0]), viewUp=np.array([0,1,0]), perspOn=False):
-
+	#print("-"*10)
+	#print("convertMesh2SRT")
+	#print(f"xMin={xMin}, xMax={xMax}, yMin={yMin}, yMax={yMax}, uMin={uMin}, uMax={uMax}, vMin={vMin}, vMax={vMax}")
+	#print("-"*10)
 	matrix = buildPipeline(VRP, dist, xMin, xMax, yMin, yMax, uMin, uMax, 
 	vMin, vMax, P, viewUp, perspOn)
 
