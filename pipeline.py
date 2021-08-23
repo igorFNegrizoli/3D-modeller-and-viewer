@@ -76,7 +76,7 @@ def proj2srt(xMin, xMax, yMin, yMax, uMin, uMax, vMin, vMax):
 	# xMax = width/2
 	# yMin = -height/2
 	# yMax = height/2
-
+	
 	m = np.eye(4)
 	m[0,0] = (uMax-uMin)/(xMax-xMin)
 	m[1,1] = (vMin-vMax)/(yMax-yMin)

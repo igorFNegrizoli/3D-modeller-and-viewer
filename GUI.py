@@ -74,229 +74,230 @@ class CanvasMenu(Frame):
 
         #  Adição dos widgets no frame 
         labelWorldLimit = Label(scrollableFrame, text="View-port:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
-        labelWorldLimit.grid(row=0, column=0, padx=15, pady=10, columnspan=3, sticky=W)
+        labelWorldLimit.grid(row=0, column=0, padx=20, pady=10, columnspan=3, sticky=W)
 
         labelWarning = Label(scrollableFrame, text="(Limite máximo: 860x640)", justify=LEFT, anchor="w", font=('Helvetica', 8), bg='#E0E0E0')
-        labelWarning.grid(row=0, column=2, padx=15, pady=10, columnspan=4, sticky=W)
+        labelWarning.grid(row=0, column=2, padx=20, pady=10, columnspan=4, sticky=W)
 
-        labelWorldLimitX1 = Label(scrollableFrame, text="uMin", font=('Helvetica', 9), bg='#E0E0E0')
-        labelWorldLimitX1.grid(row=1, column=0, padx=15, pady=10)
+        labelWorldLimitUMIN = Label(scrollableFrame, text="uMin", font=('Helvetica', 9), bg='#E0E0E0')
+        labelWorldLimitUMIN.grid(row=1, column=0, padx=20, pady=10)
 
-        coorWorldLimitX1 = Entry(scrollableFrame, width= 8)
-        coorWorldLimitX1.grid(row=1, column=1, padx=15, pady=10)
-        worldList.append(coorWorldLimitX1)
+        coorWorldLimitUMIN = Entry(scrollableFrame, width= 8)
+        coorWorldLimitUMIN.grid(row=1, column=1, padx=20, pady=10)
+        worldList.append(coorWorldLimitUMIN)
 
-        labelWorldLimitX2 = Label(scrollableFrame, text="uMax", font=('Helvetica', 9), bg='#E0E0E0')
-        labelWorldLimitX2.grid(row=1, column=2, padx=5, pady=10)
+        labelWorldLimitUMAX = Label(scrollableFrame, text="uMax", font=('Helvetica', 9), bg='#E0E0E0')
+        labelWorldLimitUMAX.grid(row=1, column=2, padx=15, pady=10)
 
-        coorWorldLimitX2 = Entry(scrollableFrame, width= 8)
-        coorWorldLimitX2.grid(row=1, column=3, padx=15, pady=10)
-        worldList.append(coorWorldLimitX2)
+        coorWorldLimitUMAX = Entry(scrollableFrame, width= 8)
+        coorWorldLimitUMAX.grid(row=1, column=3, padx=20, pady=10)
+        worldList.append(coorWorldLimitUMAX)
 
-        labelWorldLimitY1 = Label(scrollableFrame, text="vMin", font=('Helvetica', 9), bg='#E0E0E0')
-        labelWorldLimitY1.grid(row=2, column=0, padx=15, pady=10)
+        labelWorldLimitVMIN = Label(scrollableFrame, text="vMin", font=('Helvetica', 9), bg='#E0E0E0')
+        labelWorldLimitVMIN.grid(row=2, column=0, padx=20, pady=10)
 
         coorWorldLimitY1 = Entry(scrollableFrame, width= 8)
-        coorWorldLimitY1.grid(row=2, column=1, padx=15, pady=10)
+        coorWorldLimitY1.grid(row=2, column=1, padx=20, pady=10)
         worldList.append(coorWorldLimitY1)
 
-        labelWorldLimitY2 = Label(scrollableFrame, text="vMax", font=('Helvetica', 9), bg='#E0E0E0')
-        labelWorldLimitY2.grid(row=2, column=2, padx=5, pady=10)
+        labelWorldLimitVMAX = Label(scrollableFrame, text="vMax", font=('Helvetica', 9), bg='#E0E0E0')
+        labelWorldLimitVMAX.grid(row=2, column=2, padx=15, pady=10)
 
-        coorWorldLimitY2 = Entry(scrollableFrame, width= 8)
-        coorWorldLimitY2.grid(row=2, column=3, padx=15, pady=10)
-        worldList.append(coorWorldLimitY2)
+        coorWorldLimitVMAX = Entry(scrollableFrame, width= 8)
+        coorWorldLimitVMAX.grid(row=2, column=3, padx=20, pady=10)
+        worldList.append(coorWorldLimitVMAX)
 
         labelViewUp = Label(scrollableFrame, text="VIEW-UP:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
-        labelViewUp.grid(row=3, column=0, padx=15, pady=10, columnspan=3, sticky=W)
+        labelViewUp.grid(row=3, column=0, padx=20, pady=10, columnspan=3, sticky=W)
 
         labelViewUpX = Label(scrollableFrame, text="X", font=('Helvetica', 9), bg='#E0E0E0')
-        labelViewUpX.grid(row=4, column=0, padx=15, pady=10)
+        labelViewUpX.grid(row=4, column=0, pady=10)
 
         coorViewUpX = Entry(scrollableFrame, width= 8)
-        coorViewUpX.grid(row=4, column=1, padx=15, pady=10)
+        coorViewUpX.grid(row=4, column=1, pady=10)
         worldList.append(coorViewUpX)
 
         labelViewUpY = Label(scrollableFrame, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
-        labelViewUpY.grid(row=5, column=0, padx=15, pady=10)
+        labelViewUpY.grid(row=5, column=0, pady=10)
 
         coorViewUpY = Entry(scrollableFrame, width= 8)
-        coorViewUpY.grid(row=5, column=1, padx=15, pady=10)
+        coorViewUpY.grid(row=5, column=1, pady=10)
         worldList.append(coorViewUpY)
 
         labelViewUpZ = Label(scrollableFrame, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
-        labelViewUpZ.grid(row=6, column=0, padx=15, pady=10)
+        labelViewUpZ.grid(row=6, column=0, pady=10)
 
         coorViewUpZ = Entry(scrollableFrame, width= 8)
-        coorViewUpZ.grid(row=6, column=1, padx=15, pady=10)
+        coorViewUpZ.grid(row=6, column=1, pady=10)
         worldList.append(coorViewUpZ)
 
         labelVPR = Label(scrollableFrame, text="VRP:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
-        labelVPR.grid(row=3, column=2, padx=15, pady=10)
+        labelVPR.grid(row=3, column=2, pady=10)
 
         labelVRPX = Label(scrollableFrame, text="X", font=('Helvetica', 9), bg='#E0E0E0')
-        labelVRPX.grid(row=4, column=2, padx=15, pady=10)
+        labelVRPX.grid(row=4, column=2, pady=10)
 
         coorVRPX = Entry(scrollableFrame, width=8)
-        coorVRPX.grid(row=4, column=3, padx=15, pady=10)
+        coorVRPX.grid(row=4, column=3, pady=10)
         worldList.append(coorVRPX)
 
         labelVRPY = Label(scrollableFrame, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
-        labelVRPY.grid(row=5, column=2, padx=15, pady=10)
+        labelVRPY.grid(row=5, column=2, pady=10)
         
         coorVRPY = Entry(scrollableFrame, width=8)
-        coorVRPY.grid(row=5, column=3, padx=15, pady=10)
+        coorVRPY.grid(row=5, column=3, pady=10)
         worldList.append(coorVRPY)
 
         labelVRPZ = Label(scrollableFrame, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
-        labelVRPZ.grid(row=6, column=2, padx=15, pady=10)
+        labelVRPZ.grid(row=6, column=2, pady=10)
        
         coorVRPZ = Entry(scrollableFrame, width=8)
-        coorVRPZ.grid(row=6, column=3, padx=15, pady=10)
+        coorVRPZ.grid(row=6, column=3, pady=10)
         worldList.append(coorVRPZ)
 
         labelFocalPoint = Label(scrollableFrame, text="Ponto focal:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
-        labelFocalPoint.grid(row=7, column=0, padx=15, pady=10, columnspan=3, sticky=W)
+        labelFocalPoint.grid(row=7, column=0, padx=20, pady=10, columnspan=3, sticky=W)
 
         labelFocalPointX = Label(scrollableFrame, text="X", font=('Helvetica', 9), bg='#E0E0E0')
-        labelFocalPointX.grid(row=8, column=0, padx=15, pady=10)
+        labelFocalPointX.grid(row=8, column=0, pady=10)
 
         coorFocalPointX = Entry(scrollableFrame, width=8)
-        coorFocalPointX.grid(row=8, column=1, padx=15, pady=10)
+        coorFocalPointX.grid(row=8, column=1, pady=10)
         worldList.append(coorFocalPointX)
 
         labelFocalPointY = Label(scrollableFrame, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
-        labelFocalPointY.grid(row=9, column=0, padx=15, pady=10)
+        labelFocalPointY.grid(row=9, column=0, pady=10)
 
         coorFocalPointY = Entry(scrollableFrame, width=8)
-        coorFocalPointY.grid(row=9, column=1, padx=15, pady=10)
+        coorFocalPointY.grid(row=9, column=1, pady=10)
         worldList.append(coorFocalPointY)
 
         labelFocalPointZ = Label(scrollableFrame, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
-        labelFocalPointZ.grid(row=10, column=0, padx=15, pady=10)
+        labelFocalPointZ.grid(row=10, column=0, pady=10)
 
         coorFocalPointZ = Entry(scrollableFrame, width=8)
-        coorFocalPointZ.grid(row=10, column=1, padx=15, pady=10)
+        coorFocalPointZ.grid(row=10, column=1, pady=10)
         worldList.append(coorFocalPointZ)
 
         labelDistance = Label(scrollableFrame, text="Distância ao plano:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
-        labelDistance.grid(row=7, column=2, padx=15, pady=8, columnspan=3, sticky=W)
+        labelDistance.grid(row=7, column=2, pady=8, columnspan=3, sticky=W)
 
         labelProjectionPlane = Label(scrollableFrame, text="Projeção", font=('Helvetica', 9), bg='#E0E0E0')
-        labelProjectionPlane.grid(row=8, column=2, padx=15, pady=8)
+        labelProjectionPlane.grid(row=8, column=2, pady=8)
 
         distProjectionPlane = Entry(scrollableFrame, width=8)
-        distProjectionPlane.grid(row=8, column=3, padx=15, pady=8)
+        distProjectionPlane.grid(row=8, column=3, pady=8)
         worldList.append(distProjectionPlane)
 
         labelNearPlane = Label(scrollableFrame, text="Near", font=('Helvetica', 9), bg='#E0E0E0')
-        labelNearPlane.grid(row=9, column=2, padx=15, pady=8)
+        labelNearPlane.grid(row=9, column=2, pady=8)
 
         distNearPlane = Entry(scrollableFrame, width=8)
-        distNearPlane.grid(row=9, column=3, padx=15, pady=8)
+        distNearPlane.grid(row=9, column=3, pady=8)
         worldList.append(distNearPlane)
 
         labelFarPlane = Label(scrollableFrame, text="Far", font=('Helvetica', 9), bg='#E0E0E0')
-        labelFarPlane.grid(row=10, column=2, padx=15, pady=8)
+        labelFarPlane.grid(row=10, column=2, pady=8)
 
         distFarPlane = Entry(scrollableFrame, width=8)
-        distFarPlane.grid(row=10, column=3, padx=15, pady=8)
+        distFarPlane.grid(row=10, column=3, pady=8)
         worldList.append(distFarPlane)
 
         labelProjectionPlane = Label(scrollableFrame, text="World window:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
-        labelProjectionPlane.grid(row=11, column=0, padx=15, pady=10, columnspan=3, sticky=W)
+        labelProjectionPlane.grid(row=11, column=0, padx=20, pady=10, columnspan=3, sticky=W)
 
-        labelProjectionPlaneX1 = Label(scrollableFrame, text="X1", font=('Helvetica', 9), bg='#E0E0E0')
-        labelProjectionPlaneX1.grid(row=12, column=0, padx=15, pady=10)
+        labelProjectionPlaneXMIN = Label(scrollableFrame, text="Xmin", font=('Helvetica', 9), bg='#E0E0E0')
+        labelProjectionPlaneXMIN.grid(row=12, column=0, pady=10)
 
-        coorProjectionPlaneX1 = Entry(scrollableFrame, width= 8)
-        coorProjectionPlaneX1.grid(row=12, column=1, padx=15, pady=10)
-        worldList.append(coorProjectionPlaneX1)
+        coorProjectionPlaneXMIN = Entry(scrollableFrame, width= 8)
+        coorProjectionPlaneXMIN.grid(row=12, column=1, pady=10)
+        worldList.append(coorProjectionPlaneXMIN)
 
-        labelProjectionPlaneX2 = Label(scrollableFrame, text="X2", font=('Helvetica', 9), bg='#E0E0E0')
-        labelProjectionPlaneX2.grid(row=12, column=2, padx=5, pady=10)
+        labelProjectionPlaneXMAX = Label(scrollableFrame, text="Xmax", font=('Helvetica', 9), bg='#E0E0E0')
+        labelProjectionPlaneXMAX.grid(row=12, column=2, pady=10)
 
-        coorProjectionPlaneX2 = Entry(scrollableFrame, width= 8)
-        coorProjectionPlaneX2.grid(row=12, column=3, padx=15, pady=10)
-        worldList.append(coorProjectionPlaneX2)
+        coorProjectionPlaneXMAX = Entry(scrollableFrame, width= 8)
+        coorProjectionPlaneXMAX.grid(row=12, column=3, pady=10)
+        worldList.append(coorProjectionPlaneXMAX)
 
-        labelProjectionPlaneY1 = Label(scrollableFrame, text="Y1", font=('Helvetica', 9), bg='#E0E0E0')
-        labelProjectionPlaneY1.grid(row=13, column=0, padx=15, pady=10)
+        labelProjectionPlaneYMIN = Label(scrollableFrame, text="Ymin", font=('Helvetica', 9), bg='#E0E0E0')
+        labelProjectionPlaneYMIN.grid(row=13, column=0, pady=10)
 
-        coorProjectionPlaneY1 = Entry(scrollableFrame, width= 8)
-        coorProjectionPlaneY1.grid(row=13, column=1, padx=15, pady=10)
-        worldList.append(coorProjectionPlaneY1)
+        coorProjectionPlaneYMIN = Entry(scrollableFrame, width= 8)
+        coorProjectionPlaneYMIN.grid(row=13, column=1, pady=10)
+        worldList.append(coorProjectionPlaneYMIN)
 
-        labelProjectionPlaneY2 = Label(scrollableFrame, text="Y2", font=('Helvetica', 9), bg='#E0E0E0')
-        labelProjectionPlaneY2.grid(row=13, column=2, padx=5, pady=10)
+        labelProjectionPlaneYMAX = Label(scrollableFrame, text="Ymax", font=('Helvetica', 9), bg='#E0E0E0')
+        labelProjectionPlaneYMAX.grid(row=13, column=2, pady=10)
 
-        coorProjectionPlaneY2 = Entry(scrollableFrame, width= 8)
-        coorProjectionPlaneY2.grid(row=13, column=3, padx=15, pady=10)
-        worldList.append(coorProjectionPlaneY2)
+        coorProjectionPlaneYMAX = Entry(scrollableFrame, width= 8)
+        coorProjectionPlaneYMAX.grid(row=13, column=3, pady=10)
+        worldList.append(coorProjectionPlaneYMAX)
 
+    
         labelObject = Label(scrollableFrame, text="Dados do objeto:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
-        labelObject.grid(row=14, column=0, padx=4.5, pady=10, columnspan=4, sticky=W)
+        labelObject.grid(row=15, column=0, padx=20, pady=10, columnspan=4, sticky=W)
 
-        labelBaseRadius = Label(scrollableFrame, text="Raio da base", justify=LEFT, anchor="w", font=('Helvetica', 9), bg='#E0E0E0')
-        labelBaseRadius.grid(row=15, column=0, padx=4.5, pady=10, sticky=W)
+        labelBaseRadius = Label(scrollableFrame, text="Raio da base", font=('Helvetica', 9), bg='#E0E0E0')
+        labelBaseRadius.grid(row=16, column=0, padx=20, pady=10)
 
         BaseRadius = Entry(scrollableFrame, width= 8)
-        BaseRadius.grid(row=15, column=1,padx=4.5, pady=10)
+        BaseRadius.grid(row=16, column=1, pady=10)
         objectList.append(BaseRadius)
 
-        labelTopRadius = Label(scrollableFrame, text="Raio do topo", justify=LEFT, anchor="w", font=('Helvetica', 9), bg='#E0E0E0')
-        labelTopRadius.grid(row=15, column=2, padx=4.5, pady=10, sticky=W)
+        labelTopRadius = Label(scrollableFrame, text="Raio do topo", font=('Helvetica', 9), bg='#E0E0E0')
+        labelTopRadius.grid(row=16, column=2, pady=10)
 
         TopRadius = Entry(scrollableFrame, width= 8)
-        TopRadius.grid(row=15, column=3, padx=4.5, pady=10)
+        TopRadius.grid(row=16, column=3, pady=10)
         objectList.append(TopRadius)
 
-        labelNumSides = Label(scrollableFrame, text="Nº de lados", justify=LEFT, anchor="w", font=('Helvetica', 9), bg='#E0E0E0')
-        labelNumSides.grid(row=16, column=0, padx=4.5, pady=10, sticky=W)
+        labelNumSides = Label(scrollableFrame, text="Nº de lados", font=('Helvetica', 9), bg='#E0E0E0')
+        labelNumSides.grid(row=17, column=0, padx=20, pady=10)
 
         NumSides = Entry(scrollableFrame, width= 8)
-        NumSides.grid(row=16, column=1, padx=4.5, pady=10)
+        NumSides.grid(row=17, column=1, pady=10)
         objectList.append(NumSides)
 
         labelObjHeight = Label(scrollableFrame, text="Altura", font=('Helvetica', 9), bg='#E0E0E0')
-        labelObjHeight.grid(row=16, column=2, padx=4.5, pady=10)
+        labelObjHeight.grid(row=17, column=2, pady=10)
 
         ObjHeight = Entry(scrollableFrame, width= 8)
-        ObjHeight.grid(row=16, column=3, padx=4.5, pady=10)
+        ObjHeight.grid(row=17, column=3, pady=10)
         objectList.append(ObjHeight)
         
         labelObjectCenter = Label(scrollableFrame, text="Centro Geométrico:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
-        labelObjectCenter.grid(row=17, column=0, padx=4.5, pady=10, columnspan=4, sticky=W)
+        labelObjectCenter.grid(row=18, column=0, padx=20, pady=10, columnspan=4, sticky=W)
         
         objectCenterX = Label(scrollableFrame, text="X", font=('Helvetica', 9), bg='#E0E0E0')
-        objectCenterX.grid(row=18, column=0, padx=15, pady=10)
+        objectCenterX.grid(row=19, column=0, pady=10)
 
         coorObjectCenterX = Entry(scrollableFrame, width=8)
-        coorObjectCenterX.grid(row=18, column=1, padx=15, pady=10)
+        coorObjectCenterX.grid(row=19, column=1, pady=10)
         objectList.append(coorObjectCenterX)
 
         objectCenterY = Label(scrollableFrame, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
-        objectCenterY.grid(row=19, column=0, padx=15, pady=10)
+        objectCenterY.grid(row=20, column=0, pady=10)
 
         coorObjectCenterY = Entry(scrollableFrame, width=8)
-        coorObjectCenterY.grid(row=19, column=1, padx=15, pady=10)
+        coorObjectCenterY.grid(row=20, column=1, pady=10)
         objectList.append(coorObjectCenterY)
 
         objectCenterZ = Label(scrollableFrame, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
-        objectCenterZ.grid(row=20, column=0, padx=15, pady=10)
+        objectCenterZ.grid(row=21, column=0, pady=10)
 
         coorObjectCenterZ = Entry(scrollableFrame, width=8)
-        coorObjectCenterZ.grid(row=20, column=1, padx=15, pady=10)
+        coorObjectCenterZ.grid(row=21, column=1, pady=10)
         objectList.append(coorObjectCenterZ)
 
-        novoMundo = Button(scrollableFrame, text="Novo mundo", font=('Helvetica', 10), bg='#edb1ba', width=10, command = newWorld)
-        novoMundo.grid(row=21, column=0, padx= 10, pady= 30)
+        novoMundo = Button(scrollableFrame, text="Novo mundo", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newWorld)
+        novoMundo.grid(row=22, column=0, pady=10)
 
         novoObjeto = Button(scrollableFrame, text="Novo objeto", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newObject)
-        novoObjeto.grid(row=21, column=1, pady=30)
+        novoObjeto.grid(row=22, column=1, pady=10)
 
         limparCena = Button(scrollableFrame, text="Limpar cena", font=('Helvetica', 10), bg='#edb1ba', width=9, command= clearScreen)
-        limparCena.grid(row=22, column=3, padx=10, pady=20) 
+        limparCena.grid(row=22, column=3, pady=10) 
 
         sideBar.pack(side=RIGHT, fill=Y)
         canvasBar.pack(side=LEFT, fill=BOTH, expand=True)
@@ -381,60 +382,48 @@ def newWorld():
             #View-up
             global listViewUp
             listViewUp = []
-            coorVUX = int(worldList[4].get())
-            listViewUp.append(coorVUX)
-            coorVUY = int(worldList[5].get())
-            listViewUp.append(coorVUY)
-            coorVUZ = int(worldList[6].get())
-            listViewUp.append(coorVUZ)
+            listViewUp.append(int(worldList[4].get()))
+            listViewUp.append(int(worldList[5].get()))
+            listViewUp.append(int(worldList[6].get()))
             
             #VRP
             global listVRP
             listVRP = []
-            coorvrpx = int(worldList[7].get())
-            listVRP.append(coorvrpx)
-            coorvrpy = int(worldList[8].get())
-            listVRP.append(coorvrpy)
-            coorvrpz = int(worldList[9].get())
-            listVRP.append(coorvrpz)
+            listVRP.append(int(worldList[7].get()))
+            listVRP.append(int(worldList[8].get()))
+            listVRP.append(int(worldList[9].get()))
 
             #Ponto Focal
             global listP
             listP = []
-            coorFPX = int(worldList[10].get())
-            listP.append(coorFPX)
-            coorFPY = int(worldList[11].get())
-            listP.append(coorFPY)
-            coorFPZ = int(worldList[12].get())
-            listP.append(coorFPZ)
+            listP.append(int(worldList[10].get()))
+            listP.append(int(worldList[11].get()))
+            listP.append(int(worldList[12].get()))
 
             # Distância ao plano de projeção, plano near e ao plano far
             global listDist
             listDist = []
-            distPP = int(worldList[13].get())
-            listDist.append(distPP)
-            distNP = int(worldList[14].get())
-            listDist.append(distNP)
-            distFP = int(worldList[15].get())
-            listDist.append(distFP)
+            listDist.append(int(worldList[13].get()))
+            listDist.append(int(worldList[14].get()))
+            listDist.append(int(worldList[15].get()))
 
             # Janela do mundo
             global listWW
             listWW = []
             listWW.append(int(worldList[16].get()))
-            listWW.append(int(worldList[16].get()))
             listWW.append(int(worldList[17].get()))
             listWW.append(int(worldList[18].get()))
+            listWW.append(int(worldList[19].get()))
        
         except ValueError:
             popupShowErrorInput()  
         
         else:
-            if ((coorWLX1 < 0) or (coorWLX1 > 860)) or ((coorWLX2 < 0) or (coorWLX2 > 860)):
+            if ((listViewPort[0] < 0) or (listViewPort[0] > 860)) or ((listViewPort[1] < 0) or (listViewPort[1] > 860)):
                 popupShowLimitErrorX() 
-            elif ((coorWLY1 < 0) or (coorWLY1 > 640)) or ((coorWLY2 < 0) or (coorWLY2 > 640)):
+            elif ((listViewPort[2] < 0) or (listViewPort[2] > 640)) or ((listViewPort[3] < 0) or (listViewPort[3] > 640)):
                 popupShowLimitErrorY() 
-            elif ((coorWLX1 + coorWLX2) > 860) or ((coorWLY1 + coorWLY2) > 640):
+            elif ((listViewPort[0] + listViewPort[1]) > 860) or ((listViewPort[2] + listViewPort[3]) > 640):
                 popupShowLimitError() 
             else:
                 placeScreen()  
@@ -502,7 +491,7 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     print(f"listViewPort={listViewPort}")
     print("-"*10)
 
-    face = []
+    #face = []
     mesh = salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
     #Converte para SRT
     meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
