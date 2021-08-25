@@ -485,35 +485,21 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     global obj
     obj = []
 
-    print("-"*10)
-    print("createObject")
-    print(f"listWW={listWW}")
-    print(f"listViewPort={listViewPort}")
-    print("-"*10)
-
     #face = []
     mesh = salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
     #Converte para SRT
     meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
-    meshSRT = return_cube()
 
-    vertices = mesh.points()
-
-    #print(vertices)
-    
+    #print(meshSRT.points())
 
     for fh in meshSRT.faces():
+        face = []
         for vh in meshSRT.fv(fh):
             point = meshSRT.point(vh)
-            obj.append(canvas.create_polygon([point[0], point[1]], fill="black", tags="clickable"))
+            face.append([point[0], point[1]])
+        obj.append(canvas.create_polygon(face, fill="red", tags="clickable"))
 
-    
-    #obj1 = canvas.create_polygon(np.array([10,10]),np.array([70,50]),np.array([200,300]), fill="black", tags="clickable")
-    #obj.append(obj1)
-    #obj2=canvas.create_polygon(50, 50, 100, 60, 500, 100, 4, 10, fill="black", tags="clickable")
-    #obj.append(obj2)
-    #obj3=canvas.create_polygon(200, 200, 300, 10, 100, 100, 15, 15, fill="black", tags="clickable")
-    #obj.append(obj3)
+
 
 def identifyObject(event):
     tuple = canvas.find_all()
