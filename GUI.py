@@ -367,6 +367,9 @@ class CanvasMenu(Frame):
 
             canvas.grid(sticky="nsew")
 
+            global listObject
+            listObject = []
+
             canvas.bind("<Button-1>", identifyObject)
             canvas.focus_set()
             #canvas.bind("<Button-1>", locate_xy)
@@ -509,12 +512,12 @@ def placeScreen ():
 
 def clearScreen():
     canvas.delete("all")
+    listObject.clear()
 
 def createObject(raioBase, raioTopo, nLados, altura, GC):
-    global obj
+
     obj = []
 
-    #face = []
     global mesh
     mesh = salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
     #Converte para SRT
@@ -529,7 +532,8 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
             face.append([point[0], point[1]])
         obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
 
-
+    listObject.append(obj)
+    print(listObject)
 
 def identifyObject(event):
     global tuple
@@ -537,25 +541,27 @@ def identifyObject(event):
     if len(tuple) == 0:
         print("Nenhum objeto no Canvas!")
     else:
-        #id = int(canvas.find_closest(event.x, event.y)[0])
-
-        for i in range(0, len(tuple)):
-            canvas.itemconfig(tuple[i], fill='green')
-        
-        canvas.bind_all("<Key>", translacao)
-        canvas.bind_all("<Key>", escala)
-        canvas.bind_all("<Key>", rotacao)
-
-        # for i in range(0, len(tuple)):
-        #     if id == tuple[i]:
-        #         object = obj[i]
-        #         for j in range(0, len(obj)):
-        #             if j == i:
-        #                 canvas.itemconfig(object, fill='green')
-        #             else:
-        #                 canvas.itemconfig(obj[j], fill="black")
-
-
+        id = int(canvas.find_closest(event.x, event.y)[0])
+        print(id)
+        #pintar poligono clicado
+        for i in range(0, len(listObject)):
+            for j in range(0, len(listObject[i])):
+                print(listObject[i][j])
+                if listObject[i][j] == id:
+                    polygon = listObject[i]
+                    aux = i
+                    for k in range(0, len(polygon)):
+                        canvas.itemconfig(polygon[k], fill='green')
+                    
+        #pintar poligonos extras
+        for i in range(0, len(listObject)):
+            if i != aux:
+                for j in range(0, len(listObject[i])):
+                    canvas.itemconfig(listObject[i][j], fill='red')
+                
+        # canvas.bind_all("<Key>", translacao)
+        # canvas.bind_all("<Key>", escala)
+        # canvas.bind_all("<Key>", rotacao)
 
 def translacao(event):
     x, y, z = 0, 0, 0
