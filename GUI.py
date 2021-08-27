@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
+from transformations import escalate, rotX, rotY, rotZ, translate
 from teste_cube import return_cube
 import openmesh as om
 from pipeline import convertMesh2SRT
@@ -83,8 +84,9 @@ class CanvasMenu(Frame):
         labelWorldLimitUMIN.grid(row=1, column=0, padx=20, pady=10)
 
         coorWorldLimitUMIN = Entry(scrollableFrame, width= 8)
-        coorWorldLimitUMIN.grid(row=1, column=1, padx=20, pady=10)
+        coorWorldLimitUMIN.grid( row=1, column=1, padx=20, pady=10)
         worldList.append(coorWorldLimitUMIN)
+        coorWorldLimitUMIN.insert(0, 0)
 
         labelWorldLimitUMAX = Label(scrollableFrame, text="uMax", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitUMAX.grid(row=1, column=2, padx=15, pady=10)
@@ -92,6 +94,7 @@ class CanvasMenu(Frame):
         coorWorldLimitUMAX = Entry(scrollableFrame, width= 8)
         coorWorldLimitUMAX.grid(row=1, column=3, padx=20, pady=10)
         worldList.append(coorWorldLimitUMAX)
+        coorWorldLimitUMAX.insert(0, 360)
 
         labelWorldLimitVMIN = Label(scrollableFrame, text="vMin", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitVMIN.grid(row=2, column=0, padx=20, pady=10)
@@ -99,6 +102,7 @@ class CanvasMenu(Frame):
         coorWorldLimitY1 = Entry(scrollableFrame, width= 8)
         coorWorldLimitY1.grid(row=2, column=1, padx=20, pady=10)
         worldList.append(coorWorldLimitY1)
+        coorWorldLimitY1.insert(0, 0)
 
         labelWorldLimitVMAX = Label(scrollableFrame, text="vMax", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitVMAX.grid(row=2, column=2, padx=15, pady=10)
@@ -106,6 +110,7 @@ class CanvasMenu(Frame):
         coorWorldLimitVMAX = Entry(scrollableFrame, width= 8)
         coorWorldLimitVMAX.grid(row=2, column=3, padx=20, pady=10)
         worldList.append(coorWorldLimitVMAX)
+        coorWorldLimitVMAX.insert(0, 360)
 
         labelViewUp = Label(scrollableFrame, text="VIEW-UP:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelViewUp.grid(row=3, column=0, padx=20, pady=10, columnspan=3, sticky=W)
@@ -116,6 +121,7 @@ class CanvasMenu(Frame):
         coorViewUpX = Entry(scrollableFrame, width= 8)
         coorViewUpX.grid(row=4, column=1, pady=10)
         worldList.append(coorViewUpX)
+        coorViewUpX.insert(0, 0)
 
         labelViewUpY = Label(scrollableFrame, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
         labelViewUpY.grid(row=5, column=0, pady=10)
@@ -123,6 +129,7 @@ class CanvasMenu(Frame):
         coorViewUpY = Entry(scrollableFrame, width= 8)
         coorViewUpY.grid(row=5, column=1, pady=10)
         worldList.append(coorViewUpY)
+        coorViewUpY.insert(0, 1)
 
         labelViewUpZ = Label(scrollableFrame, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
         labelViewUpZ.grid(row=6, column=0, pady=10)
@@ -130,6 +137,7 @@ class CanvasMenu(Frame):
         coorViewUpZ = Entry(scrollableFrame, width= 8)
         coorViewUpZ.grid(row=6, column=1, pady=10)
         worldList.append(coorViewUpZ)
+        coorViewUpZ.insert(0, 0)
 
         labelVPR = Label(scrollableFrame, text="VRP:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelVPR.grid(row=3, column=2, pady=10)
@@ -140,6 +148,7 @@ class CanvasMenu(Frame):
         coorVRPX = Entry(scrollableFrame, width=8)
         coorVRPX.grid(row=4, column=3, pady=10)
         worldList.append(coorVRPX)
+        coorVRPX.insert(0, 0)
 
         labelVRPY = Label(scrollableFrame, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
         labelVRPY.grid(row=5, column=2, pady=10)
@@ -147,6 +156,7 @@ class CanvasMenu(Frame):
         coorVRPY = Entry(scrollableFrame, width=8)
         coorVRPY.grid(row=5, column=3, pady=10)
         worldList.append(coorVRPY)
+        coorVRPY.insert(0, 10)
 
         labelVRPZ = Label(scrollableFrame, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
         labelVRPZ.grid(row=6, column=2, pady=10)
@@ -154,6 +164,7 @@ class CanvasMenu(Frame):
         coorVRPZ = Entry(scrollableFrame, width=8)
         coorVRPZ.grid(row=6, column=3, pady=10)
         worldList.append(coorVRPZ)
+        coorVRPZ.insert(0, 10)
 
         labelFocalPoint = Label(scrollableFrame, text="Ponto focal:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelFocalPoint.grid(row=7, column=0, padx=20, pady=10, columnspan=3, sticky=W)
@@ -164,13 +175,15 @@ class CanvasMenu(Frame):
         coorFocalPointX = Entry(scrollableFrame, width=8)
         coorFocalPointX.grid(row=8, column=1, pady=10)
         worldList.append(coorFocalPointX)
-
+        coorFocalPointX.insert(0, 0)
+        
         labelFocalPointY = Label(scrollableFrame, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
         labelFocalPointY.grid(row=9, column=0, pady=10)
 
         coorFocalPointY = Entry(scrollableFrame, width=8)
         coorFocalPointY.grid(row=9, column=1, pady=10)
         worldList.append(coorFocalPointY)
+        coorFocalPointY.insert(0, 0)
 
         labelFocalPointZ = Label(scrollableFrame, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
         labelFocalPointZ.grid(row=10, column=0, pady=10)
@@ -178,6 +191,7 @@ class CanvasMenu(Frame):
         coorFocalPointZ = Entry(scrollableFrame, width=8)
         coorFocalPointZ.grid(row=10, column=1, pady=10)
         worldList.append(coorFocalPointZ)
+        coorFocalPointZ.insert(0, 0)
 
         labelDistance = Label(scrollableFrame, text="Distância ao plano:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelDistance.grid(row=7, column=2, pady=8, columnspan=3, sticky=W)
@@ -188,6 +202,7 @@ class CanvasMenu(Frame):
         distProjectionPlane = Entry(scrollableFrame, width=8)
         distProjectionPlane.grid(row=8, column=3, pady=8)
         worldList.append(distProjectionPlane)
+        distProjectionPlane.insert(0, 10)
 
         labelNearPlane = Label(scrollableFrame, text="Near", font=('Helvetica', 9), bg='#E0E0E0')
         labelNearPlane.grid(row=9, column=2, pady=8)
@@ -195,6 +210,7 @@ class CanvasMenu(Frame):
         distNearPlane = Entry(scrollableFrame, width=8)
         distNearPlane.grid(row=9, column=3, pady=8)
         worldList.append(distNearPlane)
+        distNearPlane.insert(0, 5)
 
         labelFarPlane = Label(scrollableFrame, text="Far", font=('Helvetica', 9), bg='#E0E0E0')
         labelFarPlane.grid(row=10, column=2, pady=8)
@@ -202,6 +218,7 @@ class CanvasMenu(Frame):
         distFarPlane = Entry(scrollableFrame, width=8)
         distFarPlane.grid(row=10, column=3, pady=8)
         worldList.append(distFarPlane)
+        distFarPlane.insert(0, 15)
 
         labelProjectionPlane = Label(scrollableFrame, text="World window:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelProjectionPlane.grid(row=11, column=0, padx=20, pady=10, columnspan=3, sticky=W)
@@ -212,6 +229,7 @@ class CanvasMenu(Frame):
         coorProjectionPlaneXMIN = Entry(scrollableFrame, width= 8)
         coorProjectionPlaneXMIN.grid(row=12, column=1, pady=10)
         worldList.append(coorProjectionPlaneXMIN)
+        coorProjectionPlaneXMIN.insert(0,-10)
 
         labelProjectionPlaneXMAX = Label(scrollableFrame, text="Xmax", font=('Helvetica', 9), bg='#E0E0E0')
         labelProjectionPlaneXMAX.grid(row=12, column=2, pady=10)
@@ -219,6 +237,7 @@ class CanvasMenu(Frame):
         coorProjectionPlaneXMAX = Entry(scrollableFrame, width= 8)
         coorProjectionPlaneXMAX.grid(row=12, column=3, pady=10)
         worldList.append(coorProjectionPlaneXMAX)
+        coorProjectionPlaneXMAX.insert(0,10)
 
         labelProjectionPlaneYMIN = Label(scrollableFrame, text="Ymin", font=('Helvetica', 9), bg='#E0E0E0')
         labelProjectionPlaneYMIN.grid(row=13, column=0, pady=10)
@@ -226,6 +245,7 @@ class CanvasMenu(Frame):
         coorProjectionPlaneYMIN = Entry(scrollableFrame, width= 8)
         coorProjectionPlaneYMIN.grid(row=13, column=1, pady=10)
         worldList.append(coorProjectionPlaneYMIN)
+        coorProjectionPlaneYMIN.insert(0,-10)
 
         labelProjectionPlaneYMAX = Label(scrollableFrame, text="Ymax", font=('Helvetica', 9), bg='#E0E0E0')
         labelProjectionPlaneYMAX.grid(row=13, column=2, pady=10)
@@ -233,7 +253,7 @@ class CanvasMenu(Frame):
         coorProjectionPlaneYMAX = Entry(scrollableFrame, width= 8)
         coorProjectionPlaneYMAX.grid(row=13, column=3, pady=10)
         worldList.append(coorProjectionPlaneYMAX)
-
+        coorProjectionPlaneYMAX.insert(0,10)
     
         labelObject = Label(scrollableFrame, text="Dados do objeto:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelObject.grid(row=15, column=0, padx=20, pady=10, columnspan=4, sticky=W)
@@ -244,6 +264,7 @@ class CanvasMenu(Frame):
         BaseRadius = Entry(scrollableFrame, width= 8)
         BaseRadius.grid(row=16, column=1, pady=10)
         objectList.append(BaseRadius)
+        BaseRadius.insert(0,10)
 
         labelTopRadius = Label(scrollableFrame, text="Raio do topo", font=('Helvetica', 9), bg='#E0E0E0')
         labelTopRadius.grid(row=16, column=2, pady=10)
@@ -251,6 +272,7 @@ class CanvasMenu(Frame):
         TopRadius = Entry(scrollableFrame, width= 8)
         TopRadius.grid(row=16, column=3, pady=10)
         objectList.append(TopRadius)
+        TopRadius.insert(0,6)
 
         labelNumSides = Label(scrollableFrame, text="Nº de lados", font=('Helvetica', 9), bg='#E0E0E0')
         labelNumSides.grid(row=17, column=0, padx=20, pady=10)
@@ -258,6 +280,7 @@ class CanvasMenu(Frame):
         NumSides = Entry(scrollableFrame, width= 8)
         NumSides.grid(row=17, column=1, pady=10)
         objectList.append(NumSides)
+        NumSides.insert(0,10)
 
         labelObjHeight = Label(scrollableFrame, text="Altura", font=('Helvetica', 9), bg='#E0E0E0')
         labelObjHeight.grid(row=17, column=2, pady=10)
@@ -265,6 +288,7 @@ class CanvasMenu(Frame):
         ObjHeight = Entry(scrollableFrame, width= 8)
         ObjHeight.grid(row=17, column=3, pady=10)
         objectList.append(ObjHeight)
+        ObjHeight.insert(0,5)
         
         labelObjectCenter = Label(scrollableFrame, text="Centro Geométrico:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelObjectCenter.grid(row=18, column=0, padx=20, pady=10, columnspan=4, sticky=W)
@@ -275,6 +299,7 @@ class CanvasMenu(Frame):
         coorObjectCenterX = Entry(scrollableFrame, width=8)
         coorObjectCenterX.grid(row=19, column=1, pady=10)
         objectList.append(coorObjectCenterX)
+        coorObjectCenterX.insert(0,0)
 
         objectCenterY = Label(scrollableFrame, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
         objectCenterY.grid(row=20, column=0, pady=10)
@@ -282,6 +307,7 @@ class CanvasMenu(Frame):
         coorObjectCenterY = Entry(scrollableFrame, width=8)
         coorObjectCenterY.grid(row=20, column=1, pady=10)
         objectList.append(coorObjectCenterY)
+        coorObjectCenterY.insert(0,0)
 
         objectCenterZ = Label(scrollableFrame, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
         objectCenterZ.grid(row=21, column=0, pady=10)
@@ -289,6 +315,7 @@ class CanvasMenu(Frame):
         coorObjectCenterZ = Entry(scrollableFrame, width=8)
         coorObjectCenterZ.grid(row=21, column=1, pady=10)
         objectList.append(coorObjectCenterZ)
+        coorObjectCenterZ.insert(0,0)
 
         novoMundo = Button(scrollableFrame, text="Novo mundo", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newWorld)
         novoMundo.grid(row=22, column=0, pady=10)
@@ -341,6 +368,7 @@ class CanvasMenu(Frame):
             canvas.grid(sticky="nsew")
 
             canvas.bind("<Button-1>", identifyObject)
+            canvas.focus_set()
             #canvas.bind("<Button-1>", locate_xy)
             #canvas.bind("<B1-Motion>", addLine)
 
@@ -426,6 +454,7 @@ def newWorld():
             elif ((listViewPort[0] + listViewPort[1]) > 860) or ((listViewPort[2] + listViewPort[3]) > 640):
                 popupShowLimitError() 
             else:
+                canvas.focus_set()
                 placeScreen()  
     else:
         popupShowErrorEmptyInput()
@@ -453,7 +482,7 @@ def newObject():
                 coorOCX = int(objectList[4].get())
                 coorOCY = int(objectList[5].get())
                 coorOCZ = int(objectList[5].get())
-
+                canvas.focus_set()
                 createObject(BR, TR, NL, OH, [coorOCX, coorOCY, coorOCZ])
 
             else:
@@ -486,6 +515,7 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     obj = []
 
     #face = []
+    global mesh
     mesh = salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
     #Converte para SRT
     meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
@@ -497,57 +527,140 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
         for vh in meshSRT.fv(fh):
             point = meshSRT.point(vh)
             face.append([point[0], point[1]])
-        obj.append(canvas.create_polygon(face, fill="red", tags="clickable"))
+        obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
 
 
 
 def identifyObject(event):
+    global tuple
     tuple = canvas.find_all()
     if len(tuple) == 0:
         print("Nenhum objeto no Canvas!")
     else:
-        id = int(canvas.find_closest(event.x, event.y)[0])
+        #id = int(canvas.find_closest(event.x, event.y)[0])
 
         for i in range(0, len(tuple)):
-            if id == tuple[i]:
-                object = obj[i]
-                for j in range(0, len(obj)):
-                    if j == i:
-                        canvas.itemconfig(object, fill='green')
-                    else:
-                        canvas.itemconfig(obj[j], fill="black")
+            canvas.itemconfig(tuple[i], fill='green')
+        
+        canvas.bind_all("<Key>", translacao)
+        canvas.bind_all("<Key>", escala)
+        canvas.bind_all("<Key>", rotacao)
+
+        # for i in range(0, len(tuple)):
+        #     if id == tuple[i]:
+        #         object = obj[i]
+        #         for j in range(0, len(obj)):
+        #             if j == i:
+        #                 canvas.itemconfig(object, fill='green')
+        #             else:
+        #                 canvas.itemconfig(obj[j], fill="black")
 
 
 
-# def translacao(event):
-#     x,y= 0,0
-#     if event.char == "q": # esquerda
-#     elif event.char == "a": #direita
-#     elif event.char == "w": #frente
-#     elif event.char == "s": #tras
-#     elif event.char == "e": #cima
-#     elif event.char == "d": #baixo
-#     canvas.move(id, x ,y)
+def translacao(event):
+    x, y, z = 0, 0, 0
+    if event.char == "q": 
+        x, y, z = -1, 0, 0
+        object = translate(mesh, x, y, z)
+    elif event.char == "a": 
+        x, y, z = 1, 0, 0
+        object = translate(mesh, x, y, z)
+    elif event.char == "w": 
+        x, y, z = 0, 0, 1
+        object = translate(mesh, x, y, z)
+    elif event.char == "s":
+        x, y, z = 0, 0, -1
+        object = translate(mesh, x, y, z)
+    elif event.char == "e":
+        x, y, z = 0, 1, 0
+        object = translate(mesh, x, y, z)
+    elif event.char == "d": 
+        x, y, z = 0, -1, 0
+        object = translate(mesh, x, y, z)
 
-# def escala(event):
-#     x,y= 0,0
-#     if event.char == "r": # diminui o objeto no eixo x
-#     elif event.char == "f": # aumenta o objeto no eixo x
-#     elif event.char == "t": # diminui o objeto no eixo z
-#     elif event.char == "g": # aumenta o objeto no eixo z
-#     elif event.char == "y": # diminui o objeto no eixo y
-#     elif event.char == "h": # aumenta o objeto no eixo y
-#     canvas.move(id, x ,y)
+    #delete object
+    for i in range(0, len(obj)):
+        canvas.delete(obj[i])
 
-# def rotacao(event):
-#     x,y= 0,0
-#     if event.char == "u": # rotaciona para a esquerda ao redor do eixo x
-#     elif event.char == "j": # rotaciona para a direita ao redor do eixo x
-#     elif event.char == "i": # rotaciona para a esquerda ao redor do eixo z
-#     elif event.char == "k": # rotaciona para a direita ao redor do eixo z
-#     elif event.char == "o": # rotaciona para a esquerda ao redor do eixo y
-#     elif event.char == "l": # rotaciona para a direita ao redor do eixo y
-#     canvas.move(id, x ,y)
+    #Converte para SRT
+    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+
+    for fh in meshSRT.faces():
+        face = []
+        for vh in meshSRT.fv(fh):
+            point = meshSRT.point(vh)
+            face.append([point[0], point[1]])
+        obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+
+def escala(event):
+    x,y,z= 0,0, 0
+    if event.char == "r": # diminui o objeto no eixo x
+        x, y, z = 0.5, 1, 1
+        object = escalate(mesh, x, y, z)
+    elif event.char == "f": # aumenta o objeto no eixo x
+        x, y, z = 2, 1, 1
+        object = escalate(mesh, x, y, z)
+    elif event.char == "t": # diminui o objeto no eixo z
+        x, y, z = 1, 1, 0.5
+        object = escalate(mesh, x, y, z)
+    elif event.char == "g": # aumenta o objeto no eixo z
+        x, y, z = 1, 1, 2
+        object = escalate(mesh, x, y, z)
+    elif event.char == "y": # diminui o objeto no eixo y
+        x, y, z = 1, 0.5, 1
+        object = escalate(mesh, x, y, z)
+    elif event.char == "h": # aumenta o objeto no eixo y
+        x, y, z = 1, 2, 1
+        object = escalate(mesh, x, y, z)
+    
+        #delete object
+    for i in range(0, len(obj)):
+        canvas.delete(obj[i])
+
+    #Converte para SRT
+    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+
+    for fh in meshSRT.faces():
+        face = []
+        for vh in meshSRT.fv(fh):
+            point = meshSRT.point(vh)
+            face.append([point[0], point[1]])
+        obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+
+def rotacao(event):
+    angulo = 0
+    if event.char == "u": # rotaciona para a esquerda ao redor do eixo xp
+        angulo = 1
+        object = rotX(mesh, angulo)
+    elif event.char == "j": # rotaciona para a direita ao redor do eixo x
+        angulo = -1
+        object = rotX(mesh, angulo)
+    elif event.char == "i": # rotaciona para a esquerda ao redor do eixo z
+        angulo = 1
+        object = rotZ(mesh, angulo)
+    elif event.char == "k": # rotaciona para a direita ao redor do eixo z
+        angulo = -1
+        object = rotZ(mesh, angulo)
+    elif event.char == "o": # rotaciona para a esquerda ao redor do eixo y
+        angulo = 1
+        object = rotY(mesh, angulo)
+    elif event.char == "l": # rotaciona para a direita ao redor do eixo y
+        angulo = -1
+        object = rotY(mesh, angulo)
+    
+    #delete object
+    for i in range(0, len(obj)):
+        canvas.delete(obj[i])
+
+    #Converte para SRT
+    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+
+    for fh in meshSRT.faces():
+        face = []
+        for vh in meshSRT.fv(fh):
+            point = meshSRT.point(vh)
+            face.append([point[0], point[1]])
+        obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
 
 def run_program():
     root = Tk()
