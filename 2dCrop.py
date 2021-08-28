@@ -25,34 +25,42 @@ def cutBorder(face, uMin, uMax, vMin, vMax):
 	points = face[:]
 	points.append(face[0])
 	resultPoints = []
-	#toBeDeleted = []
 
 	for regionCode in [0b0001, 0b0010, 0b0100, 0b1000]:
-		print()
-		print(regionCode)
-		print()
+		#print('-'*10)
+		#print(regionCode)
+		#print()
+		#print(f'points: {points}')
+
+		points.append(points[0])
+		resultPoints = []
 		for i in range(len(points)-1):
 			v1_code = getRegion(points[i], uMin, uMax, vMin, vMax)
 			v2_code = getRegion(points[i+1], uMin, uMax, vMin, vMax)
 
 			if (v1_code & regionCode) and not(v2_code & regionCode):
 				newPoint = getNewPoint(points[i], points[i+1], uMin, uMax, vMin, vMax, regionCode)
-				if newPoint not in resultPoints: resultPoints.append(newPoint)
-				if points[i+i] not in resultPoints: resultPoints.append(points[i+i])
-				print(f'FD: {newPoint} {points[i+1]}')
+				resultPoints.append(newPoint)
+				resultPoints.append(points[i+1])
+				#print(f'FD: {newPoint} {points[i+1]}')
 
 			elif not(v1_code & regionCode) and not(v2_code & regionCode):
-				if points[i+1] not in resultPoints: resultPoints.append(points[i+1])
-				print(f'DD: {points[i+1]}')
+				resultPoints.append(points[i+1])
+				#print(f'DD: {points[i+1]}')
 
 			elif not(v1_code & regionCode) and (v2_code & regionCode):
 				newPoint = getNewPoint(points[i], points[i+1], uMin, uMax, vMin, vMax, regionCode)
-				if newPoint not in resultPoints: resultPoints.append(newPoint)
-				print(f'DF: {newPoint}')
+				resultPoints.append(newPoint)
+				#print(f'DF: {newPoint}')
 
 			elif (v1_code & regionCode) and (v2_code & regionCode): continue
 
 			else: print("Error happened at cutLeft")
+
+		#print()
+		#print(f'resultPoints: {resultPoints}')
+		if resultPoints == []: return []
+		points = resultPoints[:]
 
 	return resultPoints
 
@@ -99,4 +107,6 @@ if __name__ == '__main__':
 	#cutLeft([[-10,10], [10,5], [10,15]], uMin, uMax, vMin, vMax)
 	#if (0b1001 & 0b0001) and not(0b0010 & 0b0001):
 	#	print("TOP")
-	print(cutBorder([[-10, 10], [10, 5], [10, 15]], uMin, uMax, vMin, vMax))
+	vertices = [[-10, 10], [-15, 5], [-10, 8]]
+	print(vertices)
+	print(cutBorder(vertices, uMin, uMax, vMin, vMax))
