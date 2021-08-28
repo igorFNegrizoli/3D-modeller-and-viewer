@@ -94,7 +94,7 @@ class CanvasMenu(Frame):
         coorWorldLimitUMAX = Entry(scrollableFrame, width= 8)
         coorWorldLimitUMAX.grid(row=1, column=3, padx=20, pady=10)
         worldList.append(coorWorldLimitUMAX)
-        coorWorldLimitUMAX.insert(0, 360)
+        coorWorldLimitUMAX.insert(0, 860)
 
         labelWorldLimitVMIN = Label(scrollableFrame, text="vMin", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitVMIN.grid(row=2, column=0, padx=20, pady=10)
@@ -110,7 +110,7 @@ class CanvasMenu(Frame):
         coorWorldLimitVMAX = Entry(scrollableFrame, width= 8)
         coorWorldLimitVMAX.grid(row=2, column=3, padx=20, pady=10)
         worldList.append(coorWorldLimitVMAX)
-        coorWorldLimitVMAX.insert(0, 360)
+        coorWorldLimitVMAX.insert(0, 640)
 
         labelViewUp = Label(scrollableFrame, text="VIEW-UP:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelViewUp.grid(row=3, column=0, padx=20, pady=10, columnspan=3, sticky=W)
@@ -264,7 +264,7 @@ class CanvasMenu(Frame):
         BaseRadius = Entry(scrollableFrame, width= 8)
         BaseRadius.grid(row=16, column=1, pady=10)
         objectList.append(BaseRadius)
-        BaseRadius.insert(0,10)
+        BaseRadius.insert(0,5)
 
         labelTopRadius = Label(scrollableFrame, text="Raio do topo", font=('Helvetica', 9), bg='#E0E0E0')
         labelTopRadius.grid(row=16, column=2, pady=10)
@@ -299,7 +299,7 @@ class CanvasMenu(Frame):
         coorObjectCenterX = Entry(scrollableFrame, width=8)
         coorObjectCenterX.grid(row=19, column=1, pady=10)
         objectList.append(coorObjectCenterX)
-        coorObjectCenterX.insert(0,0)
+        coorObjectCenterX.insert(0,10)
 
         objectCenterY = Label(scrollableFrame, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
         objectCenterY.grid(row=20, column=0, pady=10)
@@ -367,8 +367,9 @@ class CanvasMenu(Frame):
 
             canvas.grid(sticky="nsew")
 
-            global listObject
+            global listObject, listMesh
             listObject = []
+            listMesh = []
 
             canvas.bind("<Button-1>", identifyObject)
             canvas.focus_set()
@@ -513,17 +514,15 @@ def placeScreen ():
 def clearScreen():
     canvas.delete("all")
     listObject.clear()
+    listMesh.clear()
 
 def createObject(raioBase, raioTopo, nLados, altura, GC):
-
     obj = []
 
-    global mesh
     mesh = salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
+    listMesh.append(mesh)
     #Converte para SRT
     meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
-
-    #print(meshSRT.points())
 
     for fh in meshSRT.faces():
         face = []
@@ -536,17 +535,16 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     print(listObject)
 
 def identifyObject(event):
-    global tuple
+    global polygon, meshAtual, aux
     tuple = canvas.find_all()
     if len(tuple) == 0:
         print("Nenhum objeto no Canvas!")
     else:
         id = int(canvas.find_closest(event.x, event.y)[0])
-        print(id)
+
         #pintar poligono clicado
         for i in range(0, len(listObject)):
             for j in range(0, len(listObject[i])):
-                print(listObject[i][j])
                 if listObject[i][j] == id:
                     polygon = listObject[i]
                     aux = i
@@ -558,35 +556,38 @@ def identifyObject(event):
             if i != aux:
                 for j in range(0, len(listObject[i])):
                     canvas.itemconfig(listObject[i][j], fill='red')
+
+        meshAtual = listMesh[aux]
                 
-        # canvas.bind_all("<Key>", translacao)
-        # canvas.bind_all("<Key>", escala)
-        # canvas.bind_all("<Key>", rotacao)
+        canvas.bind_all("<Key>", translacao)
+        #canvas.bind_all("<Key>", escala)
+        #canvas.bind_all("<Key>", rotacao)
 
 def translacao(event):
     x, y, z = 0, 0, 0
     if event.char == "q": 
         x, y, z = -1, 0, 0
-        object = translate(mesh, x, y, z)
+        object = translate(meshAtual, x, y, z)
     elif event.char == "a": 
         x, y, z = 1, 0, 0
-        object = translate(mesh, x, y, z)
+        object = translate(meshAtual, x, y, z)
     elif event.char == "w": 
         x, y, z = 0, 0, 1
-        object = translate(mesh, x, y, z)
+        object = translate(meshAtual, x, y, z)
     elif event.char == "s":
         x, y, z = 0, 0, -1
-        object = translate(mesh, x, y, z)
+        object = translate(meshAtual, x, y, z)
     elif event.char == "e":
         x, y, z = 0, 1, 0
-        object = translate(mesh, x, y, z)
+        object = translate(meshAtual, x, y, z)
     elif event.char == "d": 
         x, y, z = 0, -1, 0
-        object = translate(mesh, x, y, z)
+        object = translate(meshAtual, x, y, z)
 
-    #delete object
-    for i in range(0, len(obj)):
-        canvas.delete(obj[i])
+    #deleta object
+    for i in range(0, len(polygon)):
+        canvas.delete(polygon[i])
+    polygon.clear()
 
     #Converte para SRT
     meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
@@ -596,67 +597,54 @@ def translacao(event):
         for vh in meshSRT.fv(fh):
             point = meshSRT.point(vh)
             face.append([point[0], point[1]])
-        obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+        polygon.append(canvas.create_polygon(face, fill="green", tags="clickable", outline="black"))
 
 def escala(event):
-    x,y,z= 0,0, 0
+    
     if event.char == "r": # diminui o objeto no eixo x
         x, y, z = 0.5, 1, 1
-        object = escalate(mesh, x, y, z)
+        object = escalate(meshAtual, x, y, z)
     elif event.char == "f": # aumenta o objeto no eixo x
         x, y, z = 2, 1, 1
-        object = escalate(mesh, x, y, z)
+        object = escalate(meshAtual, x, y, z)
     elif event.char == "t": # diminui o objeto no eixo z
         x, y, z = 1, 1, 0.5
-        object = escalate(mesh, x, y, z)
+        object = escalate(meshAtual, x, y, z)
     elif event.char == "g": # aumenta o objeto no eixo z
         x, y, z = 1, 1, 2
-        object = escalate(mesh, x, y, z)
+        object = escalate(meshAtual, x, y, z)
     elif event.char == "y": # diminui o objeto no eixo y
         x, y, z = 1, 0.5, 1
-        object = escalate(mesh, x, y, z)
+        object = escalate(meshAtual, x, y, z)
     elif event.char == "h": # aumenta o objeto no eixo y
         x, y, z = 1, 2, 1
-        object = escalate(mesh, x, y, z)
-    
-        #delete object
-    for i in range(0, len(obj)):
-        canvas.delete(obj[i])
-
-    #Converte para SRT
-    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
-
-    for fh in meshSRT.faces():
-        face = []
-        for vh in meshSRT.fv(fh):
-            point = meshSRT.point(vh)
-            face.append([point[0], point[1]])
-        obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+        object = escalate(meshAtual, x, y, z)
 
 def rotacao(event):
     angulo = 0
     if event.char == "u": # rotaciona para a esquerda ao redor do eixo xp
         angulo = 1
-        object = rotX(mesh, angulo)
+        object = rotX(meshAtual, angulo)
     elif event.char == "j": # rotaciona para a direita ao redor do eixo x
         angulo = -1
-        object = rotX(mesh, angulo)
+        object = rotX(meshAtual, angulo)
     elif event.char == "i": # rotaciona para a esquerda ao redor do eixo z
         angulo = 1
-        object = rotZ(mesh, angulo)
+        object = rotZ(meshAtual, angulo)
     elif event.char == "k": # rotaciona para a direita ao redor do eixo z
         angulo = -1
-        object = rotZ(mesh, angulo)
+        object = rotZ(meshAtual, angulo)
     elif event.char == "o": # rotaciona para a esquerda ao redor do eixo y
         angulo = 1
-        object = rotY(mesh, angulo)
+        object = rotY(meshAtual, angulo)
     elif event.char == "l": # rotaciona para a direita ao redor do eixo y
         angulo = -1
-        object = rotY(mesh, angulo)
+        object = rotY(meshAtual, angulo)
     
-    #delete object
-    for i in range(0, len(obj)):
-        canvas.delete(obj[i])
+    #deleta object
+    for i in range(0, len(polygon)):
+        canvas.delete(polygon[i])
+    polygon.clear()
 
     #Converte para SRT
     meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
@@ -666,7 +654,7 @@ def rotacao(event):
         for vh in meshSRT.fv(fh):
             point = meshSRT.point(vh)
             face.append([point[0], point[1]])
-        obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+        polygon.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
 
 def run_program():
     root = Tk()
