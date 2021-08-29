@@ -459,7 +459,23 @@ def newWorld():
                 popupShowLimitError() 
             else:
                 canvas.focus_set()
-                placeScreen()  
+                placeScreen()
+                canvas.delete("all")
+                print(listMesh)
+                print(type(listMesh))
+                if len(listMesh) > 0:
+                    for i in len(listMesh):
+                        obj = []
+                        meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+                        for fh in meshSRT.faces():
+                            face = []
+                            for vh in meshSRT.fv(fh):
+                                point = meshSRT.point(vh)
+                                face.append([point[0], point[1]])
+                            obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+
+                        listObject[i] = obj
+
     else:
         popupShowErrorEmptyInput()
 
@@ -535,12 +551,15 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     print(listObject)
 
 def identifyObject(event):
-    global polygon, meshAtual, aux
-    tuple = canvas.find_all()
-    if len(tuple) == 0:
+    global meshAtual, polygon
+    if not event.widget.find_withtag("current"):
         print("Nenhum objeto no Canvas!")
+        meshAtual = None
+        for i in range(0, len(listObject)):
+            for j in range(0, len(listObject[i])):
+                canvas.itemconfig(listObject[i][j], fill='red')
     else:
-        id = int(canvas.find_closest(event.x, event.y)[0])
+        id = event.widget.find_withtag("current")[0]
 
         #pintar poligono clicado
         for i in range(0, len(listObject)):
@@ -548,9 +567,11 @@ def identifyObject(event):
                 if listObject[i][j] == id:
                     polygon = listObject[i]
                     aux = i
+                    # for face in polygon:
+                    #     canvas.itemconfig(face, fill='green')
                     for k in range(0, len(polygon)):
                         canvas.itemconfig(polygon[k], fill='green')
-                    
+                        
         #pintar poligonos extras
         for i in range(0, len(listObject)):
             if i != aux:
@@ -558,33 +579,15 @@ def identifyObject(event):
                     canvas.itemconfig(listObject[i][j], fill='red')
 
         meshAtual = listMesh[aux]
-                
-        canvas.bind_all("<Key>", translacao)
-        #canvas.bind_all("<Key>", escala)
-        #canvas.bind_all("<Key>", rotacao)
 
-def translacao(event):
-    x, y, z = 0, 0, 0
-    if event.char == "q": 
-        x, y, z = -1, 0, 0
-        object = translate(meshAtual, x, y, z)
-    elif event.char == "a": 
-        x, y, z = 1, 0, 0
-        object = translate(meshAtual, x, y, z)
-    elif event.char == "w": 
-        x, y, z = 0, 0, 1
-        object = translate(meshAtual, x, y, z)
-    elif event.char == "s":
-        x, y, z = 0, 0, -1
-        object = translate(meshAtual, x, y, z)
-    elif event.char == "e":
-        x, y, z = 0, 1, 0
-        object = translate(meshAtual, x, y, z)
-    elif event.char == "d": 
-        x, y, z = 0, -1, 0
-        object = translate(meshAtual, x, y, z)
+def interfaceTeclas(event):
+    if meshAtual is not None:
+        translacao(event)
+        escala(event)
+        rotacao(event)
 
-    #deleta object
+def opCreate(object):
+    # #deleta object
     for i in range(0, len(polygon)):
         canvas.delete(polygon[i])
     polygon.clear()
@@ -599,62 +602,130 @@ def translacao(event):
             face.append([point[0], point[1]])
         polygon.append(canvas.create_polygon(face, fill="green", tags="clickable", outline="black"))
 
+def translacao(event):
+    x, y, z = 0, 0, 0
+    if event.char == "q": 
+        x, y, z = -1, 0, 0
+        objectTrans = translate(meshAtual, x, y, z)
+        opCreate(objectTrans)
+    elif event.char == "a": 
+        x, y, z = 1, 0, 0
+        objectTrans = translate(meshAtual, x, y, z)
+        opCreate(objectTrans)
+    elif event.char == "w": 
+        x, y, z = 0, 0, 1
+        objectTrans = translate(meshAtual, x, y, z)
+        opCreate(objectTrans)
+    elif event.char == "s":
+        x, y, z = 0, 0, -1
+        objectTrans = translate(meshAtual, x, y, z)
+        opCreate(objectTrans)
+    elif event.char == "e":
+        x, y, z = 0, 1, 0
+        objectTrans = translate(meshAtual, x, y, z)
+        opCreate(objectTrans)
+    elif event.char == "d": 
+        x, y, z = 0, -1, 0
+        objectTrans = translate(meshAtual, x, y, z)
+        opCreate(objectTrans)
+
+    # #deleta object
+    # for i in range(0, len(polygon)):
+    #     canvas.delete(polygon[i])
+    # polygon.clear()
+
+    # #Converte para SRT
+    # meshSRT = convertMesh2SRT(objectTrans, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+
+    # for fh in meshSRT.faces():
+    #     face = []
+    #     for vh in meshSRT.fv(fh):
+    #         point = meshSRT.point(vh)
+    #         face.append([point[0], point[1]])
+    #     polygon.append(canvas.create_polygon(face, fill="green", tags="clickable", outline="black"))
+
 def escala(event):
-    
+    x, y, z = 0, 0, 0
     if event.char == "r": # diminui o objeto no eixo x
         x, y, z = 0.5, 1, 1
-        object = escalate(meshAtual, x, y, z)
+        objectEsc = escalate(meshAtual, x, y, z)
+        opCreate(objectEsc)
     elif event.char == "f": # aumenta o objeto no eixo x
         x, y, z = 2, 1, 1
-        object = escalate(meshAtual, x, y, z)
+        objectEsc = escalate(meshAtual, x, y, z)
+        opCreate(objectEsc)
     elif event.char == "t": # diminui o objeto no eixo z
         x, y, z = 1, 1, 0.5
-        object = escalate(meshAtual, x, y, z)
+        objectEsc = escalate(meshAtual, x, y, z)
     elif event.char == "g": # aumenta o objeto no eixo z
         x, y, z = 1, 1, 2
-        object = escalate(meshAtual, x, y, z)
+        objectEsc = escalate(meshAtual, x, y, z)
+        opCreate(objectEsc)
     elif event.char == "y": # diminui o objeto no eixo y
         x, y, z = 1, 0.5, 1
-        object = escalate(meshAtual, x, y, z)
+        objectEsc = escalate(meshAtual, x, y, z)
+        opCreate(objectEsc)
     elif event.char == "h": # aumenta o objeto no eixo y
         x, y, z = 1, 2, 1
-        object = escalate(meshAtual, x, y, z)
+        objectEsc = escalate(meshAtual, x, y, z)
+        opCreate(objectEsc)
+
+    # #deleta object
+    # for i in range(0, len(polygon)):
+    #     canvas.delete(polygon[i])
+    # polygon.clear()
+
+    # #Converte para SRT
+    # meshSRT = convertMesh2SRT(objectEsc, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+
+    # for fh in meshSRT.faces():
+    #     face = []
+    #     for vh in meshSRT.fv(fh):
+    #         point = meshSRT.point(vh)
+    #         face.append([point[0], point[1]])
+    #     polygon.append(canvas.create_polygon(face, fill="green", tags="clickable", outline="black"))
 
 def rotacao(event):
     angulo = 0
     if event.char == "u": # rotaciona para a esquerda ao redor do eixo xp
         angulo = 1
-        object = rotX(meshAtual, angulo)
+        objectRot = rotX(meshAtual, angulo)
+        opCreate(objectRot)
     elif event.char == "j": # rotaciona para a direita ao redor do eixo x
         angulo = -1
-        object = rotX(meshAtual, angulo)
+        objectRot = rotX(meshAtual, angulo)
+        opCreate(objectRot)
     elif event.char == "i": # rotaciona para a esquerda ao redor do eixo z
         angulo = 1
-        object = rotZ(meshAtual, angulo)
+        objectRot = rotZ(meshAtual, angulo)
+        opCreate(objectRot)
     elif event.char == "k": # rotaciona para a direita ao redor do eixo z
         angulo = -1
-        object = rotZ(meshAtual, angulo)
+        objectRot = rotZ(meshAtual, angulo)
+        opCreate(objectRot)
     elif event.char == "o": # rotaciona para a esquerda ao redor do eixo y
         angulo = 1
-        object = rotY(meshAtual, angulo)
+        objectRot = rotY(meshAtual, angulo)
+        opCreate(objectRot)
     elif event.char == "l": # rotaciona para a direita ao redor do eixo y
         angulo = -1
-        object = rotY(meshAtual, angulo)
+        objectRot = rotY(meshAtual, angulo)
+        opCreate(objectRot)
     
-    #deleta object
-    for i in range(0, len(polygon)):
-        canvas.delete(polygon[i])
-    polygon.clear()
+    # #deleta object
+    # for i in range(0, len(polygon)):
+    #     canvas.delete(polygon[i])
+    # polygon.clear()
 
-    #Converte para SRT
-    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+    # #Converte para SRT
+    # meshSRT = convertMesh2SRT(anguloRot, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
 
-    for fh in meshSRT.faces():
-        face = []
-        for vh in meshSRT.fv(fh):
-            point = meshSRT.point(vh)
-            face.append([point[0], point[1]])
-        polygon.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+    # for fh in meshSRT.faces():
+    #     face = []
+    #     for vh in meshSRT.fv(fh):
+    #         point = meshSRT.point(vh)
+    #         face.append([point[0], point[1]])
+    #     polygon.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
 
 def run_program():
     root = Tk()
@@ -671,8 +742,12 @@ def run_program():
     posy = (heightScreen/2 - height/2) - 30
 
     root.geometry("%dx%d+%d+%d" % (width, height, posx, posy))
+
+    global polygon, meshAtual
+    polygon, meshAtual = None, None
     
     CanvasMenu()
+    canvas.bind_all("<Key>", interfaceTeclas)
    
     root.mainloop()
 
