@@ -333,6 +333,11 @@ class CanvasMenu(Frame):
         # S = vetor direção de observação
         # n = aproximação da distribuição espacial da luz refletida especularmente
         # Ks = coeficiente de reflexão especular (0 <= Ks <= 1) (KsR, KsG, KsB) --> Material 03
+
+        # Sistema de cores RGB
+        # R
+        # G
+        # B
         
         novoMundo = Button(scrollableFrame, text="Novo mundo", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newWorld)
         novoMundo.grid(row=22, column=0, pady=10)
