@@ -28,9 +28,11 @@ class CanvasMenu(Frame):
     
         perspective = Radiobutton(toolBar, text="Perspectiva", variable=optionProj, value=False, font=('Helvetica', 9), bg='#E0E0E0')
         perspective.grid(row=1, column=2, padx=5, pady=5)
+        perspective.select()
 
         parallel = Radiobutton(toolBar, text="Paralela", variable=optionProj, value=True, font=('Helvetica', 9), bg='#E0E0E0')
         parallel.grid(row=1, column=3, padx=5, pady=5)
+        parallel.deselect()
 
         optionProj = BooleanVar()
 
@@ -39,12 +41,15 @@ class CanvasMenu(Frame):
 
         constant = Radiobutton(toolBar, text="Constante", variable=optionSomb, value=3, font=('Helvetica', 9), bg='#E0E0E0')
         constant.grid(row=1, column=6, padx=5, pady=5)
+        constant.select()
     
         gouraud = Radiobutton(toolBar, text="Gouraud", variable=optionSomb, value=4, font=('Helvetica', 9), bg='#E0E0E0')
         gouraud.grid(row=1, column=7, padx=5, pady=5)
+        gouraud.deselect()
 
         phong = Radiobutton(toolBar, text="Phong simplificado", variable=optionSomb, value=5, font=('Helvetica', 9), bg='#E0E0E0')
         phong.grid(row=1, column=8, padx=5, pady=5)
+        phong.deselect()
 
         optionSomb = IntVar()
 
@@ -157,8 +162,8 @@ class CanvasMenu(Frame):
         
         coorVRPY = Entry(scrollableFrame, width=8)
         coorVRPY.grid(row=6, column=3, pady=10)
-        worldList.append(coorVRPY)
         coorVRPY.insert(0, 10)
+        worldList.append(coorVRPY)
 
         labelVRPZ = Label(scrollableFrame, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
         labelVRPZ.grid(row=7, column=2, pady=10)
@@ -318,9 +323,143 @@ class CanvasMenu(Frame):
         coorObjectCenterZ.grid(row=21, column=1, pady=10)
         coorObjectCenterZ.insert(0,0)
         objectDataList.append(coorObjectCenterZ)
+        
+        labelSomb = Label(scrollableFrame, text="Sombreamento:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0', fg='#990303')
+        labelSomb.grid(row=22, column=0, padx=20, pady=10, columnspan=4, sticky=W)
 
+        labelRGBKa = Label(scrollableFrame, text="Ka", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
+        labelRGBKa.grid(row=23, column=0,padx=20, pady=10, sticky=W)
+
+        RKa = Label(scrollableFrame, text="R", font=('Helvetica', 9), bg='#E0E0E0')
+        RKa.grid(row=24, column=0, pady=10)
+
+        entryRKa = Entry(scrollableFrame, width=8)
+        entryRKa.grid(row=24, column=1, pady=10)
+
+        GKa = Label(scrollableFrame, text="G", font=('Helvetica', 9), bg='#E0E0E0')
+        GKa.grid(row=25, column=0, pady=10)
+
+        entryGKa = Entry(scrollableFrame, width=8)
+        entryGKa.grid(row=25, column=1, pady=10)
+
+        BKa = Label(scrollableFrame, text="B", font=('Helvetica', 9), bg='#E0E0E0')
+        BKa.grid(row=26, column=0, pady=10)
+
+        entryBKa = Entry(scrollableFrame, width=8)
+        entryBKa.grid(row=26, column=1, pady=10)
+
+        labelRGBKd = Label(scrollableFrame, text="Kd", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
+        labelRGBKd.grid(row=23, column=2, pady=10, sticky=W)
+        
+        RKd = Label(scrollableFrame, text="R", font=('Helvetica', 9), bg='#E0E0E0')
+        RKd.grid(row=24, column=2, pady=10)
+
+        EntryRKd = Entry(scrollableFrame, width=8)
+        EntryRKd.grid(row=24, column=3, pady=10)
+
+        GKd = Label(scrollableFrame, text="G", font=('Helvetica', 9), bg='#E0E0E0')
+        GKd.grid(row=25, column=2, pady=10)
+
+        EntryGKd = Entry(scrollableFrame, width=8)
+        EntryGKd.grid(row=25, column=3, pady=10)
+
+        BKd = Label(scrollableFrame, text="B", font=('Helvetica', 9), bg='#E0E0E0')
+        BKd.grid(row=26, column=2, pady=10)
+
+        EntryBKd = Entry(scrollableFrame, width=8)
+        EntryBKd.grid(row=26, column=3, pady=10)
+        
+        labelRGBKs = Label(scrollableFrame, text="Ks", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
+        labelRGBKs.grid(row=27, column=0, padx=20, pady=10, sticky=W)
+
+        RKs = Label(scrollableFrame, text="R", font=('Helvetica', 9), bg='#E0E0E0')
+        RKs.grid(row=28, column=0, pady=10)
+
+        EntryRKs = Entry(scrollableFrame, width=8)
+        EntryRKs.grid(row=28, column=1, pady=10)
+
+        GKs = Label(scrollableFrame, text="G", font=('Helvetica', 9), bg='#E0E0E0')
+        GKs.grid(row=29, column=0, pady=10)
+        
+        EntryGKs = Entry(scrollableFrame, width=8)
+        EntryGKs.grid(row=29, column=1, pady=10)
+
+        BKs = Label(scrollableFrame, text="B", font=('Helvetica', 9), bg='#E0E0E0')
+        BKs.grid(row=30, column=0, pady=10)
+        
+        EntryBKs = Entry(scrollableFrame, width=8)
+        EntryBKs.grid(row=30, column=1, pady=10)
+        
+        labelN = Label(scrollableFrame, text="n", font=('Helvetica', 9), bg='#E0E0E0')
+        labelN.grid(row=28, column=2, pady=10)
+
+        EntryN = Entry(scrollableFrame, width=8)
+        EntryN.grid(row=28, column=3, pady=10)
+
+        labelRGBIla = Label(scrollableFrame, text="Luz Ambiente", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
+        labelRGBIla.grid(row=31, column=0, padx=20, pady=10, columnspan=4, sticky=W)
+
+        IlaR = Label(scrollableFrame, text="R", font=('Helvetica', 9), bg='#E0E0E0')
+        IlaR.grid(row=32, column=0, pady=10)
+
+        EntryIlaR = Entry(scrollableFrame, width=8)
+        EntryIlaR.grid(row=32, column=1, pady=10)
+
+        IlaG = Label(scrollableFrame, text="G", font=('Helvetica', 9), bg='#E0E0E0')
+        IlaG.grid(row=33, column=0, pady=10)
+        
+        EntryIlaG = Entry(scrollableFrame, width=8)
+        EntryIlaG.grid(row=33, column=1, pady=10)
+
+        IlaB = Label(scrollableFrame, text="B", font=('Helvetica', 9), bg='#E0E0E0')
+        IlaB.grid(row=34, column=0, pady=10)
+        
+        EntryIlaB = Entry(scrollableFrame, width=8)
+        EntryIlaB.grid(row=34, column=1, pady=10)
+        
+        labelRGBfla = Label(scrollableFrame, text="Fonte Luminosa", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
+        labelRGBfla.grid(row=31, column=2, padx=20, pady=10, columnspan=4, sticky=W)
+
+        IflR = Label(scrollableFrame, text="R", font=('Helvetica', 9), bg='#E0E0E0')
+        IflR.grid(row=32, column=2, pady=10)
+
+        EntryIflR = Entry(scrollableFrame, width=8)
+        EntryIflR.grid(row=32, column=3, pady=10)
+
+        IflG = Label(scrollableFrame, text="G", font=('Helvetica', 9), bg='#E0E0E0')
+        IflG.grid(row=33, column=2, pady=10)
+        
+        EntryIflG = Entry(scrollableFrame, width=8)
+        EntryIflG.grid(row=33, column=3, pady=10)
+
+        IflB = Label(scrollableFrame, text="B", font=('Helvetica', 9), bg='#E0E0E0')
+        IflB.grid(row=34, column=2, pady=10)
+        
+        EntryIflB = Entry(scrollableFrame, width=8)
+        EntryIflB.grid(row=34, column=3, pady=10)
+
+        labelCoorFontLum = Label(scrollableFrame, text="Coord. Fonte luminosa:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
+        labelCoorFontLum.grid(row=35, column=0, padx=20, pady=10, columnspan=4, sticky=W)
+
+        labelCoorFontLumX = Label(scrollableFrame, text="X", font=('Helvetica', 9), bg='#E0E0E0')
+        labelCoorFontLumX.grid(row=36, column=0, pady=10)
+
+        coorFontLumX = Entry(scrollableFrame, width=8)
+        coorFontLumX.grid(row=36, column=1, pady=10)
+
+        labelCoorFontLumY = Label(scrollableFrame, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
+        labelCoorFontLumY.grid(row=37, column=0, pady=10)
+
+        coorFontLumY = Entry(scrollableFrame, width=8)
+        coorFontLumY.grid(row=37, column=1, pady=10)
+
+        labelCoorFontLumZ = Label(scrollableFrame, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
+        labelCoorFontLumZ.grid(row=38, column=0, pady=10)
+
+        coorFontLumZ = Entry(scrollableFrame, width=8)
+        coorFontLumZ.grid(row=38, column=1, pady=10)
+  
         # Luz ambiente
-        # Ia = intensidade ambiente
         # Ila = intensidade da luz ambiente (IlaR, IlaG, IlaB) --> luz ambiente
         # Ka = coeficiente de reflexão ambiente (0 <= Ka <= 1) (KaR, KaG, KaB) --> Material 01
 
@@ -329,24 +468,18 @@ class CanvasMenu(Frame):
         # Kd = Coeficiente de reflexão difusa (0 <= Kd <= 1) (KdR, KdG, KdB) --> Material 02
 
         # Reflexão especular
-        # R = vetor reflexão
-        # S = vetor direção de observação
         # n = aproximação da distribuição espacial da luz refletida especularmente
         # Ks = coeficiente de reflexão especular (0 <= Ks <= 1) (KsR, KsG, KsB) --> Material 03
+        # coord fonte luminosa -> x, y, z
 
-        # Sistema de cores RGB
-        # R
-        # G
-        # B
-        
         novoMundo = Button(scrollableFrame, text="Novo mundo", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newWorld)
-        novoMundo.grid(row=22, column=0, pady=10)
+        novoMundo.grid(row=39, column=0, pady=10)
 
         novoObjeto = Button(scrollableFrame, text="Novo objeto", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newObject)
-        novoObjeto.grid(row=22, column=1, pady=10)
+        novoObjeto.grid(row=39, column=1, pady=10)
 
         limparCena = Button(scrollableFrame, text="Limpar cena", font=('Helvetica', 10), bg='#edb1ba', width=9, command= clearScreen)
-        limparCena.grid(row=22, column=3, pady=10) 
+        limparCena.grid(row=39, column=3, pady=10) 
 
         sideBar.pack(side=RIGHT, fill=Y)
         canvasBar.pack(side=LEFT, fill=BOTH, expand=True)
@@ -475,6 +608,7 @@ def newWorld():
                 placeScreen()
                 if((canvas.find_all) != 0):
                     canvas.delete("all")
+                    listObject.clear()
                     for i in range(0, len(listMesh)):
                         obj = []
                         meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
@@ -484,6 +618,8 @@ def newWorld():
                                 point = meshSRT.point(vh)
                                 face.append([point[0], point[1]])
                             obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+
+                        listObject.append(obj)
 
     else:
         popupShowErrorEmptyInput()
@@ -569,8 +705,6 @@ def identifyObject(event):
                 if listObject[i][j] == id:
                     polygon = listObject[i]
                     aux = i
-                    # for face in polygon:
-                    #     canvas.itemconfig(face, fill='green')
                     for k in range(0, len(polygon)):
                         canvas.itemconfig(polygon[k], fill='green')
                         
@@ -589,7 +723,7 @@ def interfaceTeclas(event):
         rotacao(event)
 
 def opCreate(object):
-    # #deleta object
+    #deleta object
     for i in range(0, len(polygon)):
         canvas.delete(polygon[i])
     polygon.clear()
@@ -709,7 +843,7 @@ def run_program():
     listObject = []
 
     CanvasMenu()
-    
+    newWorld()
     canvas.bind("<Button-1>", identifyObject)
     canvas.bind_all("<Key>", interfaceTeclas)
    
