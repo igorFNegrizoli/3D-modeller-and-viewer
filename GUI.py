@@ -685,7 +685,6 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
         obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
 
     listObject.append(obj)
-    print(listObject)
 
 def identifyObject(event):
     canvas.focus_set()
@@ -698,12 +697,12 @@ def identifyObject(event):
                 canvas.itemconfig(listObject[i][j], fill='red')
     else:
         id = event.widget.find_withtag("current")[0]
-
         #pintar poligono clicado
         for i in range(0, len(listObject)):
             for j in range(0, len(listObject[i])):
                 if listObject[i][j] == id:
                     polygon = listObject[i]
+                    print(polygon)
                     aux = i
                     for k in range(0, len(polygon)):
                         canvas.itemconfig(polygon[k], fill='green')
@@ -737,6 +736,8 @@ def opCreate(object):
             point = meshSRT.point(vh)
             face.append([point[0], point[1]])
         polygon.append(canvas.create_polygon(face, fill="green", tags="clickable", outline="black"))
+    print(polygon)
+    print(listObject)
 
 def translacao(event):
     x, y, z = 0, 0, 0
@@ -778,6 +779,7 @@ def escala(event):
     elif event.char == "t": # diminui o objeto no eixo z
         x, y, z = 1, 1, 0.5
         objectEsc = escalate(meshAtual, x, y, z)
+        opCreate(objectEsc)
     elif event.char == "g": # aumenta o objeto no eixo z
         x, y, z = 1, 1, 2
         objectEsc = escalate(meshAtual, x, y, z)
