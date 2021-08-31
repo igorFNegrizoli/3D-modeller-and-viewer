@@ -85,7 +85,7 @@ class CanvasMenu(Frame):
         labelWorldLimit.grid(row=1, column=0, padx=20, pady=10, columnspan=3, sticky=W)
 
         labelWarning = Label(scrollableFrame, text="(Limite máximo: 860x640)", justify=LEFT, anchor="w", font=('Helvetica', 8), bg='#E0E0E0')
-        labelWarning.grid(row=1, column=2, padx=20, pady=10, columnspan=4, sticky=W)
+        labelWarning.grid(row=1, column=1, padx=20, pady=10, columnspan=4, sticky=W)
 
         labelWorldLimitUMIN = Label(scrollableFrame, text="uMin", font=('Helvetica', 9), bg='#E0E0E0')
         labelWorldLimitUMIN.grid(row=2, column=0, padx=20, pady=10)
@@ -119,7 +119,7 @@ class CanvasMenu(Frame):
         coorWorldLimitVMAX.insert(0, 640)
         worldList.append(coorWorldLimitVMAX)
         
-        labelViewUp = Label(scrollableFrame, text="VIEW-UP:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
+        labelViewUp = Label(scrollableFrame, text="View-up:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelViewUp.grid(row=4, column=0, padx=20, pady=10, columnspan=3, sticky=W)
 
         labelViewUpX = Label(scrollableFrame, text="X", font=('Helvetica', 9), bg='#E0E0E0')
@@ -230,7 +230,7 @@ class CanvasMenu(Frame):
         labelProjectionPlane = Label(scrollableFrame, text="World window:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelProjectionPlane.grid(row=12, column=0, padx=20, pady=10, columnspan=3, sticky=W)
 
-        labelProjectionPlaneXMIN = Label(scrollableFrame, text="Xmin", font=('Helvetica', 9), bg='#E0E0E0')
+        labelProjectionPlaneXMIN = Label(scrollableFrame, text="XMin", font=('Helvetica', 9), bg='#E0E0E0')
         labelProjectionPlaneXMIN.grid(row=13, column=0, pady=10)
 
         coorProjectionPlaneXMIN = Entry(scrollableFrame, width= 8)
@@ -238,7 +238,7 @@ class CanvasMenu(Frame):
         coorProjectionPlaneXMIN.insert(0, -10)
         worldList.append(coorProjectionPlaneXMIN)
     
-        labelProjectionPlaneXMAX = Label(scrollableFrame, text="Xmax", font=('Helvetica', 9), bg='#E0E0E0')
+        labelProjectionPlaneXMAX = Label(scrollableFrame, text="XMax", font=('Helvetica', 9), bg='#E0E0E0')
         labelProjectionPlaneXMAX.grid(row=13, column=2, pady=10)
 
         coorProjectionPlaneXMAX = Entry(scrollableFrame, width= 8)
@@ -246,7 +246,7 @@ class CanvasMenu(Frame):
         coorProjectionPlaneXMAX.insert(0,10)
         worldList.append(coorProjectionPlaneXMAX)
 
-        labelProjectionPlaneYMIN = Label(scrollableFrame, text="Ymin", font=('Helvetica', 9), bg='#E0E0E0')
+        labelProjectionPlaneYMIN = Label(scrollableFrame, text="YMin", font=('Helvetica', 9), bg='#E0E0E0')
         labelProjectionPlaneYMIN.grid(row=14, column=0, pady=10)
 
         coorProjectionPlaneYMIN = Entry(scrollableFrame, width= 8)
@@ -254,7 +254,7 @@ class CanvasMenu(Frame):
         coorProjectionPlaneYMIN.insert(0,-10)
         worldList.append(coorProjectionPlaneYMIN)
         
-        labelProjectionPlaneYMAX = Label(scrollableFrame, text="Ymax", font=('Helvetica', 9), bg='#E0E0E0')
+        labelProjectionPlaneYMAX = Label(scrollableFrame, text="YMax", font=('Helvetica', 9), bg='#E0E0E0')
         labelProjectionPlaneYMAX.grid(row=14, column=2, pady=10)
 
         coorProjectionPlaneYMAX = Entry(scrollableFrame, width= 8)
@@ -297,7 +297,7 @@ class CanvasMenu(Frame):
         ObjHeight.insert(0,5)
         objectDataList.append(ObjHeight)
         
-        labelObjectCenter = Label(scrollableFrame, text="Centro Geométrico:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
+        labelObjectCenter = Label(scrollableFrame, text="Centro geométrico:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelObjectCenter.grid(row=18, column=0, padx=20, pady=10, columnspan=4, sticky=W)
 
         objectCenterX = Label(scrollableFrame, text="X", font=('Helvetica', 9), bg='#E0E0E0')
@@ -396,7 +396,7 @@ class CanvasMenu(Frame):
         EntryN = Entry(scrollableFrame, width=8)
         EntryN.grid(row=28, column=3, pady=10)
 
-        labelRGBIla = Label(scrollableFrame, text="Luz Ambiente", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
+        labelRGBIla = Label(scrollableFrame, text="Luz ambiente", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
         labelRGBIla.grid(row=31, column=0, padx=20, pady=10, columnspan=4, sticky=W)
 
         IlaR = Label(scrollableFrame, text="R", font=('Helvetica', 9), bg='#E0E0E0')
@@ -417,7 +417,7 @@ class CanvasMenu(Frame):
         EntryIlaB = Entry(scrollableFrame, width=8)
         EntryIlaB.grid(row=34, column=1, pady=10)
         
-        labelRGBfla = Label(scrollableFrame, text="Fonte Luminosa", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
+        labelRGBfla = Label(scrollableFrame, text="Fonte luminosa", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
         labelRGBfla.grid(row=31, column=2, padx=20, pady=10, columnspan=4, sticky=W)
 
         IflR = Label(scrollableFrame, text="R", font=('Helvetica', 9), bg='#E0E0E0')
@@ -438,7 +438,7 @@ class CanvasMenu(Frame):
         EntryIflB = Entry(scrollableFrame, width=8)
         EntryIflB.grid(row=34, column=3, pady=10)
 
-        labelCoorFontLum = Label(scrollableFrame, text="Coord. Fonte luminosa:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
+        labelCoorFontLum = Label(scrollableFrame, text="Coord. fonte luminosa:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelCoorFontLum.grid(row=35, column=0, padx=20, pady=10, columnspan=4, sticky=W)
 
         labelCoorFontLumX = Label(scrollableFrame, text="X", font=('Helvetica', 9), bg='#E0E0E0')
