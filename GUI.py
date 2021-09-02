@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
+
+from numpy.core.arrayprint import BoolFormat
 from transformations import escalate, rotX, rotY, rotZ, translate
 from teste_cube import return_cube
 import openmesh as om
@@ -19,39 +21,38 @@ class CanvasMenu(Frame):
 
     # Toolbar para a escolha da projeção e do sombreamento
     def initToolbar(self):
-        global optionProj, optionSomb
 
         toolBar = Frame(self.master, bg='#E0E0E0')
+
+        Proj = BooleanVar()
+        Proj.set("True")
+        clicked(Proj.get())
 
         labelProjection = Label(toolBar, text="Projeção:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelProjection.grid(row=0, column= 1, padx=10)
     
-        perspective = Radiobutton(toolBar, text="Perspectiva", variable=optionProj, value=False, font=('Helvetica', 9), bg='#E0E0E0')
+        perspective = Radiobutton(toolBar, text="Perspectiva", variable=Proj, value=True, command=lambda: clicked(Proj.get()), font=('Helvetica', 9), bg='#E0E0E0')
         perspective.grid(row=1, column=2, padx=5, pady=5)
-        perspective.select()
 
-        parallel = Radiobutton(toolBar, text="Paralela", variable=optionProj, value=True, font=('Helvetica', 9), bg='#E0E0E0')
+        parallel = Radiobutton(toolBar, text="Paralela", variable=Proj, value=False, command=lambda: clicked(Proj.get()), font=('Helvetica', 9), bg='#E0E0E0')
         parallel.grid(row=1, column=3, padx=5, pady=5)
-        parallel.deselect()
 
-        optionProj = BooleanVar()
+        # labelProjection = Label(toolBar, text="Sombreamento:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
+        # labelProjection.grid(row=0, column= 5, padx=10)
 
-        labelProjection = Label(toolBar, text="Sombreamento:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
-        labelProjection.grid(row=0, column= 5, padx=10)
-
-        constant = Radiobutton(toolBar, text="Constante", variable=optionSomb, value=3, font=('Helvetica', 9), bg='#E0E0E0')
-        constant.grid(row=1, column=6, padx=5, pady=5)
-        constant.select()
+        # constant = Radiobutton(toolBar, text="Constante", variable=optionSomb, value=3, font=('Helvetica', 9), bg='#E0E0E0')
+        # constant.grid(row=1, column=6, padx=5, pady=5)
+        # constant.select()
     
-        gouraud = Radiobutton(toolBar, text="Gouraud", variable=optionSomb, value=4, font=('Helvetica', 9), bg='#E0E0E0')
-        gouraud.grid(row=1, column=7, padx=5, pady=5)
-        gouraud.deselect()
+        # gouraud = Radiobutton(toolBar, text="Gouraud", variable=optionSomb, value=4, font=('Helvetica', 9), bg='#E0E0E0')
+        # gouraud.grid(row=1, column=7, padx=5, pady=5)
+        # gouraud.deselect()
 
-        phong = Radiobutton(toolBar, text="Phong simplificado", variable=optionSomb, value=5, font=('Helvetica', 9), bg='#E0E0E0')
-        phong.grid(row=1, column=8, padx=5, pady=5)
-        phong.deselect()
+        # phong = Radiobutton(toolBar, text="Phong simplificado", variable=optionSomb, value=5, font=('Helvetica', 9), bg='#E0E0E0')
+        # phong.grid(row=1, column=8, padx=5, pady=5)
+        # phong.deselect()
 
-        optionSomb = IntVar()
+        # optionSomb = IntVar()
 
         toolBar.pack(side=TOP, fill=X)
 
@@ -606,20 +607,22 @@ def newWorld():
                 canvas.focus_set()
 
                 placeScreen()
-                if((canvas.find_all) != 0):
-                    canvas.delete("all")
-                    listObject.clear()
-                    for i in range(0, len(listMesh)):
-                        obj = []
-                        meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
-                        for fh in meshSRT.faces():
-                            face = []
-                            for vh in meshSRT.fv(fh):
-                                point = meshSRT.point(vh)
-                                face.append([point[0], point[1]])
-                            obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+                redefineObject()
 
-                        listObject.append(obj)
+                # if((canvas.find_all) != 0):
+                #     canvas.delete("all")
+                #     listObject.clear()
+                #     for i in range(0, len(listMesh)):
+                #         obj = []
+                #         meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+                #         for fh in meshSRT.faces():
+                #             face = []
+                #             for vh in meshSRT.fv(fh):
+                #                 point = meshSRT.point(vh)
+                #                 face.append([point[0], point[1]])
+                #             obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+
+                #         listObject.append(obj)
 
     else:
         popupShowErrorEmptyInput()
@@ -667,6 +670,24 @@ def clearScreen():
     listObject.clear()
     listMesh.clear()
 
+def redefineObject():
+
+    if((canvas.find_all) != 0):
+        canvas.delete("all")
+        listObject.clear()
+        for i in range(0, len(listMesh)):
+            obj = []
+            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+            for fh in meshSRT.faces():
+                face = []
+                for vh in meshSRT.fv(fh):
+                    point = meshSRT.point(vh)
+                    face.append([point[0], point[1]])
+                obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+
+            listObject.append(obj)
+    
+
 def createObject(raioBase, raioTopo, nLados, altura, GC):
     global listMesh, listObject
     obj = []
@@ -702,7 +723,6 @@ def identifyObject(event):
             for j in range(0, len(listObject[i])):
                 if listObject[i][j] == id:
                     polygon = listObject[i]
-                    print(polygon)
                     aux = i
                     for k in range(0, len(polygon)):
                         canvas.itemconfig(polygon[k], fill='green')
@@ -736,8 +756,6 @@ def opCreate(object):
             point = meshSRT.point(vh)
             face.append([point[0], point[1]])
         polygon.append(canvas.create_polygon(face, fill="green", tags="clickable", outline="black"))
-    print(polygon)
-    print(listObject)
 
 def translacao(event):
     x, y, z = 0, 0, 0
@@ -819,6 +837,12 @@ def rotacao(event):
         angulo = -1
         objectRot = rotY(meshAtual, angulo)
         opCreate(objectRot)
+
+def clicked(value):
+    global optionProj
+    optionProj = value
+    if canvas is not None:
+        redefineObject()
 
 def run_program():
     root = Tk()
