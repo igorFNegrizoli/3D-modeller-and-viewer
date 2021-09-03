@@ -2,7 +2,6 @@ from tkinter import *
 from tkinter import messagebox
 
 from numpy.core.arrayprint import BoolFormat
-from numpy.lib.polynomial import poly
 from transformations import escalate, rotX, rotY, rotZ, translate
 from teste_cube import return_cube
 import openmesh as om
@@ -33,12 +32,11 @@ class CanvasMenu(Frame):
         labelProjection = Label(toolBar, text="Projeção:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelProjection.grid(row=0, column= 1, padx=10)
     
-        perspective = Radiobutton(toolBar, text="Perspectiva", variable=Proj, value = True, command=lambda: clicked(Proj.get()), font=('Helvetica', 9), bg='#E0E0E0')
+        perspective = Radiobutton(toolBar, text="Perspectiva", variable=Proj, value=True, command=lambda: clicked(Proj.get()), font=('Helvetica', 9), bg='#E0E0E0')
         perspective.grid(row=1, column=2, padx=5, pady=5)
 
-        parallel = Radiobutton(toolBar, text="Paralela", variable=Proj, value = False, command=lambda: clicked(Proj.get()), font=('Helvetica', 9), bg='#E0E0E0')
+        parallel = Radiobutton(toolBar, text="Paralela", variable=Proj, value=False, command=lambda: clicked(Proj.get()), font=('Helvetica', 9), bg='#E0E0E0')
         parallel.grid(row=1, column=3, padx=5, pady=5)
-        
 
         # labelProjection = Label(toolBar, text="Sombreamento:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         # labelProjection.grid(row=0, column= 5, padx=10)
@@ -736,19 +734,7 @@ def interfaceTeclas(event):
         escala(event)
         rotacao(event)
 
-def opCreateRed(object):
-    obj = []
-    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0])
-    for fh in meshSRT.faces():
-        face = []
-        for vh in meshSRT.fv(fh):
-            point = meshSRT.point(vh)
-            face.append([point[0], point[1]])
-        obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
-    listObject.append(obj)
-
 def opCreate(object):
-
     #deleta object
     global polygon
     for i in range(0, len(polygon)):
@@ -870,17 +856,6 @@ def clicked(value):
 
             listObject.append(obj)
 
-    if(canvas is not None):
-        canvas.delete("all")
-        for i in range(0, len(listMesh)):
-
-            if(len(polygon)!= 0):
-                opCreate(listMesh[i])
-            else:
-                listObject.clear()
-                opCreateRed(listMesh[i])
-            
-    
 def run_program():
     root = Tk()
     root.resizable(width=False, height=False)
