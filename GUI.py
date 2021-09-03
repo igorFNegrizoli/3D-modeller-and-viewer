@@ -22,12 +22,13 @@ class CanvasMenu(Frame):
 
     # Toolbar para a escolha da projeção e do sombreamento
     def initToolbar(self):
+        global list
 
         toolBar = Frame(self.master, bg='#E0E0E0')
 
         Proj = BooleanVar()
         Proj.set("True")
-        clicked(Proj.get())
+        list.append(Proj)
 
         labelProjection = Label(toolBar, text="Projeção:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelProjection.grid(row=0, column= 1, padx=10)
@@ -326,6 +327,7 @@ class CanvasMenu(Frame):
         coorObjectCenterZ.grid(row=21, column=1, pady=10)
         coorObjectCenterZ.insert(0,0)
         objectDataList.append(coorObjectCenterZ)
+
         
         labelSomb = Label(scrollableFrame, text="Sombreamento:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0', fg='#990303')
         labelSomb.grid(row=22, column=0, padx=20, pady=10, columnspan=4, sticky=W)
@@ -609,13 +611,7 @@ def newWorld():
                 canvas.focus_set()
 
                 placeScreen()
-
-                if((canvas.find_all) != 0):
-                    canvas.delete("all")
-                    listObject.clear()
-                    for i in range(0, len(listMesh)):
-                        opCreateRed(listMesh[i])
-
+                redefineObject()
     else:
         popupShowErrorEmptyInput()
 
@@ -658,12 +654,32 @@ def placeScreen ():
     screen.place(x = (listViewPort[0] + 10), y = (listViewPort[2] + 70), width= listViewPort[1], height= listViewPort[3])
 
 def clearScreen():
+    global meshAtual, polygon
     canvas.delete("all")
+    meshAtual = None
+    polygon = None
+    listMesh.clear()
     listObject.clear()
-    listMesh.clear()   
-    if meshAtual is not None: 
-        meshAtual.clear()
-    polygon.clear()    
+
+def redefineObject():
+    global polygon, meshAtual
+    if((canvas.find_all) != 0):
+        canvas.delete("all")
+        listObject.clear()
+        polygon = None
+        meshAtual = None
+        for i in range(0, len(listMesh)):
+            obj = []
+            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0])
+            for fh in meshSRT.faces():
+                face = []
+                for vh in meshSRT.fv(fh):
+                    point = meshSRT.point(vh)
+                    face.append([point[0], point[1]])
+                obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+
+            listObject.append(obj)
+    
 
 def createObject(raioBase, raioTopo, nLados, altura, GC):
     global listMesh, listObject
@@ -673,7 +689,7 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     listMesh.append(mesh)
 
     #Converte para SRT
-    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0])
 
     for fh in meshSRT.faces():
         face = []
@@ -688,12 +704,13 @@ def identifyObject(event):
     canvas.focus_set()
     global meshAtual, polygon, listMesh
     meshAtual = None
+    polygon = None
     if not event.widget.find_withtag("current"):
         print("Nenhum objeto no Canvas!")
         for i in range(0, len(listObject)):
             for j in range(0, len(listObject[i])):
                 canvas.itemconfig(listObject[i][j], fill='red')
-        polygon.clear()
+        polygon = None
     else:
         id = event.widget.find_withtag("current")[0]
         #pintar poligono clicado
@@ -721,7 +738,7 @@ def interfaceTeclas(event):
 
 def opCreateRed(object):
     obj = []
-    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0])
     for fh in meshSRT.faces():
         face = []
         for vh in meshSRT.fv(fh):
@@ -733,19 +750,21 @@ def opCreateRed(object):
 def opCreate(object):
 
     #deleta object
+    global polygon
     for i in range(0, len(polygon)):
         canvas.delete(polygon[i])
     polygon.clear()
 
     #Converte para SRT
-    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), optionProj)
+    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0])
 
     for fh in meshSRT.faces():
         face = []
         for vh in meshSRT.fv(fh):
             point = meshSRT.point(vh)
             face.append([point[0], point[1]])
-            polygon.append(canvas.create_polygon(face, fill="green", tags="clickable", outline="black"))
+        polygon.append(canvas.create_polygon(face, fill="green", tags="clickable", outline="black"))
+            
 
 def translacao(event):
     x, y, z = 0, 0, 0
@@ -829,8 +848,27 @@ def rotacao(event):
         opCreate(objectRot)
 
 def clicked(value):
-    global optionProj
-    optionProj = value
+    global list, polygon, meshAtual
+    list[0] = value
+    print(list)
+
+    if(canvas.find_all != 0):
+        canvas.delete("all")
+        listObject.clear()
+        polygon = None
+        meshAtual = None
+
+        for i in range(0, len(listMesh)):
+            obj = []
+            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0])
+            for fh in meshSRT.faces():
+                face = []
+                for vh in meshSRT.fv(fh):
+                    point = meshSRT.point(vh)
+                    face.append([point[0], point[1]])
+                obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+
+            listObject.append(obj)
 
     if(canvas is not None):
         canvas.delete("all")
@@ -858,14 +896,14 @@ def run_program():
     posy = (heightScreen/2 - height/2) - 30
 
     root.geometry("%dx%d+%d+%d" % (width, height, posx, posy))
-
-    global optionProj, optionSomb, worldList, objectDataList, listViewPort, listViewUp, listVRP,  listP
-    global listDist, listWW, polygon, meshAtual, listObject, listMesh, screen, canvas
+ 
+    global polygon, meshAtual, listObject, listMesh, list
     
-    optionProj, optionSomb, screen, canvas, meshAtual = None, None, None, None, None
-    polygon = []
+    meshAtual = None
+    polygon = None
     listMesh = []
     listObject = []
+    list = []
 
     CanvasMenu()
     newWorld()
