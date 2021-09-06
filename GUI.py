@@ -3,11 +3,10 @@ from tkinter import messagebox
 
 from numpy.core.arrayprint import BoolFormat
 from transformations import escalate, rotX, rotY, rotZ, translate
-from teste_cube import return_cube
-import openmesh as om
 from pipeline import convertMesh2SRT
 from savePoly import salvaPoligono
 import numpy as np
+from utils import rgba2hex
 
 class CanvasMenu(Frame):
     def __init__(self):
@@ -686,15 +685,26 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     mesh = salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
     listMesh.append(mesh)
 
+    #Valores de teste para iluminação
+    #O codigo de todos convertMesh2SRT devem ser refadorados pq os parametros de entrarem mudaram, usem a linha 699 como referencia
+    #Precisa fazer a convertMesh2SRT pegar os valores do usuario, aqui eu fiz funcionar só pra createObject com os valores que declarei aqui em baixo
+    lAmbiente = np.array([120,120,120])
+    lPontual = np.array([150,150,150])
+    lPontualCord = np.array([70,20,35])
+    kA = 0.4
+    kD = 0.7
+    kS = 0.5
+    n = 2.15
+
     #Converte para SRT
-    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0])
+    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], lAmbiente, lPontual, lPontualCord, kA, kD, kS, n)
 
     for fh in meshSRT.faces():
         face = []
         for vh in meshSRT.fv(fh):
             point = meshSRT.point(vh)
             face.append([point[0], point[1]])
-        obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+        obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
 
     listObject.append(obj)
 

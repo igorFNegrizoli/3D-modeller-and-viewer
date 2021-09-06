@@ -2,6 +2,7 @@ import copy
 import openmesh as om
 import numpy as np
 from transformations import getGeometricCenter
+from constantShading import applyConstantShading
 
 def isMeshVisible(mesh, dNear, dFar):
 	GC = getGeometricCenter(mesh)
@@ -113,7 +114,7 @@ def computeVertices(mesh, pipelineMatrix):
 	return mesh
 
 def convertMesh2SRT(mesh, VRP, dist, xMin, xMax, yMin, yMax, uMin, uMax, 
-	vMin, vMax, P=np.array([0,0,0]), viewUp=np.array([0,1,0]), perspOn=False):
+	vMin, vMax, P, viewUp, perspOn, lAmbiente, lPontual, lPontualCord, kA, kD, kS, n):
 	#print("-"*10)
 	#print("convertMesh2SRT")
 	#print(f"xMin={xMin}, xMax={xMax}, yMin={yMin}, yMax={yMax}, uMin={uMin}, uMax={uMax}, vMin={vMin}, vMax={vMax}")
@@ -121,8 +122,10 @@ def convertMesh2SRT(mesh, VRP, dist, xMin, xMax, yMin, yMax, uMin, uMax,
 	matrix = buildPipeline(VRP, dist, xMin, xMax, yMin, yMax, uMin, uMax, 
 	vMin, vMax, P, viewUp, perspOn)
 
-	mesh = copy.deepcopy(mesh)
+	mesh = getVisibleFaces(copy.deepcopy(mesh), VRP, P)
 	
-	meshCopy = computeVertices(getVisibleFaces(mesh, VRP, P), matrix)
+	applyConstantShading(mesh, VRP, lAmbiente, lPontual, lPontualCord, kA, kD, kS, n)
+
+	meshCopy = computeVertices(mesh, matrix)
 
 	return meshCopy

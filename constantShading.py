@@ -1,6 +1,6 @@
 import numpy as np
 import openmesh as om
-from pipeline import normalize
+from math import ceil
 
 def faceGeometricCenter(mesh, faceHandler):
 	maxCoord = np.copy(mesh.point(next(mesh.fv(faceHandler))))
@@ -17,6 +17,9 @@ def faceGeometricCenter(mesh, faceHandler):
 
 def constantShading(mesh, faceHandler, VRP, lAmbiente, lPontual, lPontualCord, kA, kD, kS, n):
 
+	print()
+	print(VRP, lAmbiente, lPontual, lPontualCord, kA, kD, kS, n)
+
 	GC = faceGeometricCenter(mesh, faceHandler)
 	
 	#iluminação ambiente
@@ -24,28 +27,36 @@ def constantShading(mesh, faceHandler, VRP, lAmbiente, lPontual, lPontualCord, k
 
 	#iluminação difusa
 	N = mesh.calc_face_normal(faceHandler)
-	L = normalize(lPontualCord - GC)
+	L = (lPontualCord - GC)/np.linalg.norm(lPontualCord - GC)
 	N_dot_L = np.dot(N,L)
 
-	if N_dot_L <= 0: return iA
+	if N_dot_L <= 0:
+		#print(f'amb: {np.append(iA,1)}')
+		return np.append(iA,1)
 
 	iD = lPontual*kD*N_dot_L
 
 	#iluminação especular
 	R =np.dot(2*np.dot(L,N),N)-L
-	S = normalize(VRP-GC)
+	S = (VRP-GC)/np.linalg.norm(VRP-GC)
 	R_dot_S = np.dot(R,S)
 
-	if R_dot_S <= 0: return iA+iD
+	if R_dot_S <= 0:
+		#print(f'a+d: {np.append(iA+iD,1)}')
+		return np.append(iA+iD,1)
 
 	iE = lPontual*kS*(R_dot_S**n)
 
-	return iA+iD+iE
+	#print(f'all: {np.append(iA+iD+iE,1)}')
+	return np.append(iA+iD+iE,1)
 
 def applyConstantShading(mesh, VRP, lAmbiente, lPontual, lPontualCord, kA, kD, kS, n):
 
-	for fh in meshSRT.faces():
-		mesh.set_color(fh, constantShading(mesh, faceHandler, VRP, lAmbiente, lPontual, lPontualCord, kA, kD, kS, n))
+	for fh in mesh.faces():
+		#print(constantShading(mesh, fh, VRP, lAmbiente, lPontual, lPontualCord, kA, kD, kS, n))
+		color = constantShading(mesh, fh, VRP, lAmbiente, lPontual, lPontualCord, kA, kD, kS, n)
+		color = np.clip(color,0,255)
+		mesh.set_color(fh, color)
 
 if __name__ == '__main__':
 	face = [[1,1,0],[2,2,0],[1,2,0]]
