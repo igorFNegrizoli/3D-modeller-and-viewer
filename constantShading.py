@@ -17,9 +17,6 @@ def faceGeometricCenter(mesh, faceHandler):
 
 def constantShading(mesh, faceHandler, VRP, lAmbiente, lPontual, lPontualCord, kA, kD, kS, n):
 
-	print()
-	print(VRP, lAmbiente, lPontual, lPontualCord, kA, kD, kS, n)
-
 	GC = faceGeometricCenter(mesh, faceHandler)
 	
 	#iluminação ambiente
