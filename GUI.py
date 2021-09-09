@@ -7,6 +7,7 @@ from pipeline import convertMesh2SRT
 from savePoly import salvaPoligono
 import numpy as np
 from utils import rgba2hex
+from doisDCrop import cutBorder
 
 class CanvasMenu(Frame):
     def __init__(self):
@@ -337,18 +338,24 @@ class CanvasMenu(Frame):
 
         entryRKa = Entry(scrollableFrame, width=8)
         entryRKa.grid(row=24, column=1, pady=10)
+        entryRKa.insert(0,0.4)
+        objectDataList.append(entryRKa)
 
         GKa = Label(scrollableFrame, text="G", font=('Helvetica', 9), bg='#E0E0E0')
         GKa.grid(row=25, column=0, pady=10)
 
         entryGKa = Entry(scrollableFrame, width=8)
         entryGKa.grid(row=25, column=1, pady=10)
+        entryGKa.insert(0, 0.5)
+        objectDataList.append(entryGKa)
 
         BKa = Label(scrollableFrame, text="B", font=('Helvetica', 9), bg='#E0E0E0')
         BKa.grid(row=26, column=0, pady=10)
 
         entryBKa = Entry(scrollableFrame, width=8)
         entryBKa.grid(row=26, column=1, pady=10)
+        entryBKa.insert(0, 0.6)
+        objectDataList.append(entryBKa)
 
         labelRGBKd = Label(scrollableFrame, text="Kd", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
         labelRGBKd.grid(row=23, column=2, pady=10, sticky=W)
@@ -358,18 +365,24 @@ class CanvasMenu(Frame):
 
         EntryRKd = Entry(scrollableFrame, width=8)
         EntryRKd.grid(row=24, column=3, pady=10)
+        EntryRKd.insert(0, 0.7)
+        objectDataList.append(EntryRKd)
 
         GKd = Label(scrollableFrame, text="G", font=('Helvetica', 9), bg='#E0E0E0')
         GKd.grid(row=25, column=2, pady=10)
 
         EntryGKd = Entry(scrollableFrame, width=8)
         EntryGKd.grid(row=25, column=3, pady=10)
+        EntryGKd.insert(0,0.8)
+        objectDataList.append(EntryGKd)
 
         BKd = Label(scrollableFrame, text="B", font=('Helvetica', 9), bg='#E0E0E0')
         BKd.grid(row=26, column=2, pady=10)
 
         EntryBKd = Entry(scrollableFrame, width=8)
         EntryBKd.grid(row=26, column=3, pady=10)
+        EntryBKd.insert(0,0.9)
+        objectDataList.append(EntryBKd)
         
         labelRGBKs = Label(scrollableFrame, text="Ks", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
         labelRGBKs.grid(row=27, column=0, padx=20, pady=10, sticky=W)
@@ -379,24 +392,32 @@ class CanvasMenu(Frame):
 
         EntryRKs = Entry(scrollableFrame, width=8)
         EntryRKs.grid(row=28, column=1, pady=10)
+        EntryRKs.insert(0, 0.5)
+        objectDataList.append(EntryRKs)
 
         GKs = Label(scrollableFrame, text="G", font=('Helvetica', 9), bg='#E0E0E0')
         GKs.grid(row=29, column=0, pady=10)
         
         EntryGKs = Entry(scrollableFrame, width=8)
         EntryGKs.grid(row=29, column=1, pady=10)
+        EntryGKs.insert(0, 0.3)
+        objectDataList.append(EntryGKs)
 
         BKs = Label(scrollableFrame, text="B", font=('Helvetica', 9), bg='#E0E0E0')
         BKs.grid(row=30, column=0, pady=10)
         
         EntryBKs = Entry(scrollableFrame, width=8)
         EntryBKs.grid(row=30, column=1, pady=10)
+        EntryBKs.insert(0, 0.2)
+        objectDataList.append(EntryBKs)
         
         labelN = Label(scrollableFrame, text="n", font=('Helvetica', 9), bg='#E0E0E0')
         labelN.grid(row=28, column=2, pady=10)
 
         EntryN = Entry(scrollableFrame, width=8)
         EntryN.grid(row=28, column=3, pady=10)
+        EntryN.insert(0,2.15)
+        objectDataList.append(EntryN)
 
         labelRGBIla = Label(scrollableFrame, text="Luz ambiente", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
         labelRGBIla.grid(row=31, column=0, padx=20, pady=10, columnspan=4, sticky=W)
@@ -406,18 +427,24 @@ class CanvasMenu(Frame):
 
         EntryIlaR = Entry(scrollableFrame, width=8)
         EntryIlaR.grid(row=32, column=1, pady=10)
+        EntryIlaR.insert(0,120)
+        objectDataList.append(EntryIlaR)
 
         IlaG = Label(scrollableFrame, text="G", font=('Helvetica', 9), bg='#E0E0E0')
         IlaG.grid(row=33, column=0, pady=10)
         
         EntryIlaG = Entry(scrollableFrame, width=8)
         EntryIlaG.grid(row=33, column=1, pady=10)
+        EntryIlaG.insert(0,120)
+        objectDataList.append(EntryIlaG)
 
         IlaB = Label(scrollableFrame, text="B", font=('Helvetica', 9), bg='#E0E0E0')
         IlaB.grid(row=34, column=0, pady=10)
         
         EntryIlaB = Entry(scrollableFrame, width=8)
         EntryIlaB.grid(row=34, column=1, pady=10)
+        EntryIlaB.insert(0,120)
+        objectDataList.append(EntryIlaB)
         
         labelRGBfla = Label(scrollableFrame, text="Fonte luminosa", justify=LEFT, anchor="w", font=('Helvetica', 9, 'bold'), bg='#E0E0E0')
         labelRGBfla.grid(row=31, column=2, padx=20, pady=10, columnspan=4, sticky=W)
@@ -427,18 +454,24 @@ class CanvasMenu(Frame):
 
         EntryIflR = Entry(scrollableFrame, width=8)
         EntryIflR.grid(row=32, column=3, pady=10)
+        EntryIflR.insert(0,150)
+        objectDataList.append(EntryIflR)
 
         IflG = Label(scrollableFrame, text="G", font=('Helvetica', 9), bg='#E0E0E0')
         IflG.grid(row=33, column=2, pady=10)
         
         EntryIflG = Entry(scrollableFrame, width=8)
         EntryIflG.grid(row=33, column=3, pady=10)
+        EntryIflG.insert(0,150)
+        objectDataList.append(EntryIflG)
 
         IflB = Label(scrollableFrame, text="B", font=('Helvetica', 9), bg='#E0E0E0')
         IflB.grid(row=34, column=2, pady=10)
         
         EntryIflB = Entry(scrollableFrame, width=8)
         EntryIflB.grid(row=34, column=3, pady=10)
+        EntryIflB.insert(0,150)
+        objectDataList.append(EntryIflB)
 
         labelCoorFontLum = Label(scrollableFrame, text="Coord. fonte luminosa:", justify=LEFT, anchor="w", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelCoorFontLum.grid(row=35, column=0, padx=20, pady=10, columnspan=4, sticky=W)
@@ -448,31 +481,24 @@ class CanvasMenu(Frame):
 
         coorFontLumX = Entry(scrollableFrame, width=8)
         coorFontLumX.grid(row=36, column=1, pady=10)
+        coorFontLumX.insert(0, 70)
+        objectDataList.append(coorFontLumX)
 
         labelCoorFontLumY = Label(scrollableFrame, text="Y", font=('Helvetica', 9), bg='#E0E0E0')
         labelCoorFontLumY.grid(row=37, column=0, pady=10)
 
         coorFontLumY = Entry(scrollableFrame, width=8)
         coorFontLumY.grid(row=37, column=1, pady=10)
+        coorFontLumY.insert(0, 20)
+        objectDataList.append(coorFontLumY)
 
         labelCoorFontLumZ = Label(scrollableFrame, text="Z", font=('Helvetica', 9), bg='#E0E0E0')
         labelCoorFontLumZ.grid(row=38, column=0, pady=10)
 
         coorFontLumZ = Entry(scrollableFrame, width=8)
         coorFontLumZ.grid(row=38, column=1, pady=10)
-  
-        # Luz ambiente
-        # Ila = intensidade da luz ambiente (IlaR, IlaG, IlaB) --> luz ambiente
-        # Ka = coeficiente de reflexão ambiente (0 <= Ka <= 1) (KaR, KaG, KaB) --> Material 01
-
-        # Reflexão difusa
-        # Il = Intensidade da fonte luminosa (IlR, IlG, IlB) --> luzes pontuais
-        # Kd = Coeficiente de reflexão difusa (0 <= Kd <= 1) (KdR, KdG, KdB) --> Material 02
-
-        # Reflexão especular
-        # n = aproximação da distribuição espacial da luz refletida especularmente
-        # Ks = coeficiente de reflexão especular (0 <= Ks <= 1) (KsR, KsG, KsB) --> Material 03
-        # coord fonte luminosa -> x, y, z
+        coorFontLumZ.insert(0, 35)
+        objectDataList.append(coorFontLumZ)
 
         novoMundo = Button(scrollableFrame, text="Novo mundo", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newWorld)
         novoMundo.grid(row=39, column=0, pady=10)
@@ -614,7 +640,12 @@ def newWorld():
 
 def newObject():
     if len(objectDataList[0].get()) != 0 and len(objectDataList[1].get()) != 0 and len(objectDataList[2].get()) != 0 and len(objectDataList[3].get()) != 0 \
-       and len(objectDataList[4].get()) != 0 and len(objectDataList[5].get()) != 0 and len(objectDataList[6].get()) != 0:
+       and len(objectDataList[4].get()) != 0 and len(objectDataList[5].get()) != 0 and len(objectDataList[6].get()) != 0 and len(objectDataList[7].get()) != 0 \
+       and len(objectDataList[8].get()) != 0 and len(objectDataList[9].get()) != 0 and len(objectDataList[10].get()) != 0 and len(objectDataList[11].get()) != 0 \
+       and len(objectDataList[12].get()) != 0 and len(objectDataList[13].get()) != 0 and len(objectDataList[14].get()) != 0 and len(objectDataList[15].get()) != 0 \
+       and len(objectDataList[16].get()) != 0 and len(objectDataList[17].get()) != 0 and len(objectDataList[18].get()) != 0 and len(objectDataList[19].get()) != 0 \
+       and len(objectDataList[20].get()) != 0 and len(objectDataList[21].get()) != 0 and len(objectDataList[22].get()) != 0 and len(objectDataList[23].get()) != 0 \
+       and len(objectDataList[24].get()) != 0 and len(objectDataList[25].get()) != 0:
         try:
 
             #Número de lados
@@ -635,6 +666,43 @@ def newObject():
                 coorOCX = float(objectDataList[4].get())
                 coorOCY = float(objectDataList[5].get())
                 coorOCZ = float(objectDataList[5].get())
+
+                #Ka
+                global listK
+                listK = []
+                listK.append(float(objectDataList[7].get()))
+                listK.append(float(objectDataList[8].get()))
+                listK.append(float(objectDataList[9].get()))
+
+                #Kd
+                listK.append(float(objectDataList[10].get()))
+                listK.append(float(objectDataList[11].get()))
+                listK.append(float(objectDataList[12].get()))
+
+                #Ks
+                listK.append(float(objectDataList[13].get()))
+                listK.append(float(objectDataList[14].get()))
+                listK.append(float(objectDataList[15].get()))
+                
+                #n
+                listK.append(float(objectDataList[16].get()))
+
+                #luz ambiente
+                global listLuz
+                listLuz = []
+                listLuz.append(int(objectDataList[17].get()))
+                listLuz.append(int(objectDataList[18].get()))
+                listLuz.append(int(objectDataList[19].get()))
+
+                #fonte luminosa
+                listLuz.append(int(objectDataList[20].get()))
+                listLuz.append(int(objectDataList[21].get()))
+                listLuz.append(int(objectDataList[22].get()))
+
+                #coord. fonte luminosa
+                listLuz.append(int(objectDataList[23].get()))
+                listLuz.append(int(objectDataList[24].get()))
+                listLuz.append(int(objectDataList[25].get()))
 
                 canvas.focus_set()
                 createObject(BR, TR, NL, OH, [coorOCX, coorOCY, coorOCZ])
@@ -667,13 +735,14 @@ def redefineObject():
         meshAtual = None
         for i in range(0, len(listMesh)):
             obj = []
-            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0])
+            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
+
             for fh in meshSRT.faces():
                 face = []
                 for vh in meshSRT.fv(fh):
                     point = meshSRT.point(vh)
                     face.append([point[0], point[1]])
-                obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+                obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
 
             listObject.append(obj)
     
@@ -688,16 +757,16 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     #Valores de teste para iluminação
     #O codigo de todos convertMesh2SRT devem ser refadorados pq os parametros de entrarem mudaram, usem a linha 699 como referencia
     #Precisa fazer a convertMesh2SRT pegar os valores do usuario, aqui eu fiz funcionar só pra createObject com os valores que declarei aqui em baixo
-    lAmbiente = np.array([120,120,120])
-    lPontual = np.array([150,150,150])
-    lPontualCord = np.array([70,20,35])
-    kA = 0.4
-    kD = 0.7
-    kS = 0.5
-    n = 2.15
+    # lAmbiente = np.array([120,120,120])
+    # lPontual = np.array([150,150,150])
+    # lPontualCord = np.array([70,20,35])
+    # kA = 0.4
+    # kD = 0.7
+    # kS = 0.5
+    # n = 2.15
 
     #Converte para SRT
-    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], lAmbiente, lPontual, lPontualCord, kA, kD, kS, n)
+    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
 
     for fh in meshSRT.faces():
         face = []
@@ -717,7 +786,7 @@ def identifyObject(event):
         print("Nenhum objeto no Canvas!")
         for i in range(0, len(listObject)):
             for j in range(0, len(listObject[i])):
-                canvas.itemconfig(listObject[i][j], fill='red')
+                canvas.itemconfig(listObject[i][j], outline="black")
         polygon = None
     else:
         id = event.widget.find_withtag("current")[0]
@@ -728,13 +797,13 @@ def identifyObject(event):
                     polygon = listObject[i]
                     aux = i
                     for k in range(0, len(polygon)):
-                        canvas.itemconfig(polygon[k], fill='green')
+                        canvas.itemconfig(polygon[k], outline="red")
                         
         #pintar poligonos extras
         for i in range(0, len(listObject)):
             if i != aux:
                 for j in range(0, len(listObject[i])):
-                    canvas.itemconfig(listObject[i][j], fill='red')
+                    canvas.itemconfig(listObject[i][j], outline="black")
 
         meshAtual = listMesh[aux]
 
@@ -752,15 +821,15 @@ def opCreate(object):
     polygon.clear()
 
     #Converte para SRT
-    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0])
+    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
 
     for fh in meshSRT.faces():
         face = []
         for vh in meshSRT.fv(fh):
             point = meshSRT.point(vh)
             face.append([point[0], point[1]])
-        polygon.append(canvas.create_polygon(face, fill="green", tags="clickable", outline="black"))
-            
+        polygon.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))
+        cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
 
 def translacao(event):
     x, y, z = 0, 0, 0
@@ -846,7 +915,6 @@ def rotacao(event):
 def clicked(value):
     global list, polygon, meshAtual
     list[0] = value
-    print(list)
 
     if(canvas.find_all != 0):
         canvas.delete("all")
@@ -856,13 +924,14 @@ def clicked(value):
 
         for i in range(0, len(listMesh)):
             obj = []
-            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0])
+            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
+
             for fh in meshSRT.faces():
                 face = []
                 for vh in meshSRT.fv(fh):
                     point = meshSRT.point(vh)
                     face.append([point[0], point[1]])
-                obj.append(canvas.create_polygon(face, fill="red", tags="clickable", outline="black"))
+                obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
 
             listObject.append(obj)
 
