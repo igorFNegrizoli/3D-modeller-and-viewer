@@ -4,6 +4,7 @@ from tkinter import messagebox
 from numpy.core.arrayprint import BoolFormat
 from transformations import escalate, rotX, rotY, rotZ, translate
 from pipeline import convertMesh2SRT
+from pipeline import isMeshVisible
 from savePoly import salvaPoligono
 import numpy as np
 from utils import rgba2hex
@@ -735,7 +736,9 @@ def redefineObject():
         meshAtual = None
         for i in range(0, len(listMesh)):
             obj = []
-            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
+            listKs = listIlum[i]
+            #if(isMeshVisible(listMesh[i], listDist[1], listDist[2])):
+            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listKs[0], listKs[1], listKs[2]], [listKs[3], listKs[4], listKs[5]], [listKs[6], listKs[7], listKs[8]], listKs[9])
 
             for fh in meshSRT.faces():
                 face = []
@@ -748,7 +751,7 @@ def redefineObject():
     
 
 def createObject(raioBase, raioTopo, nLados, altura, GC):
-    global listMesh, listObject
+    global listMesh, listObject, listIlum
     obj = []
 
     mesh = salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
@@ -766,8 +769,10 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     # n = 2.15
 
     #Converte para SRT
-    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
 
+    #if(isMeshVisible(mesh, listDist[1], listDist[2])):
+    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
+    listIlum.append(listK)
     for fh in meshSRT.faces():
         face = []
         for vh in meshSRT.fv(fh):
@@ -779,9 +784,10 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
 
 def identifyObject(event):
     canvas.focus_set()
-    global meshAtual, polygon, listMesh
+    global meshAtual, polygon, listMesh, kAtual
     meshAtual = None
     polygon = None
+    kAtual = None
     if not event.widget.find_withtag("current"):
         print("Nenhum objeto no Canvas!")
         for i in range(0, len(listObject)):
@@ -806,6 +812,7 @@ def identifyObject(event):
                     canvas.itemconfig(listObject[i][j], outline="black")
 
         meshAtual = listMesh[aux]
+        kAtual = listIlum[aux]
 
 def interfaceTeclas(event):
     if meshAtual is not None:
@@ -815,13 +822,14 @@ def interfaceTeclas(event):
 
 def opCreate(object):
     #deleta object
-    global polygon
+    global polygon, kAtual
     for i in range(0, len(polygon)):
         canvas.delete(polygon[i])
     polygon.clear()
 
     #Converte para SRT
-    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
+    #if(isMeshVisible(object, listDist[1], listDist[2])):
+    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [kAtual[0], kAtual[1], kAtual[2]], [kAtual[3], kAtual[4], kAtual[5]], [kAtual[6], kAtual[7], kAtual[8]], kAtual[9])
 
     for fh in meshSRT.faces():
         face = []
@@ -915,7 +923,6 @@ def rotacao(event):
 def clicked(value):
     global list, polygon, meshAtual
     list[0] = value
-
     if(canvas.find_all != 0):
         canvas.delete("all")
         listObject.clear()
@@ -924,7 +931,9 @@ def clicked(value):
 
         for i in range(0, len(listMesh)):
             obj = []
-            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
+            listaKs = listIlum[i]
+            #if(isMeshVisible(listMesh[i], listDist[1], listDist[2])):
+            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listaKs[0], listaKs[1], listaKs[2]], [listaKs[3], listaKs[4], listaKs[5]], [listaKs[6], listaKs[7], listaKs[8]], listaKs[9])
 
             for fh in meshSRT.faces():
                 face = []
@@ -951,13 +960,14 @@ def run_program():
 
     root.geometry("%dx%d+%d+%d" % (width, height, posx, posy))
  
-    global polygon, meshAtual, listObject, listMesh, list
+    global polygon, meshAtual, listObject, listMesh, list, listIlum
     
     meshAtual = None
     polygon = None
     listMesh = []
     listObject = []
     list = []
+    listIlum = []
 
     CanvasMenu()
     newWorld()
