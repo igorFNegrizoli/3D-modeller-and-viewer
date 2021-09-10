@@ -779,6 +779,7 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
         face = []
         for vh in meshSRT.fv(fh):
             point = meshSRT.point(vh)
+            print(point)
             face.append([point[0], point[1]])
         obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
 
@@ -838,8 +839,11 @@ def opCreate(object):
         for vh in meshSRT.fv(fh):
             point = meshSRT.point(vh)
             face.append([point[0], point[1]])
-        polygon.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))
+        newFace = cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
+        if newFace != []:
+            polygon.append(canvas.create_polygon(newFace, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))
         
+
 def translacao(event):
     x, y, z = 0, 0, 0
     if event.char == "q": 
