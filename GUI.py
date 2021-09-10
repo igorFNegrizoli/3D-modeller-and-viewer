@@ -770,18 +770,17 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
 
     #Converte para SRT
 
-    #if(isMeshVisible(mesh, listDist[1], listDist[2])):
     meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
-    listIlum.append(listK)
-    for fh in meshSRT.faces():
-        face = []
-        for vh in meshSRT.fv(fh):
-            point = meshSRT.point(vh)
-            print(point)
-            face.append([point[0], point[1]])
-        obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
+    if isMeshVisible(meshSRT, listDist[1], listDist[2]):
+        listIlum.append(listK)
+        for fh in meshSRT.faces():
+            face = []
+            for vh in meshSRT.fv(fh):
+                point = meshSRT.point(vh)
+                face.append([point[0], point[1]])
+            obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
 
-    listObject.append(obj)
+        listObject.append(obj)
 
 def identifyObject(event):
     canvas.focus_set()
