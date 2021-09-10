@@ -720,12 +720,14 @@ def placeScreen ():
     screen.place(x = (listViewPort[0] + 10), y = (listViewPort[2] + 70), width= listViewPort[1], height= listViewPort[3])
 
 def clearScreen():
-    global meshAtual, polygon
+    global meshAtual, polygon, kAtual
     canvas.delete("all")
     meshAtual = None
     polygon = None
+    kAtual = None
     listMesh.clear()
     listObject.clear()
+    listIlum.clear()
 
 def redefineObject():
     global polygon, meshAtual
@@ -837,8 +839,7 @@ def opCreate(object):
             point = meshSRT.point(vh)
             face.append([point[0], point[1]])
         polygon.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))
-        cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
-
+        
 def translacao(event):
     x, y, z = 0, 0, 0
     if event.char == "q": 
