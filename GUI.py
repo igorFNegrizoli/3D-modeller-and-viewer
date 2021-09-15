@@ -3,7 +3,7 @@ from tkinter import messagebox
 
 from numpy.core.arrayprint import BoolFormat
 from transformations import escalate, rotX, rotY, rotZ, translate
-from pipeline import convertMesh2SRT
+from pipeline import convertMesh2SRT, perspProj, sru2src
 from pipeline import isMeshVisible
 from savePoly import salvaPoligono
 import numpy as np
@@ -22,13 +22,13 @@ class CanvasMenu(Frame):
 
     # Toolbar para a escolha da projeção e do sombreamento
     def initToolbar(self):
-        global list
+        global listProj
 
         toolBar = Frame(self.master, bg='#E0E0E0')
 
         Proj = BooleanVar()
         Proj.set("True")
-        list.append(Proj)
+        listProj.append(Proj)
 
         labelProjection = Label(toolBar, text="Projeção:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
         labelProjection.grid(row=0, column= 1, padx=10)
@@ -515,26 +515,12 @@ class CanvasMenu(Frame):
         scrollBar.pack(side=RIGHT, fill=Y)
 
     def initPC(self):
+        global canvasPC
         planoCartesiano = Frame(self.master, highlightbackground='gray', highlightthickness=1)
-
-        planoCartesiano.rowconfigure(0, weight = 1)
-        planoCartesiano.columnconfigure(0, weight = 1)
-
         canvasPC = Canvas(planoCartesiano)
         planoCartesiano.place(x=20, y= 550, width=150, height=150)
-
-        labelXAxis = Label(planoCartesiano, text="X", font=('Helvetica', 9), fg="red")
-        labelXAxis.place(relx=0.85, rely= 0.5, anchor=E)
-        canvasPC.create_line((62, 86, 125, 86), fill="red")
-        
-        labelYAxis = Label(planoCartesiano, text="Y", font=('Helvetica', 9), fg="green")
-        labelYAxis.place(relx=0.55, rely= 0.2, anchor=E)
-        canvasPC.create_line((62, 25, 62, 86), fill="green")
-
-        labelZAxis = Label(planoCartesiano, text="Z", font=('Helvetica', 9), fg="blue")
-        labelZAxis.place(relx=0.2, rely= 0.68, anchor=E)
-        canvasPC.create_line((62, 86, 20, 120), fill="blue")
-
+        planoCartesiano.rowconfigure(0, weight = 1)
+        planoCartesiano.columnconfigure(0, weight = 1)
         canvasPC.grid(sticky="nsew")
 
     def initScreen(self):
@@ -549,6 +535,8 @@ class CanvasMenu(Frame):
         screen.place(x=10, y= 70, width=860, height=640)
 
         canvas.grid(sticky="nsew")
+
+
 
 def popupShowErrorEmptyInput():
     messagebox.showerror("Erro!", "Campos vazios!")
@@ -636,6 +624,8 @@ def newWorld():
 
                 placeScreen()
                 redefineObject()
+                EixosSinalizadores()
+                
     else:
         popupShowErrorEmptyInput()
 
@@ -716,6 +706,49 @@ def newObject():
     else:
         popupShowErrorEmptyInput()
 
+def EixosSinalizadores():
+    global listViewUp, listDist, listVRP, listP
+
+    canvasPC.delete("all")
+
+    if ((len(listVRP) != 0) and (len(listP) != 0) and (len(listDist) != 0) and (len(listViewUp) != 0)):
+        print("entrei")
+        tamanhoLinha = 60
+        matrizPCsrt = None
+
+        matrizPontos = np.array([[0, tamanhoLinha, 0, 0],[0, 0, tamanhoLinha, 0], [0, 0, 0, tamanhoLinha], [1, 1, 1, 1]])
+
+       
+
+        PCsrc = sru2src(np.array(listVRP),np.array(listP) ,np.array(listViewUp))
+        
+        matrizPCsrt = np.dot(PCsrc, matrizPontos)
+
+        if listProj[0]:
+            print("perpec")
+            matrizPerpec = perspProj(listDist[0])
+            matrizPCsrt = np.dot(matrizPerpec, matrizPCsrt)
+
+        x = (matrizPCsrt[0][0] - 50)
+        y = (matrizPCsrt[1][0] - 50)
+
+
+        print(matrizPCsrt[0][0])
+        print(matrizPCsrt[1][0])
+        # labelXAxis = Label(planoCartesiano, text="X", font=('Helvetica', 9), fg="red")
+        # labelXAxis.place(relx=0.85, rely= 0.5, anchor=E)
+        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][1] - x, matrizPCsrt[1][1] - y), fill="red")
+        
+        # labelYAxis = Label(planoCartesiano, text="Y", font=('Helvetica', 9), fg="green")
+        # labelYAxis.place(relx=0.55, rely= 0.2, anchor=E)
+        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][2] - x, matrizPCsrt[1][2] - y), fill="green")
+
+        # labelZAxis = Label(planoCartesiano, text="Z", font=('Helvetica', 9), fg="blue")
+        # labelZAxis.place(relx=0.2, rely= 0.68, anchor=E)
+        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][3] - x, matrizPCsrt[1][3] - y), fill="blue")
+
+        
+
 def placeScreen ():
     screen.place(x = (listViewPort[0] + 10), y = (listViewPort[2] + 70), width= listViewPort[1], height= listViewPort[3])
 
@@ -738,7 +771,7 @@ def redefineObject():
             obj = []
             listKs = listIlum[i]
             #if(isMeshVisible(listMesh[i], listDist[1], listDist[2])):
-            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listKs[0], listKs[1], listKs[2]], [listKs[3], listKs[4], listKs[5]], [listKs[6], listKs[7], listKs[8]], listKs[9])
+            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listKs[0], listKs[1], listKs[2]], [listKs[3], listKs[4], listKs[5]], [listKs[6], listKs[7], listKs[8]], listKs[9])
 
             for fh in meshSRT.faces():
                 face = []
@@ -770,7 +803,7 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
 
     #Converte para SRT
 
-    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
+    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
     if isMeshVisible(meshSRT, listDist[1], listDist[2]):
         listIlum.append(listK)
         for fh in meshSRT.faces():
@@ -829,7 +862,7 @@ def opCreate(object):
 
     #Converte para SRT
     #if(isMeshVisible(object, listDist[1], listDist[2])):
-    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [kAtual[0], kAtual[1], kAtual[2]], [kAtual[3], kAtual[4], kAtual[5]], [kAtual[6], kAtual[7], kAtual[8]], kAtual[9])
+    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [kAtual[0], kAtual[1], kAtual[2]], [kAtual[3], kAtual[4], kAtual[5]], [kAtual[6], kAtual[7], kAtual[8]], kAtual[9])
 
     for fh in meshSRT.faces():
         face = []
@@ -923,8 +956,8 @@ def rotacao(event):
         opCreate(objectRot)
 
 def clicked(value):
-    global list, polygon, meshAtual
-    list[0] = value
+    global listProj, polygon, meshAtual
+    listProj[0] = value
     if(canvas.find_all != 0):
         canvas.delete("all")
         listObject.clear()
@@ -935,7 +968,7 @@ def clicked(value):
             obj = []
             listaKs = listIlum[i]
             #if(isMeshVisible(listMesh[i], listDist[1], listDist[2])):
-            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), list[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listaKs[0], listaKs[1], listaKs[2]], [listaKs[3], listaKs[4], listaKs[5]], [listaKs[6], listaKs[7], listaKs[8]], listaKs[9])
+            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listaKs[0], listaKs[1], listaKs[2]], [listaKs[3], listaKs[4], listaKs[5]], [listaKs[6], listaKs[7], listaKs[8]], listaKs[9])
 
             for fh in meshSRT.faces():
                 face = []
@@ -962,14 +995,18 @@ def run_program():
 
     root.geometry("%dx%d+%d+%d" % (width, height, posx, posy))
  
-    global polygon, meshAtual, listObject, listMesh, list, listIlum
+    global polygon, meshAtual, listObject, listMesh, listProj, listIlum, listVRP, listP, listViewUp, listDist
     
     meshAtual = None
     polygon = None
     listMesh = []
     listObject = []
-    list = []
+    listProj = []
     listIlum = []
+    listViewUp = []
+    listP = []
+    listViewUp = []
+    listDist = []
 
     CanvasMenu()
     newWorld()
