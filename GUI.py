@@ -39,23 +39,6 @@ class CanvasMenu(Frame):
         parallel = Radiobutton(toolBar, text="Paralela", variable=Proj, value=False, command=lambda: clicked(Proj.get()), font=('Helvetica', 9), bg='#E0E0E0')
         parallel.grid(row=1, column=3, padx=5, pady=5)
 
-        # labelProjection = Label(toolBar, text="Sombreamento:", font=('Helvetica', 10, 'bold'), bg='#E0E0E0')
-        # labelProjection.grid(row=0, column= 5, padx=10)
-
-        # constant = Radiobutton(toolBar, text="Constante", variable=optionSomb, value=3, font=('Helvetica', 9), bg='#E0E0E0')
-        # constant.grid(row=1, column=6, padx=5, pady=5)
-        # constant.select()
-    
-        # gouraud = Radiobutton(toolBar, text="Gouraud", variable=optionSomb, value=4, font=('Helvetica', 9), bg='#E0E0E0')
-        # gouraud.grid(row=1, column=7, padx=5, pady=5)
-        # gouraud.deselect()
-
-        # phong = Radiobutton(toolBar, text="Phong simplificado", variable=optionSomb, value=5, font=('Helvetica', 9), bg='#E0E0E0')
-        # phong.grid(row=1, column=8, padx=5, pady=5)
-        # phong.deselect()
-
-        # optionSomb = IntVar()
-
         toolBar.pack(side=TOP, fill=X)
 
     # SideBar para definição do mundo e do objeto
@@ -576,23 +559,23 @@ def newWorld():
             #View-up
             global listViewUp
             listViewUp = []
-            listViewUp.append(int(worldList[4].get()))
-            listViewUp.append(int(worldList[5].get()))
-            listViewUp.append(int(worldList[6].get()))
+            listViewUp.append(float(worldList[4].get()))
+            listViewUp.append(float(worldList[5].get()))
+            listViewUp.append(float(worldList[6].get()))
             
             #VRP
             global listVRP
             listVRP = []
-            listVRP.append(int(worldList[7].get()))
-            listVRP.append(int(worldList[8].get()))
-            listVRP.append(int(worldList[9].get()))
+            listVRP.append(float(worldList[7].get()))
+            listVRP.append(float(worldList[8].get()))
+            listVRP.append(float(worldList[9].get()))
 
             #Ponto Focal
             global listP
             listP = []
-            listP.append(int(worldList[10].get()))
-            listP.append(int(worldList[11].get()))
-            listP.append(int(worldList[12].get()))
+            listP.append(float(worldList[10].get()))
+            listP.append(float(worldList[11].get()))
+            listP.append(float(worldList[12].get()))
 
             # Distância ao plano de projeção, plano near e ao plano far
             global listDist
@@ -782,18 +765,18 @@ def redefineObject():
         for i in range(0, len(listMesh)):
             obj = []
             listKs = listIlum[i]
-            #if(isMeshVisible(listMesh[i], listDist[1], listDist[2])):
+            
             meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listKs[0], listKs[1], listKs[2]], [listKs[3], listKs[4], listKs[5]], [listKs[6], listKs[7], listKs[8]], listKs[9])
+            if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
+                for fh in meshSRT.faces():
+                    face = []
+                    for vh in meshSRT.fv(fh):
+                        point = meshSRT.point(vh)
+                        face.append([point[0], point[1]])
+                    obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
 
-            for fh in meshSRT.faces():
-                face = []
-                for vh in meshSRT.fv(fh):
-                    point = meshSRT.point(vh)
-                    face.append([point[0], point[1]])
-                obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
+                listObject.append(obj)
 
-            listObject.append(obj)
-    
 
 def createObject(raioBase, raioTopo, nLados, altura, GC):
     global listMesh, listObject, listIlum
@@ -873,97 +856,97 @@ def opCreate(object):
     polygon.clear()
 
     #Converte para SRT
-    #if(isMeshVisible(object, listDist[1], listDist[2])):
+    
     meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [kAtual[0], kAtual[1], kAtual[2]], [kAtual[3], kAtual[4], kAtual[5]], [kAtual[6], kAtual[7], kAtual[8]], kAtual[9])
-
-    for fh in meshSRT.faces():
-        face = []
-        for vh in meshSRT.fv(fh):
-            point = meshSRT.point(vh)
-            face.append([point[0], point[1]])
-        newFace = cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
-        if newFace != []:
-            polygon.append(canvas.create_polygon(newFace, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))
+    if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
+        for fh in meshSRT.faces():
+            face = []
+            for vh in meshSRT.fv(fh):
+                point = meshSRT.point(vh)
+                face.append([point[0], point[1]])
+            newFace = cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
+            if newFace != []:
+                polygon.append(canvas.create_polygon(newFace, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))
         
 
 def translacao(event):
     x, y, z = 0, 0, 0
     if event.char == "q": 
-        x, y, z = -1, 0, 0
+        x, y, z = -0.1, 0, 0
         objectTrans = translate(meshAtual, x, y, z)
         opCreate(objectTrans)
     elif event.char == "a": 
-        x, y, z = 1, 0, 0
+        x, y, z = 0.1, 0, 0
         objectTrans = translate(meshAtual, x, y, z)
         opCreate(objectTrans)
     elif event.char == "w": 
-        x, y, z = 0, 0, 1
+        x, y, z = 0, 0, 0.1
         objectTrans = translate(meshAtual, x, y, z)
         opCreate(objectTrans)
     elif event.char == "s":
-        x, y, z = 0, 0, -1
+        x, y, z = 0, 0, -0.1
         objectTrans = translate(meshAtual, x, y, z)
         opCreate(objectTrans)
     elif event.char == "e":
-        x, y, z = 0, 1, 0
+        x, y, z = 0, 0.1, 0
         objectTrans = translate(meshAtual, x, y, z)
         opCreate(objectTrans)
     elif event.char == "d": 
-        x, y, z = 0, -1, 0
+        x, y, z = 0, -0.1, 0
         objectTrans = translate(meshAtual, x, y, z)
         opCreate(objectTrans)
 
 def escala(event):
     x, y, z = 0, 0, 0
     if event.char == "r": # diminui o objeto no eixo x
-        x, y, z = 0.5, 1, 1
+        x, y, z = 0.95, 1, 1
         objectEsc = escalate(meshAtual, x, y, z)
         opCreate(objectEsc)
     elif event.char == "f": # aumenta o objeto no eixo x
-        x, y, z = 2, 1, 1
+        x, y, z = 1.05, 1, 1
         objectEsc = escalate(meshAtual, x, y, z)
         opCreate(objectEsc)
     elif event.char == "t": # diminui o objeto no eixo z
-        x, y, z = 1, 1, 0.5
+        x, y, z = 1, 1, 0.95
         objectEsc = escalate(meshAtual, x, y, z)
         opCreate(objectEsc)
     elif event.char == "g": # aumenta o objeto no eixo z
-        x, y, z = 1, 1, 2
+        x, y, z = 1, 1, 1.05
         objectEsc = escalate(meshAtual, x, y, z)
         opCreate(objectEsc)
     elif event.char == "y": # diminui o objeto no eixo y
-        x, y, z = 1, 0.5, 1
+        x, y, z = 1, 0.95, 1
         objectEsc = escalate(meshAtual, x, y, z)
         opCreate(objectEsc)
     elif event.char == "h": # aumenta o objeto no eixo y
-        x, y, z = 1, 2, 1
+        x, y, z = 1, 1.05, 1
         objectEsc = escalate(meshAtual, x, y, z)
         opCreate(objectEsc)
 
 def rotacao(event):
     angulo = 0
     if event.char == "u": # rotaciona para a esquerda ao redor do eixo xp
-        angulo = 1
+        angulo = 0.1
         objectRot = rotX(meshAtual, angulo)
         opCreate(objectRot)
     elif event.char == "j": # rotaciona para a direita ao redor do eixo x
-        angulo = -1
+        angulo = -0.1
         objectRot = rotX(meshAtual, angulo)
         opCreate(objectRot)
     elif event.char == "i": # rotaciona para a esquerda ao redor do eixo z
-        angulo = 1
+        angulo = 0.1
         objectRot = rotZ(meshAtual, angulo)
         opCreate(objectRot)
     elif event.char == "k": # rotaciona para a direita ao redor do eixo z
-        angulo = -1
+        angulo = -0.1
         objectRot = rotZ(meshAtual, angulo)
         opCreate(objectRot)
     elif event.char == "o": # rotaciona para a esquerda ao redor do eixo y
-        angulo = 1
+        angulo = 0.1
         objectRot = rotY(meshAtual, angulo)
         opCreate(objectRot)
     elif event.char == "l": # rotaciona para a direita ao redor do eixo y
-        angulo = -1
+        angulo = -0.1
         objectRot = rotY(meshAtual, angulo)
         opCreate(objectRot)
 
@@ -979,17 +962,16 @@ def clicked(value):
         for i in range(0, len(listMesh)):
             obj = []
             listaKs = listIlum[i]
-            #if(isMeshVisible(listMesh[i], listDist[1], listDist[2])):
             meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listaKs[0], listaKs[1], listaKs[2]], [listaKs[3], listaKs[4], listaKs[5]], [listaKs[6], listaKs[7], listaKs[8]], listaKs[9])
+            if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
+                for fh in meshSRT.faces():
+                    face = []
+                    for vh in meshSRT.fv(fh):
+                        point = meshSRT.point(vh)
+                        face.append([point[0], point[1]])
+                    obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
 
-            for fh in meshSRT.faces():
-                face = []
-                for vh in meshSRT.fv(fh):
-                    point = meshSRT.point(vh)
-                    face.append([point[0], point[1]])
-                obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
-
-            listObject.append(obj)
+                listObject.append(obj)
 
 def run_program():
     root = Tk()
