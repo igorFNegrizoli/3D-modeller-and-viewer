@@ -518,7 +518,7 @@ class CanvasMenu(Frame):
         global canvasPC
         planoCartesiano = Frame(self.master, highlightbackground='gray', highlightthickness=1)
         canvasPC = Canvas(planoCartesiano)
-        planoCartesiano.place(x=20, y= 550, width=150, height=150)
+        planoCartesiano.place(x=20, y= 530, width=170, height=170)
         planoCartesiano.rowconfigure(0, weight = 1)
         planoCartesiano.columnconfigure(0, weight = 1)
         canvasPC.grid(sticky="nsew")
@@ -621,9 +621,9 @@ def newWorld():
                 popupShowLimitError() 
             else:
                 canvas.focus_set()
-
                 placeScreen()
                 redefineObject()
+                deleteLabel()
                 EixosSinalizadores()
                 
     else:
@@ -706,49 +706,61 @@ def newObject():
     else:
         popupShowErrorEmptyInput()
 
+def deleteLabel():
+    global labelXAxis, labelYAxis, labelZAxis
+    if(labelXAxis != None and labelYAxis != None and labelZAxis != None):
+        labelXAxis.place_forget()
+        labelYAxis.place_forget()
+        labelZAxis.place_forget()
+
 def EixosSinalizadores():
     global listViewUp, listDist, listVRP, listP
-
-    canvasPC.delete("all")
+    global labelXAxis, labelYAxis, labelZAxis
 
     if ((len(listVRP) != 0) and (len(listP) != 0) and (len(listDist) != 0) and (len(listViewUp) != 0)):
-        print("entrei")
+
+        canvasPC.delete("all")
         tamanhoLinha = 60
         matrizPCsrt = None
 
         matrizPontos = np.array([[0, tamanhoLinha, 0, 0],[0, 0, tamanhoLinha, 0], [0, 0, 0, tamanhoLinha], [1, 1, 1, 1]])
 
-       
+        print(listDist)
+        print(listP)
+        print(listViewUp)
+        print(listVRP)
 
         PCsrc = sru2src(np.array(listVRP),np.array(listP) ,np.array(listViewUp))
         
         matrizPCsrt = np.dot(PCsrc, matrizPontos)
 
         if listProj[0]:
-            print("perpec")
             matrizPerpec = perspProj(listDist[0])
             matrizPCsrt = np.dot(matrizPerpec, matrizPCsrt)
 
-        x = (matrizPCsrt[0][0] - 70)
-        y = (matrizPCsrt[1][0] - 75)
+        matrizPCsrt[1:]*=-1
 
+        x = (matrizPCsrt[0][0] - 80)
+        y = (matrizPCsrt[1][0] - 77)
 
-        print(matrizPCsrt[0][0])
-        print(matrizPCsrt[1][0])
-        # labelXAxis = Label(planoCartesiano, text="X", font=('Helvetica', 9), fg="red")
-        # labelXAxis.place(relx=0.85, rely= 0.5, anchor=E)
-        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][1] - x, matrizPCsrt[1][1] - y), fill="red", width=2)
-        
-        # labelYAxis = Label(planoCartesiano, text="Y", font=('Helvetica', 9), fg="green")
-        # labelYAxis.place(relx=0.55, rely= 0.2, anchor=E)
-        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][2] - x, matrizPCsrt[1][2] - y), fill="green", width=2)
-
-        # labelZAxis = Label(planoCartesiano, text="Z", font=('Helvetica', 9), fg="blue")
-        # labelZAxis.place(relx=0.2, rely= 0.68, anchor=E)
-        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][3] - x, matrizPCsrt[1][3] - y), fill="blue", width=2)
+        EndLineX = [matrizPCsrt[0][1] - x, matrizPCsrt[1][1] - y]
+        EndLineY = [matrizPCsrt[0][2] - x, matrizPCsrt[1][2] - y]
+        EndLineZ = [matrizPCsrt[0][3] - x, matrizPCsrt[1][3] - y]
 
         
+        labelXAxis = Label(canvasPC, text="X", font=('Helvetica', 9), fg="red")
+        labelXAxis.place(x= EndLineX[0], y= EndLineX[1]-10, anchor=E)
+        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, EndLineX[0], EndLineX[1]), fill="red", width=2)
+        
+        labelYAxis = Label(canvasPC, text="Y", font=('Helvetica', 9), fg="green")
+        labelYAxis.place(x=EndLineY[0], y= EndLineY[1]-10, anchor=E)
+        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, EndLineY[0], EndLineY[1]), fill="green", width=2)
 
+        labelZAxis = Label(canvasPC, text="Z", font=('Helvetica', 9), fg="blue")
+        labelZAxis.place(x=EndLineZ[0], y= EndLineZ[1]+10, anchor=E)
+        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, EndLineZ[0], EndLineZ[1]), fill="blue", width=2)
+
+        
 def placeScreen ():
     screen.place(x = (listViewPort[0] + 10), y = (listViewPort[2] + 70), width= listViewPort[1], height= listViewPort[3])
 
@@ -995,10 +1007,13 @@ def run_program():
 
     root.geometry("%dx%d+%d+%d" % (width, height, posx, posy))
  
-    global polygon, meshAtual, listObject, listMesh, listProj, listIlum, listVRP, listP, listViewUp, listDist
+    global polygon, meshAtual, listObject, listMesh, listProj, listIlum, listVRP, listP, listViewUp, listDist, labelXAxis, labelYAxis, labelZAxis
     
     meshAtual = None
     polygon = None
+    labelXAxis = None
+    labelYAxis = None
+    labelZAxis = None
     listMesh = []
     listObject = []
     listProj = []
