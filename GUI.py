@@ -729,23 +729,23 @@ def EixosSinalizadores():
             matrizPerpec = perspProj(listDist[0])
             matrizPCsrt = np.dot(matrizPerpec, matrizPCsrt)
 
-        x = (matrizPCsrt[0][0] - 50)
-        y = (matrizPCsrt[1][0] - 50)
+        x = (matrizPCsrt[0][0] - 70)
+        y = (matrizPCsrt[1][0] - 75)
 
 
         print(matrizPCsrt[0][0])
         print(matrizPCsrt[1][0])
         # labelXAxis = Label(planoCartesiano, text="X", font=('Helvetica', 9), fg="red")
         # labelXAxis.place(relx=0.85, rely= 0.5, anchor=E)
-        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][1] - x, matrizPCsrt[1][1] - y), fill="red")
+        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][1] - x, matrizPCsrt[1][1] - y), fill="red", width=2)
         
         # labelYAxis = Label(planoCartesiano, text="Y", font=('Helvetica', 9), fg="green")
         # labelYAxis.place(relx=0.55, rely= 0.2, anchor=E)
-        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][2] - x, matrizPCsrt[1][2] - y), fill="green")
+        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][2] - x, matrizPCsrt[1][2] - y), fill="green", width=2)
 
         # labelZAxis = Label(planoCartesiano, text="Z", font=('Helvetica', 9), fg="blue")
         # labelZAxis.place(relx=0.2, rely= 0.68, anchor=E)
-        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][3] - x, matrizPCsrt[1][3] - y), fill="blue")
+        canvasPC.create_line((matrizPCsrt[0][0] - x, matrizPCsrt[1][0] - y, matrizPCsrt[0][3] - x, matrizPCsrt[1][3] - y), fill="blue", width=2)
 
         
 
