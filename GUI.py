@@ -490,6 +490,9 @@ class CanvasMenu(Frame):
         novoObjeto = Button(scrollableFrame, text="Novo objeto", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newObject)
         novoObjeto.grid(row=39, column=1, pady=10)
 
+        atualizarObjeto = Button(scrollableFrame, text="Atualizar objeto", font=('Helvetica', 10), bg='#edb1ba', width=9, command = updateObject)
+        atualizarObjeto.grid(row=39, column=2, pady=10)
+
         limparCena = Button(scrollableFrame, text="Limpar cena", font=('Helvetica', 10), bg='#edb1ba', width=9, command= clearScreen)
         limparCena.grid(row=39, column=3, pady=10) 
 
