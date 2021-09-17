@@ -490,7 +490,7 @@ class CanvasMenu(Frame):
         novoObjeto = Button(scrollableFrame, text="Novo objeto", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newObject)
         novoObjeto.grid(row=39, column=1, pady=10)
 
-        atualizarObjeto = Button(scrollableFrame, text="Atualizar objeto", font=('Helvetica', 10), bg='#edb1ba', width=9, command = updateObject)
+        atualizarObjeto = Button(scrollableFrame, text="Atualizar objeto", font=('Helvetica', 8), bg='#edb1ba', width=9, command = updateObject)
         atualizarObjeto.grid(row=39, column=2, pady=10)
 
         limparCena = Button(scrollableFrame, text="Limpar cena", font=('Helvetica', 10), bg='#edb1ba', width=9, command= clearScreen)
@@ -548,7 +548,10 @@ def newWorld():
        and len(worldList[7].get()) != 0 and len(worldList[8].get()) != 0 and len(worldList[9].get()) != 0 \
        and len(worldList[10].get()) != 0 and len(worldList[11].get()) != 0 and len(worldList[12].get()) != 0 \
        and len(worldList[13].get()) != 0 and len(worldList[14].get()) != 0 and len(worldList[15].get()) != 0 \
-       and len(worldList[16].get()) != 0 and len(worldList[17].get()) != 0 and len(worldList[18].get()) != 0:
+       and len(worldList[16].get()) != 0 and len(worldList[17].get()) != 0 and len(worldList[18].get()) != 0 \
+       and len(objectDataList[17].get()) != 0 and len(objectDataList[18].get()) != 0 and len(objectDataList[19].get()) != 0 \
+       and len(objectDataList[20].get()) != 0 and len(objectDataList[21].get()) != 0 and len(objectDataList[22].get()) != 0  \
+       and len(objectDataList[23].get()) != 0 and len(objectDataList[24].get()) != 0 and len(objectDataList[25].get()) != 0:
    
         try:
             #View-port
@@ -594,6 +597,23 @@ def newWorld():
             listWW.append(int(worldList[17].get()))
             listWW.append(int(worldList[18].get()))
             listWW.append(int(worldList[19].get()))
+
+            #luz ambiente
+            global listLuz
+            listLuz = []
+            listLuz.append(int(objectDataList[17].get()))
+            listLuz.append(int(objectDataList[18].get()))
+            listLuz.append(int(objectDataList[19].get()))
+
+            #fonte luminosa
+            listLuz.append(int(objectDataList[20].get()))
+            listLuz.append(int(objectDataList[21].get()))
+            listLuz.append(int(objectDataList[22].get()))
+
+            #coord. fonte luminosa
+            listLuz.append(int(objectDataList[23].get()))
+            listLuz.append(int(objectDataList[24].get()))
+            listLuz.append(int(objectDataList[25].get()))
        
         except ValueError:
             popupShowErrorInput()  
@@ -620,9 +640,7 @@ def newObject():
        and len(objectDataList[4].get()) != 0 and len(objectDataList[5].get()) != 0 and len(objectDataList[6].get()) != 0 and len(objectDataList[7].get()) != 0 \
        and len(objectDataList[8].get()) != 0 and len(objectDataList[9].get()) != 0 and len(objectDataList[10].get()) != 0 and len(objectDataList[11].get()) != 0 \
        and len(objectDataList[12].get()) != 0 and len(objectDataList[13].get()) != 0 and len(objectDataList[14].get()) != 0 and len(objectDataList[15].get()) != 0 \
-       and len(objectDataList[16].get()) != 0 and len(objectDataList[17].get()) != 0 and len(objectDataList[18].get()) != 0 and len(objectDataList[19].get()) != 0 \
-       and len(objectDataList[20].get()) != 0 and len(objectDataList[21].get()) != 0 and len(objectDataList[22].get()) != 0 and len(objectDataList[23].get()) != 0 \
-       and len(objectDataList[24].get()) != 0 and len(objectDataList[25].get()) != 0:
+       and len(objectDataList[16].get()) != 0:
         try:
 
             #Número de lados
@@ -663,23 +681,6 @@ def newObject():
                 
                 #n
                 listK.append(float(objectDataList[16].get()))
-
-                #luz ambiente
-                global listLuz
-                listLuz = []
-                listLuz.append(int(objectDataList[17].get()))
-                listLuz.append(int(objectDataList[18].get()))
-                listLuz.append(int(objectDataList[19].get()))
-
-                #fonte luminosa
-                listLuz.append(int(objectDataList[20].get()))
-                listLuz.append(int(objectDataList[21].get()))
-                listLuz.append(int(objectDataList[22].get()))
-
-                #coord. fonte luminosa
-                listLuz.append(int(objectDataList[23].get()))
-                listLuz.append(int(objectDataList[24].get()))
-                listLuz.append(int(objectDataList[25].get()))
 
                 canvas.focus_set()
                 createObject(BR, TR, NL, OH, [coorOCX, coorOCY, coorOCZ])
@@ -760,6 +761,114 @@ def clearScreen():
     listObject.clear()
     listIlum.clear()
 
+def updateObject():
+    global polygon, meshAtual, kAtual
+    if((canvas.find_all) != 0):
+            
+        if(len(objectDataList[7].get()) != 0 \
+        and len(objectDataList[8].get()) != 0 and len(objectDataList[9].get()) != 0 and len(objectDataList[10].get()) != 0 and len(objectDataList[11].get()) != 0 \
+        and len(objectDataList[12].get()) != 0 and len(objectDataList[13].get()) != 0 and len(objectDataList[14].get()) != 0 and len(objectDataList[15].get()) != 0 \
+        and len(objectDataList[16].get()) != 0 and len(objectDataList[17].get()) != 0 and len(objectDataList[18].get()) != 0 and len(objectDataList[19].get()) != 0 \
+        and len(objectDataList[20].get()) != 0 and len(objectDataList[21].get()) != 0 and len(objectDataList[22].get()) != 0  \
+        and len(objectDataList[23].get()) != 0 and len(objectDataList[24].get()) != 0 and len(objectDataList[25].get()) != 0):
+
+            if(meshAtual is None):
+                
+                try:
+                    #Ka
+                    listK = []
+                    listK.append(float(objectDataList[7].get()))
+                    listK.append(float(objectDataList[8].get()))
+                    listK.append(float(objectDataList[9].get()))
+
+                    #Kd
+                    listK.append(float(objectDataList[10].get()))
+                    listK.append(float(objectDataList[11].get()))
+                    listK.append(float(objectDataList[12].get()))
+
+                    #Ks
+                    listK.append(float(objectDataList[13].get()))
+                    listK.append(float(objectDataList[14].get()))
+                    listK.append(float(objectDataList[15].get()))
+
+                    #n
+                    listK.append(float(objectDataList[16].get()))
+
+                    #luz ambiente
+                    global listLuz
+                    listLuz = []
+                    listLuz.append(int(objectDataList[17].get()))
+                    listLuz.append(int(objectDataList[18].get()))
+                    listLuz.append(int(objectDataList[19].get()))
+
+                    #fonte luminosa
+                    listLuz.append(int(objectDataList[20].get()))
+                    listLuz.append(int(objectDataList[21].get()))
+                    listLuz.append(int(objectDataList[22].get()))
+
+                    #coord. fonte luminosa
+                    listLuz.append(int(objectDataList[23].get()))
+                    listLuz.append(int(objectDataList[24].get()))
+                    listLuz.append(int(objectDataList[25].get()))
+                    canvas.focus_set()
+                    
+                    canvas.delete("all")
+                    listObject.clear()
+                    listIlum.clear()
+                    polygon = None
+                    meshAtual = None
+                    kAtual = None
+                    for i in range(0, len(listMesh)):
+                        obj = [] 
+                        meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
+                        if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
+                            listIlum.append(listK)
+                            for fh in meshSRT.faces():
+                                face = []
+                                for vh in meshSRT.fv(fh):
+                                    point = meshSRT.point(vh)
+                                    face.append([point[0], point[1]])
+                                obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
+
+                            listObject.append(obj)
+                except ValueError:
+                    popupShowErrorInput() 
+            else:
+
+                try:
+                    #Ka
+                    listK = []
+                    listK.append(float(objectDataList[7].get()))
+                    listK.append(float(objectDataList[8].get()))
+                    listK.append(float(objectDataList[9].get()))
+
+                    #Kd
+                    listK.append(float(objectDataList[10].get()))
+                    listK.append(float(objectDataList[11].get()))
+                    listK.append(float(objectDataList[12].get()))
+
+                    #Ks
+                    listK.append(float(objectDataList[13].get()))
+                    listK.append(float(objectDataList[14].get()))
+                    listK.append(float(objectDataList[15].get()))
+
+                    #n
+                    listK.append(float(objectDataList[16].get()))
+
+                    for i in range(0, len(listMesh)):
+                        if(listMesh[i] == meshAtual):
+                            listIlum[i] = listK
+                    kAtual = listK
+                    opCreate(meshAtual)
+
+                except ValueError:
+                    popupShowErrorInput() 
+        else:
+            popupShowErrorEmptyInput()
+
+            
+               
+
 def redefineObject():
     global polygon, meshAtual
     if((canvas.find_all) != 0):
@@ -767,6 +876,7 @@ def redefineObject():
         listObject.clear()
         polygon = None
         meshAtual = None
+        kAtual = None
         for i in range(0, len(listMesh)):
             obj = []
             listKs = listIlum[i]
@@ -965,7 +1075,7 @@ def clicked(value):
         listObject.clear()
         polygon = None
         meshAtual = None
-
+        kAtual = None
         for i in range(0, len(listMesh)):
             obj = []
             listaKs = listIlum[i]
