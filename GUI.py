@@ -865,8 +865,9 @@ def opCreate(object):
                 faces.append([newFace,faceProfundidade/3,rgba2hex(meshSRT.color(fh))])
 
     #Ordenamos todas as faces pelo item [1] que é a profundidade
+    #Reforçand: aqui na faces a gente tem todas as faces do poligono mas temos que fazer com que faces tenha as faces de TODOS os poligonos. Não implementei essa parte ṕois nem sei onde eles estao sendo armazenados kkkk. Não esqueçam que estou livre se precisarem de ajuda :)
     faces = sorted(faces , key=lambda k: k[1])
-    #Agora desenhamos todas em ordem d
+    #Agora desenhamos todas em ordem de profundidade
     for currFace in faces:
         polygon.append(canvas.create_polygon(currFace[0], fill=currFace[2], tags="clickable", outline="red"))
 
