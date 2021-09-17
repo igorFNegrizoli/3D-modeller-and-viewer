@@ -837,9 +837,15 @@ def interfaceTeclas(event):
         escala(event)
         rotacao(event)
 
-def desenhaObjeto(mesh):
+def opCreate(object):
+    #deleta object
+    global polygon, kAtual
+    for i in range(0, len(polygon)):
+        canvas.delete(polygon[i])
+    polygon.clear()
+
     #Converte para SRT
-    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [kAtual[0], kAtual[1], kAtual[2]], [kAtual[3], kAtual[4], kAtual[5]], [kAtual[6], kAtual[7], kAtual[8]], kAtual[9])
+    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [kAtual[0], kAtual[1], kAtual[2]], [kAtual[3], kAtual[4], kAtual[5]], [kAtual[6], kAtual[7], kAtual[8]], kAtual[9])
     if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
         for fh in meshSRT.faces():
             face = []
@@ -848,18 +854,7 @@ def desenhaObjeto(mesh):
                 face.append([point[0], point[1]])
             newFace = cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
             if newFace != []:
-                polygon.append(canvas.create_polygon(newFace, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))
-
-
-def opCreate(object):
-    #deleta object
-    global polygon, kAtual
-    for i in range(0, len(polygon)):
-        canvas.delete(polygon[i])
-    polygon.clear()
-
-    desenhaObjeto(object)
-        
+                polygon.append(canvas.create_polygon(newFace, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))       
 
 def translacao(event):
     x, y, z = 0, 0, 0
