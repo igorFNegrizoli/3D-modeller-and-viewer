@@ -847,17 +847,32 @@ def opCreate(object):
         canvas.delete(polygon[i])
     polygon.clear()
 
+    #Lista de faces que vai ser ordenada
+    faces = []
+
     #Converte para SRT
     meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [kAtual[0], kAtual[1], kAtual[2]], [kAtual[3], kAtual[4], kAtual[5]], [kAtual[6], kAtual[7], kAtual[8]], kAtual[9])
     if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
         for fh in meshSRT.faces():
             face = []
+            faceProfundidade = 0
             for vh in meshSRT.fv(fh):
                 point = meshSRT.point(vh)
+                faceProfundidade += point[2]
                 face.append([point[0], point[1]])
             newFace = cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
             if newFace != []:
-                polygon.append(canvas.create_polygon(newFace, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))       
+                #polygon.append(canvas.create_polygon(newFace, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))
+                #Em vez de já desenhar na tela, adicionar a newFace, profundidade e a cor na faces
+                #IMPORTANTE: Aqui a gente tá fazendo o algoritmo do pintor só pro objeto que a gente ta passando no opCreate, mas isso deve ser feito para TODOS os objetos todas as vezes que fazemos qualquer operação
+                faces.append([newFace,faceProfundidade/3,rgba2hex(meshSRT.color(fh))])
+
+    #Ordenamos todas as faces pelo item [1] que é a profundidade
+    #Reforçand: aqui na faces a gente tem todas as faces do poligono mas temos que fazer com que faces tenha as faces de TODOS os poligonos. Não implementei essa parte ṕois nem sei onde eles estao sendo armazenados kkkk. Não esqueçam que estou livre se precisarem de ajuda :)
+    faces = sorted(faces , key=lambda k: k[1])
+    #Agora desenhamos todas em ordem de profundidade
+    for currFace in faces:
+        polygon.append(canvas.create_polygon(currFace[0], fill=currFace[2], tags="clickable", outline="red"))
 
 def translacao(event):
     x, y, z = 0, 0, 0
