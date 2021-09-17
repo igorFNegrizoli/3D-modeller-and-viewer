@@ -785,17 +785,6 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     mesh = salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
     listMesh.append(mesh)
 
-    #Valores de teste para iluminação
-    #O codigo de todos convertMesh2SRT devem ser refadorados pq os parametros de entrarem mudaram, usem a linha 699 como referencia
-    #Precisa fazer a convertMesh2SRT pegar os valores do usuario, aqui eu fiz funcionar só pra createObject com os valores que declarei aqui em baixo
-    # lAmbiente = np.array([120,120,120])
-    # lPontual = np.array([150,150,150])
-    # lPontualCord = np.array([70,20,35])
-    # kA = 0.4
-    # kD = 0.7
-    # kS = 0.5
-    # n = 2.15
-
     #Converte para SRT
 
     meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
@@ -848,16 +837,9 @@ def interfaceTeclas(event):
         escala(event)
         rotacao(event)
 
-def opCreate(object):
-    #deleta object
-    global polygon, kAtual
-    for i in range(0, len(polygon)):
-        canvas.delete(polygon[i])
-    polygon.clear()
-
+def desenhaObjeto(mesh):
     #Converte para SRT
-    
-    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [kAtual[0], kAtual[1], kAtual[2]], [kAtual[3], kAtual[4], kAtual[5]], [kAtual[6], kAtual[7], kAtual[8]], kAtual[9])
+    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [kAtual[0], kAtual[1], kAtual[2]], [kAtual[3], kAtual[4], kAtual[5]], [kAtual[6], kAtual[7], kAtual[8]], kAtual[9])
     if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
         for fh in meshSRT.faces():
             face = []
@@ -867,6 +849,16 @@ def opCreate(object):
             newFace = cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
             if newFace != []:
                 polygon.append(canvas.create_polygon(newFace, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))
+
+
+def opCreate(object):
+    #deleta object
+    global polygon, kAtual
+    for i in range(0, len(polygon)):
+        canvas.delete(polygon[i])
+    polygon.clear()
+
+    desenhaObjeto(object)
         
 
 def translacao(event):
