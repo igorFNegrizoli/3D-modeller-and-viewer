@@ -20,6 +20,7 @@ conda activate cg_py37
 conda install -c anaconda tk
 conda install -c conda-forge openmesh
 conda install -c conda-forge openmesh-python
+python3 GUI.py
 ```
 ## Capturas de tela/Printscreens
 To-do
