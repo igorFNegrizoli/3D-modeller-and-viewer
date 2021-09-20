@@ -920,34 +920,6 @@ def identifyObject(event):
                 kAtual = i[0]
                 break
 
-"""
-    if not event.widget.find_withtag("current"):
-        print("Nenhum objeto no Canvas!")
-        for i in range(0, len(listObject[0])):
-            for j in range(0, len(listObject[0][i])):
-                canvas.itemconfig(listObject[0][i][j], outline="black")
-        polygon = None
-    else:
-        id = event.widget.find_withtag("current")[0]
-        #pintar poligono clicado
-        for i in range(0, len(listObject[0])):
-            for j in range(0, len(listObject[0][i])):
-                if listObject[0][i][j] == id:
-                    polygon = listObject[0][i]
-                    aux = i
-                    for k in range(0, len(polygon)):
-                        canvas.itemconfig(polygon[k], outline="red")
-                        
-        #pintar poligonos extras
-        for i in range(0, len(listObject[0])):
-            if i != aux:
-                for j in range(0, len(listObject[0][i])):
-                    canvas.itemconfig(listObject[0][i][j], outline="black")
-
-        meshAtual = listMesh[aux]
-        kAtual = listIlum[aux]
-"""
-
 def interfaceTeclas(event):
     if meshAtual is not None:
         translacao(event)
