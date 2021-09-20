@@ -903,63 +903,104 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
 
     mesh = salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
     listMesh.append([mesh, contadorObj])
+    listIlum.append([listK, contadorObj])
 
-    #Converte para SRT
+    desenhaTudo()
 
-    #Lista de faces que vai ser ordenada
+def desenhaTudo():
+    global listMesh, listObject
+
     faces = []
 
-    meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
-    listIlum.append([listK, contadorObj])
-    if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
-        for fh in meshSRT.faces():
-            face = []
-            faceProfundidade = 0
-            for vh in meshSRT.fv(fh):
-                point = meshSRT.point(vh)
-                faceProfundidade += point[2]
-                face.append([point[0], point[1]])
-            newFace = cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
-            if newFace != []:
-                faces.append([newFace,faceProfundidade/3,rgba2hex(meshSRT.color(fh)), contadorObj])
+    for i in listMesh:
+        idObj = i[1]
 
-  
+        listKAtual = []
+        for j in listIlum:
+            if j[1] == idObj:
+                listKAtual = j[0]
+                break
+
+        meshSRT = convertMesh2SRT(i[0], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listKAtual[0], listKAtual[1], listKAtual[2]], [listKAtual[3], listKAtual[4], listKAtual[5]], [listKAtual[6], listKAtual[7], listKAtual[8]], listKAtual[9])
+        if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
+            for fh in meshSRT.faces():
+                face = []
+                faceProfundidade = 0
+                for vh in meshSRT.fv(fh):
+                    point = meshSRT.point(vh)
+                    faceProfundidade += point[2]
+                    face.append([point[0], point[1]])
+                newFace = cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
+                if newFace != []:
+                    faces.append([newFace,faceProfundidade/3,rgba2hex(meshSRT.color(fh)), idObj])
+
     faces = sorted(faces , key=lambda k: k[1])
+    listObject = []
     for currFace in faces:
-        listObject.append([canvas.create_polygon(currFace[0], fill=currFace[2], tags="clickable", outline="black"), contadorObj])
-        
+        listObject.append([canvas.create_polygon(currFace[0], fill=currFace[2], tags="clickable", outline="black"), currFace[3]])
+
 
 def identifyObject(event):
     canvas.focus_set()
-    global meshAtual, polygon, listMesh, kAtual
+    global meshAtual, listMesh, kAtual
     meshAtual = None
-    polygon = None
     kAtual = None
+
+    idWidget = event.widget.find_withtag("current")
+
+    if not idWidget:
+        print("O alvo do clique era um espaço vazio")
+        for i in listObject:
+            canvas.itemconfig(i[0], outline="black")
+    else:
+        idObj = -1
+        for i in listObject:
+            if i[0] == idWidget[0]:
+                idObj = i[1]
+
+        for i in listObject:
+            if i[1] == idObj:
+                canvas.itemconfig(i[0], outline="red")
+            else:
+                canvas.itemconfig(i[0], outline="black")
+
+        for i in listMesh:
+            if i[1] == idObj:
+                meshAtual = i[0]
+                break
+
+        for i in listIlum:
+            if i[1] == idObj:
+                kAtual = i[0]
+                break
+
+"""
     if not event.widget.find_withtag("current"):
         print("Nenhum objeto no Canvas!")
-        for i in range(0, len(listObject)):
-            for j in range(0, len(listObject[i])):
-                canvas.itemconfig(listObject[i][j], outline="black")
+        for i in range(0, len(listObject[0])):
+            for j in range(0, len(listObject[0][i])):
+                canvas.itemconfig(listObject[0][i][j], outline="black")
         polygon = None
     else:
         id = event.widget.find_withtag("current")[0]
         #pintar poligono clicado
-        for i in range(0, len(listObject)):
-            for j in range(0, len(listObject[i])):
-                if listObject[i][j] == id:
-                    polygon = listObject[i]
+        for i in range(0, len(listObject[0])):
+            for j in range(0, len(listObject[0][i])):
+                if listObject[0][i][j] == id:
+                    polygon = listObject[0][i]
                     aux = i
                     for k in range(0, len(polygon)):
                         canvas.itemconfig(polygon[k], outline="red")
                         
         #pintar poligonos extras
-        for i in range(0, len(listObject)):
+        for i in range(0, len(listObject[0])):
             if i != aux:
-                for j in range(0, len(listObject[i])):
-                    canvas.itemconfig(listObject[i][j], outline="black")
+                for j in range(0, len(listObject[0][i])):
+                    canvas.itemconfig(listObject[0][i][j], outline="black")
 
         meshAtual = listMesh[aux]
         kAtual = listIlum[aux]
+"""
 
 def interfaceTeclas(event):
     if meshAtual is not None:
