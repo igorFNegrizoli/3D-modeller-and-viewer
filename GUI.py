@@ -502,7 +502,7 @@ class CanvasMenu(Frame):
 
     def initPC(self):
         global canvasPC
-        planoCartesiano = Frame(self.master, highlightbackground='gray', highlightthickness=1)
+        planoCartesiano = Frame(self.master)
         canvasPC = Canvas(planoCartesiano)
         planoCartesiano.place(x=20, y= 530, width=170, height=170)
         planoCartesiano.rowconfigure(0, weight = 1)
