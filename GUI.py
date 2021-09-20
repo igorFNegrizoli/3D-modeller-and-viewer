@@ -646,7 +646,7 @@ def newObject():
             #Número de lados
             NL = int(objectDataList[2].get())
 
-            if(NL > 3 and NL < 20):
+            if(NL >= 3):
 
                 #Raio da base
                 BR = float(objectDataList[0].get())
@@ -752,17 +752,16 @@ def placeScreen ():
     screen.place(x = (listViewPort[0] + 10), y = (listViewPort[2] + 70), width= listViewPort[1], height= listViewPort[3])
 
 def clearScreen():
-    global meshAtual, polygon, kAtual
+    global meshAtual, kAtual
     canvas.delete("all")
     meshAtual = None
-    polygon = None
     kAtual = None
     listMesh.clear()
     listObject.clear()
     listIlum.clear()
 
 def updateObject():
-    global polygon, meshAtual, kAtual
+    global meshAtual, kAtual
     if((canvas.find_all) != 0):
             
         if(len(objectDataList[7].get()) != 0 \
@@ -1046,10 +1045,9 @@ def run_program():
 
     root.geometry("%dx%d+%d+%d" % (width, height, posx, posy))
  
-    global polygon, meshAtual, listObject, listMesh, listProj, listIlum, listVRP, listP, listViewUp, listDist, labelXAxis, labelYAxis, labelZAxis, contadorObj, idAtual
+    global meshAtual, listObject, listMesh, listProj, listIlum, listVRP, listP, listViewUp, listDist, labelXAxis, labelYAxis, labelZAxis, contadorObj, idAtual
     
     meshAtual = None
-    polygon = None
     labelXAxis = None
     labelYAxis = None
     labelZAxis = None
