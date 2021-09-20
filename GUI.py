@@ -870,13 +870,16 @@ def updateObject():
                
 
 def redefineObject():
-    global polygon, meshAtual
+    global polygon, meshAtual, kAtual
+
     if((canvas.find_all) != 0):
+
         canvas.delete("all")
         listObject.clear()
         polygon = None
         meshAtual = None
         kAtual = None
+        
         for i in range(0, len(listMesh)):
             obj = []
             listKs = listIlum[i]
@@ -894,25 +897,37 @@ def redefineObject():
 
 
 def createObject(raioBase, raioTopo, nLados, altura, GC):
-    global listMesh, listObject, listIlum
-    obj = []
+    global listMesh, listObject, listIlum, contadorObj
+
+    contadorObj += 1
 
     mesh = salvaPoligono(raioBase, raioTopo, nLados, altura, GC)
-    listMesh.append(mesh)
+    listMesh.append([mesh, contadorObj])
 
     #Converte para SRT
 
+    #Lista de faces que vai ser ordenada
+    faces = []
+
     meshSRT = convertMesh2SRT(mesh, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
-    if isMeshVisible(meshSRT, listDist[1], listDist[2]):
-        listIlum.append(listK)
+    listIlum.append([listK, contadorObj])
+    if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
         for fh in meshSRT.faces():
             face = []
+            faceProfundidade = 0
             for vh in meshSRT.fv(fh):
                 point = meshSRT.point(vh)
+                faceProfundidade += point[2]
                 face.append([point[0], point[1]])
-            obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
+            newFace = cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
+            if newFace != []:
+                faces.append([newFace,faceProfundidade/3,rgba2hex(meshSRT.color(fh)), contadorObj])
 
-        listObject.append(obj)
+  
+    faces = sorted(faces , key=lambda k: k[1])
+    for currFace in faces:
+        listObject.append([canvas.create_polygon(currFace[0], fill=currFace[2], tags="clickable", outline="black"), contadorObj])
+        
 
 def identifyObject(event):
     canvas.focus_set()
@@ -1106,7 +1121,7 @@ def run_program():
 
     root.geometry("%dx%d+%d+%d" % (width, height, posx, posy))
  
-    global polygon, meshAtual, listObject, listMesh, listProj, listIlum, listVRP, listP, listViewUp, listDist, labelXAxis, labelYAxis, labelZAxis
+    global polygon, meshAtual, listObject, listMesh, listProj, listIlum, listVRP, listP, listViewUp, listDist, labelXAxis, labelYAxis, labelZAxis, contadorObj
     
     meshAtual = None
     polygon = None
@@ -1121,6 +1136,7 @@ def run_program():
     listP = []
     listViewUp = []
     listDist = []
+    contadorObj = 0
 
     CanvasMenu()
     newWorld()
