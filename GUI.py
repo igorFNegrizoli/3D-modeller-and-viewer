@@ -490,7 +490,7 @@ class CanvasMenu(Frame):
         novoObjeto = Button(scrollableFrame, text="Novo objeto", font=('Helvetica', 10), bg='#edb1ba', width=9, command = newObject)
         novoObjeto.grid(row=39, column=1, pady=10)
 
-        atualizarObjeto = Button(scrollableFrame, text="Atualizar objeto", font=('Helvetica', 8), bg='#edb1ba', width=9, command = updateObject)
+        atualizarObjeto = Button(scrollableFrame, text="Att. Luz", font=('Helvetica', 8), bg='#edb1ba', width=9, command = updateObject)
         atualizarObjeto.grid(row=39, column=2, pady=10)
 
         limparCena = Button(scrollableFrame, text="Limpar cena", font=('Helvetica', 10), bg='#edb1ba', width=9, command= clearScreen)
@@ -712,10 +712,10 @@ def EixosSinalizadores():
 
         matrizPontos = np.array([[0, tamanhoLinha, 0, 0],[0, 0, tamanhoLinha, 0], [0, 0, 0, tamanhoLinha], [1, 1, 1, 1]])
 
-        print(listDist)
-        print(listP)
-        print(listViewUp)
-        print(listVRP)
+        #print(listDist)
+        #print(listP)
+        #print(listViewUp)
+        #print(listVRP)
 
         PCsrc = sru2src(np.array(listVRP),np.array(listP) ,np.array(listViewUp))
         
@@ -775,25 +775,6 @@ def updateObject():
             if(meshAtual is None):
                 
                 try:
-                    #Ka
-                    listK = []
-                    listK.append(float(objectDataList[7].get()))
-                    listK.append(float(objectDataList[8].get()))
-                    listK.append(float(objectDataList[9].get()))
-
-                    #Kd
-                    listK.append(float(objectDataList[10].get()))
-                    listK.append(float(objectDataList[11].get()))
-                    listK.append(float(objectDataList[12].get()))
-
-                    #Ks
-                    listK.append(float(objectDataList[13].get()))
-                    listK.append(float(objectDataList[14].get()))
-                    listK.append(float(objectDataList[15].get()))
-
-                    #n
-                    listK.append(float(objectDataList[16].get()))
-
                     #luz ambiente
                     global listLuz
                     listLuz = []
@@ -812,25 +793,8 @@ def updateObject():
                     listLuz.append(int(objectDataList[25].get()))
                     canvas.focus_set()
                     
-                    canvas.delete("all")
-                    listObject.clear()
-                    listIlum.clear()
-                    polygon = None
-                    meshAtual = None
-                    kAtual = None
-                    for i in range(0, len(listMesh)):
-                        obj = [] 
-                        meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listK[0], listK[1], listK[2]], [listK[3], listK[4], listK[5]], [listK[6], listK[7], listK[8]], listK[9])
-                        if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
-                            listIlum.append(listK)
-                            for fh in meshSRT.faces():
-                                face = []
-                                for vh in meshSRT.fv(fh):
-                                    point = meshSRT.point(vh)
-                                    face.append([point[0], point[1]])
-                                obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
+                    updateScreen()
 
-                            listObject.append(obj)
                 except ValueError:
                     popupShowErrorInput() 
             else:
@@ -855,11 +819,11 @@ def updateObject():
                     #n
                     listK.append(float(objectDataList[16].get()))
 
-                    for i in range(0, len(listMesh)):
-                        if(listMesh[i] == meshAtual):
-                            listIlum[i] = listK
                     kAtual = listK
-                    opCreate(meshAtual)
+                    for i in listMesh:
+                        if i[1] == idAtual:
+                            opCreate(i[0])
+
 
                 except ValueError:
                     popupShowErrorInput() 
@@ -870,30 +834,11 @@ def updateObject():
                
 
 def redefineObject():
-    global polygon, meshAtual, kAtual
 
     if((canvas.find_all) != 0):
 
         canvas.delete("all")
-        listObject.clear()
-        polygon = None
-        meshAtual = None
-        kAtual = None
-        
-        for i in range(0, len(listMesh)):
-            obj = []
-            listKs = listIlum[i]
-            
-            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listKs[0], listKs[1], listKs[2]], [listKs[3], listKs[4], listKs[5]], [listKs[6], listKs[7], listKs[8]], listKs[9])
-            if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
-                for fh in meshSRT.faces():
-                    face = []
-                    for vh in meshSRT.fv(fh):
-                        point = meshSRT.point(vh)
-                        face.append([point[0], point[1]])
-                    obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
-
-                listObject.append(obj)
+        updateScreen()
 
 
 def createObject(raioBase, raioTopo, nLados, altura, GC):
@@ -905,10 +850,11 @@ def createObject(raioBase, raioTopo, nLados, altura, GC):
     listMesh.append([mesh, contadorObj])
     listIlum.append([listK, contadorObj])
 
-    desenhaTudo()
+    updateScreen()
 
-def desenhaTudo():
+def updateScreen():
     global listMesh, listObject
+    canvas.delete("all")
 
     faces = []
 
@@ -942,14 +888,14 @@ def desenhaTudo():
 
 def identifyObject(event):
     canvas.focus_set()
-    global meshAtual, listMesh, kAtual
+    global meshAtual, listMesh, kAtual, idAtual
     meshAtual = None
     kAtual = None
 
     idWidget = event.widget.find_withtag("current")
 
     if not idWidget:
-        print("O alvo do clique era um espaço vazio")
+        #print("O alvo do clique era um espaço vazio")
         for i in listObject:
             canvas.itemconfig(i[0], outline="black")
     else:
@@ -968,7 +914,7 @@ def identifyObject(event):
             if i[1] == idObj:
                 meshAtual = i[0]
                 break
-
+        idAtual = idObj
         for i in listIlum:
             if i[1] == idObj:
                 kAtual = i[0]
@@ -1010,37 +956,21 @@ def interfaceTeclas(event):
 
 def opCreate(object):
     #deleta object
-    global polygon, kAtual
-    for i in range(0, len(polygon)):
-        canvas.delete(polygon[i])
-    polygon.clear()
+    global kAtual, idAtual, listMesh, listIlum
+    
+    for i in listMesh:
+        if i[1] == idAtual:
+            i[0] = object
 
-    #Lista de faces que vai ser ordenada
-    faces = []
+    for i in listIlum:
+        if i[1] == idAtual:
+            i[0] = kAtual
 
-    #Converte para SRT
-    meshSRT = convertMesh2SRT(object, np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [kAtual[0], kAtual[1], kAtual[2]], [kAtual[3], kAtual[4], kAtual[5]], [kAtual[6], kAtual[7], kAtual[8]], kAtual[9])
-    if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
-        for fh in meshSRT.faces():
-            face = []
-            faceProfundidade = 0
-            for vh in meshSRT.fv(fh):
-                point = meshSRT.point(vh)
-                faceProfundidade += point[2]
-                face.append([point[0], point[1]])
-            newFace = cutBorder(face, listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3])
-            if newFace != []:
-                #polygon.append(canvas.create_polygon(newFace, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="red"))
-                #Em vez de já desenhar na tela, adicionar a newFace, profundidade e a cor na faces
-                #IMPORTANTE: Aqui a gente tá fazendo o algoritmo do pintor só pro objeto que a gente ta passando no opCreate, mas isso deve ser feito para TODOS os objetos todas as vezes que fazemos qualquer operação
-                faces.append([newFace,faceProfundidade/3,rgba2hex(meshSRT.color(fh))])
+    updateScreen()
 
-    #Ordenamos todas as faces pelo item [1] que é a profundidade
-    #Reforçand: aqui na faces a gente tem todas as faces do poligono mas temos que fazer com que faces tenha as faces de TODOS os poligonos. Não implementei essa parte ṕois nem sei onde eles estao sendo armazenados kkkk. Não esqueçam que estou livre se precisarem de ajuda :)
-    faces = sorted(faces , key=lambda k: k[1])
-    #Agora desenhamos todas em ordem de profundidade
-    for currFace in faces:
-        polygon.append(canvas.create_polygon(currFace[0], fill=currFace[2], tags="clickable", outline="red"))
+    for i in listObject:
+        if i[1] == idAtual:
+            canvas.itemconfig(i[0], outline="red")
 
 def translacao(event):
     x, y, z = 0, 0, 0
@@ -1124,27 +1054,9 @@ def rotacao(event):
         opCreate(objectRot)
 
 def clicked(value):
-    global listProj, polygon, meshAtual
     listProj[0] = value
     if(canvas.find_all != 0):
-        canvas.delete("all")
-        listObject.clear()
-        polygon = None
-        meshAtual = None
-        kAtual = None
-        for i in range(0, len(listMesh)):
-            obj = []
-            listaKs = listIlum[i]
-            meshSRT = convertMesh2SRT(listMesh[i], np.array(listVRP), listDist[0], listWW[0], listWW[1], listWW[2], listWW[3], listViewPort[0], listViewPort[1], listViewPort[2], listViewPort[3], np.array(listP), np.array(listViewUp), listProj[0], np.array([listLuz[0], listLuz[1], listLuz[2]]), np.array([listLuz[3], listLuz[4], listLuz[5]]), np.array([listLuz[6], listLuz[7], listLuz[8]]), [listaKs[0], listaKs[1], listaKs[2]], [listaKs[3], listaKs[4], listaKs[5]], [listaKs[6], listaKs[7], listaKs[8]], listaKs[9])
-            if(isMeshVisible(meshSRT, listDist[1], listDist[2])):
-                for fh in meshSRT.faces():
-                    face = []
-                    for vh in meshSRT.fv(fh):
-                        point = meshSRT.point(vh)
-                        face.append([point[0], point[1]])
-                    obj.append(canvas.create_polygon(face, fill=rgba2hex(meshSRT.color(fh)), tags="clickable", outline="black"))
-
-                listObject.append(obj)
+        updateScreen()
 
 def run_program():
     root = Tk()
@@ -1162,7 +1074,7 @@ def run_program():
 
     root.geometry("%dx%d+%d+%d" % (width, height, posx, posy))
  
-    global polygon, meshAtual, listObject, listMesh, listProj, listIlum, listVRP, listP, listViewUp, listDist, labelXAxis, labelYAxis, labelZAxis, contadorObj
+    global polygon, meshAtual, listObject, listMesh, listProj, listIlum, listVRP, listP, listViewUp, listDist, labelXAxis, labelYAxis, labelZAxis, contadorObj, idAtual
     
     meshAtual = None
     polygon = None
@@ -1178,6 +1090,7 @@ def run_program():
     listViewUp = []
     listDist = []
     contadorObj = 0
+    idAtual = -1
 
     CanvasMenu()
     newWorld()

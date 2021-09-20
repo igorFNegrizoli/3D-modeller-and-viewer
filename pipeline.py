@@ -6,7 +6,7 @@ from constantShading import applyConstantShading
 
 def isMeshVisible(mesh, dNear, dFar):
 	GC = getGeometricCenter(mesh)
-	print(GC)
+	#print(GC)
 	if -GC[2] < dNear or -GC[2] > dFar:
 		return False
 	else:
