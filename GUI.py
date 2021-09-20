@@ -646,7 +646,7 @@ def newObject():
             #Número de lados
             NL = int(objectDataList[2].get())
 
-            if(NL > 3 and NL < 20):
+            if(NL >= 3):
 
                 #Raio da base
                 BR = float(objectDataList[0].get())
@@ -752,17 +752,16 @@ def placeScreen ():
     screen.place(x = (listViewPort[0] + 10), y = (listViewPort[2] + 70), width= listViewPort[1], height= listViewPort[3])
 
 def clearScreen():
-    global meshAtual, polygon, kAtual
+    global meshAtual, kAtual
     canvas.delete("all")
     meshAtual = None
-    polygon = None
     kAtual = None
     listMesh.clear()
     listObject.clear()
     listIlum.clear()
 
 def updateObject():
-    global polygon, meshAtual, kAtual
+    global meshAtual, kAtual
     if((canvas.find_all) != 0):
             
         if(len(objectDataList[7].get()) != 0 \
@@ -920,34 +919,6 @@ def identifyObject(event):
                 kAtual = i[0]
                 break
 
-"""
-    if not event.widget.find_withtag("current"):
-        print("Nenhum objeto no Canvas!")
-        for i in range(0, len(listObject[0])):
-            for j in range(0, len(listObject[0][i])):
-                canvas.itemconfig(listObject[0][i][j], outline="black")
-        polygon = None
-    else:
-        id = event.widget.find_withtag("current")[0]
-        #pintar poligono clicado
-        for i in range(0, len(listObject[0])):
-            for j in range(0, len(listObject[0][i])):
-                if listObject[0][i][j] == id:
-                    polygon = listObject[0][i]
-                    aux = i
-                    for k in range(0, len(polygon)):
-                        canvas.itemconfig(polygon[k], outline="red")
-                        
-        #pintar poligonos extras
-        for i in range(0, len(listObject[0])):
-            if i != aux:
-                for j in range(0, len(listObject[0][i])):
-                    canvas.itemconfig(listObject[0][i][j], outline="black")
-
-        meshAtual = listMesh[aux]
-        kAtual = listIlum[aux]
-"""
-
 def interfaceTeclas(event):
     if meshAtual is not None:
         translacao(event)
@@ -1074,10 +1045,9 @@ def run_program():
 
     root.geometry("%dx%d+%d+%d" % (width, height, posx, posy))
  
-    global polygon, meshAtual, listObject, listMesh, listProj, listIlum, listVRP, listP, listViewUp, listDist, labelXAxis, labelYAxis, labelZAxis, contadorObj, idAtual
+    global meshAtual, listObject, listMesh, listProj, listIlum, listVRP, listP, listViewUp, listDist, labelXAxis, labelYAxis, labelZAxis, contadorObj, idAtual
     
     meshAtual = None
-    polygon = None
     labelXAxis = None
     labelYAxis = None
     labelZAxis = None
