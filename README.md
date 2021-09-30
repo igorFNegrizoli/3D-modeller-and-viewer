@@ -23,4 +23,28 @@ conda install -c conda-forge openmesh-python
 python3 GUI.py
 ```
 ## Capturas de tela/Printscreens
-To-do
+ <p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Overview1.png" /><br>
+  <span><i>Cena exemplo em projeção perspectiva / Example scene in perspective projection</i></span>
+</p>
+
+ <p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Overview2.png" /><br>
+  <span><i>Cena exemplo em projeção paralela / Example scene in parallel projection</i></span>
+</p>
+
+ <p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Menu1.png" /><br>
+  <span><i>Parâmetros de mundo disponíveis / Available word parameters</i></span>
+</p>
+
+ <p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/d/d2/Menu2.png" /><br>
+  <span><i>Parâmetros disponíveis para a criação do objeto / Object creation available parameters</i></span>
+</p>
+
+ <p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/Menu3.png" /><br>
+  <span><i>Parâmetros de sombreamento de objeto disponíveis / Object shading available parameters</i></span>
+</p>
+
